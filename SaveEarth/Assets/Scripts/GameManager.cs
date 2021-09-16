@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public float time = 0;
     private Dictionary<int, int> levelToPolutionOutput;
 
+
+
     public GameManager()
     {
         PopulatePollutionEconomy();       

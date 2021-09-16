@@ -8,11 +8,16 @@ public class House : Building
 
     public int population;
 
-    private Dictionary<int, int> levelToPopulation = new Dictionary<int, int>();
+    //private Dictionary<int, int> levelToPopulation = new Dictionary<int, int>();
     public House()
     {
         this.population = 20;
-        this.dataID = new DataID(4, "House");
+        this.DID = new DataID(4, "House");
         this.pollutionOutput = 20;
+    }
+
+    public void IncreasePopulations()
+    {
+        population += 30;
     }
 }

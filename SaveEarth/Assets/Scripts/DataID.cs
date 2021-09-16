@@ -4,14 +4,52 @@ using UnityEngine;
 
 public class DataID : MonoBehaviour
 {
-    public int ID;
-    public string name;
-    
+    private int id;
+    private string name;
+
+    public int ID
+    {
+        get
+        {
+            return id;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+    }
+    /// <summary>
+    /// Makes a DataId for ingame object
+    /// 0 - Town Center
+    /// 1 - Farm
+    /// 2 - Factory
+    /// 3 - Filteration Plant
+    /// 4 - House
+    /// </summary>
+    /// <param name="ID"></param>
+    /// <param name="name"></param>
     public DataID(int ID, string name)
     {
-        this.ID = ID;
+        this.id = ID;
         this.name = name;
     }
 
+    public IEnumerable dataIDD
+    {
+        get
+        {
+            return "string";
+        }
+    }
     
+   public void somethign()
+    {
+        
+    }
 }
+
+
