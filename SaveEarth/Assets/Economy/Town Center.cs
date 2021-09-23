@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TownCenter : Building
 {
+    
     public TownCenter()
     {
         this.DID = new DataID(0, "Town Center");
@@ -18,7 +19,7 @@ public class TownCenter : Building
         // if requirements are met
         // Requirements - Food, Wood, Metal, Stone, Population, Factories number,
         // Farm Number, Filteration Plant Numbers and their levels
+        ResourceManager.instance.baseProductionRate += 50;
         base.LevelUp();
-
     }
 }
