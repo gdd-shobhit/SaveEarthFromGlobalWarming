@@ -29,6 +29,10 @@ public class DataID : MonoBehaviour
     /// 2 - Factory
     /// 3 - Filteration Plant
     /// 4 - House
+    /// 11 - Food
+    /// 12 - Wood
+    /// 13 - Stone
+    /// 14 - Metal
     /// </summary>
     /// <param name="ID"></param>
     /// <param name="name"></param>
@@ -37,19 +41,7 @@ public class DataID : MonoBehaviour
         this.id = ID;
         this.name = name;
     }
-
-    public IEnumerable dataIDD
-    {
-        get
-        {
-            return "string";
-        }
-    }
-    
-   public void somethign()
-    {
-        
-    }
+   
 }
 
 

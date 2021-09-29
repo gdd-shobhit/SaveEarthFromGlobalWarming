@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     public float time = 0;
     private Dictionary<int, int> levelToPolutionOutput;
 
-
-
     public GameManager()
     {
         PopulatePollutionEconomy();       
@@ -71,6 +69,12 @@ public class GameManager : MonoBehaviour
 
         dataIDToPollution.Add(new DataID(4, "House"), levelToPolutionOutput);
 
+    }
+
+    DataID GetDID(string name)
+    {
+
+        return null;
     }
 
 }
