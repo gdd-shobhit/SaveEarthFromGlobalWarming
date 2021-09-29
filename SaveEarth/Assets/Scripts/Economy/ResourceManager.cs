@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,13 @@ public class ResourceManager : MonoBehaviour
     {
 
     }
-    
 
+    /// <summary>
+    /// Takes in DID and find its requirements and tells if it meets the levelupRequirements 
+    /// </summary>
+    /// <param name="did"></param>
+    internal static bool CheckRequirements(DataID did,int levelReq)
+    {
+        return false;
+    }
 }

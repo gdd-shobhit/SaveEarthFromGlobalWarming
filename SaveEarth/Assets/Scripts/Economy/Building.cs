@@ -21,6 +21,10 @@ public class Building : MonoBehaviour
     {
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
-        level++;
+        // check if resources are enough to level up
+        if (ResourceManager.CheckRequirements(DID, level+1))
+        {
+            level++;
+        }
     }
 }
