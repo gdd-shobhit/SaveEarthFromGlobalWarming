@@ -6,7 +6,7 @@ public class Farm : Building
 {
     public Farm()
     {
-        this.DID = new DataID(1, "Farm");
+        this.DID = new DataID(1);
         this.pollutionOutput = -20;
     }
 }
