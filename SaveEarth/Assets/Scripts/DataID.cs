@@ -5,7 +5,16 @@ using UnityEngine;
 public class DataID : MonoBehaviour
 {
     private int id;
+    private string did;
     private string name;
+
+    public string DID
+    {
+        get
+        {
+            return did;
+        }
+    }
 
     public int ID
     {
@@ -36,10 +45,11 @@ public class DataID : MonoBehaviour
     /// </summary>
     /// <param name="ID"></param>
     /// <param name="name"></param>
-    public DataID(int ID, string name)
+    public DataID(int ID)
     {
         this.id = ID;
-        this.name = name;
+        // get DID and Name from the csv
+        
     }
    
 }

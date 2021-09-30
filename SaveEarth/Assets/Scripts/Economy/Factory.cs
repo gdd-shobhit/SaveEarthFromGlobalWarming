@@ -6,7 +6,7 @@ public class Factory : Building
 {
     public Factory()
     {
-        this.DID = new DataID(2, "Factory");
+        this.DID = new DataID(2);
         this.pollutionOutput = 60;
     }
 }

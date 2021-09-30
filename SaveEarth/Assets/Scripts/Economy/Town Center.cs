@@ -7,7 +7,7 @@ public class TownCenter : Building
     
     public TownCenter()
     {
-        this.DID = new DataID(0, "Town Center");
+        this.DID = new DataID(0);
         this.pollutionOutput = -20;
     }
 
