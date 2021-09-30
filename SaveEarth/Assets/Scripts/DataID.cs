@@ -7,7 +7,7 @@ public class DataID : MonoBehaviour
     private int id;
     private string did;
     private string name;
-
+    public ScriptableObject something;
     public string DID
     {
         get

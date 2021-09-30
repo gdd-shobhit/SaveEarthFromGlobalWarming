@@ -11,8 +11,6 @@ namespace StaticDataObject
         public string DID;
         public string name;
         public List<Progressions> progressions;
-        public string location;
-        public double points;
     }
 
     [System.Serializable]

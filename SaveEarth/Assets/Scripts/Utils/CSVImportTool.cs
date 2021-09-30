@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using ExcelToCsv;
+using System.IO;
+using StaticDataObject;
 
 public class CSVImportTool : ToolEditor
 {
@@ -35,8 +36,11 @@ public class CSVImportTool : ToolEditor
 
         if(GUILayout.Button("Import"))
         {
-            ExcelToCsv.CSVParser.ConvertExcelToCSV();
-            if(groupEnabled)
+            Debug.Log(Directory.GetCurrentDirectory()+ "\\Assets\\StaticData\\CSV\\DataId.csv");
+            string textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
+            StaticDataList sample = new StaticDataList();
+
+            if (groupEnabled)
             {
                 DataGenerationUtils.Generate(costBool, pollutionBool, BuildingBool);
             }
