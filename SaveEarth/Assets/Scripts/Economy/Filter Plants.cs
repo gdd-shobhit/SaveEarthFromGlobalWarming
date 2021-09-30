@@ -11,7 +11,7 @@ public class FilterPlants : Building
     /// </summary>
    public FilterPlants()
     {
-        this.DID = new DataID(3);
+        //this.DID = new DataID(3);
         this.pollutionOutput = -20;
     }
 }

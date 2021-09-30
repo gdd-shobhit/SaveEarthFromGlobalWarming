@@ -12,7 +12,7 @@ public class House : Building
     public House()
     {
         this.population = 20;
-        this.DID = new DataID(4);
+        //this.DID = new DataID(4);
         this.pollutionOutput = 20;
     }
 
