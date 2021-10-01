@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using StaticDataObject;
+using System.Linq;
 
 public class CSVImportTool : ToolEditor
 {
@@ -38,11 +38,17 @@ public class CSVImportTool : ToolEditor
         {
             Debug.Log(Directory.GetCurrentDirectory()+ "\\Assets\\StaticData\\CSV\\DataId.csv");
             string textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
-            StaticDataList sample = new StaticDataList();
+            DataIDList dataIDs = new DataIDList();
+
+            dataIDs.dataList = CSVParser.Deserialize<DataID>(textData).ToList();
+            foreach(DataID did in dataIDs.dataList)
+            {
+                did.SetName();
+            }
 
             if (groupEnabled)
             {
-                DataGenerationUtils.Generate(costBool, pollutionBool, BuildingBool);
+                DataGenerationUtils.Generate(dataIDs, costBool, pollutionBool, BuildingBool);
             }
         }
     }
