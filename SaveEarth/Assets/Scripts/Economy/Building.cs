@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for a structure/Building
+/// </summary>
 public class Building : MonoBehaviour
 {
     public int level;
     public int pollutionOutput;
     public DataID DID;
-    public Dictionary<int, int> prog; 
-   
+    public Dictionary<int, int> costProg;
+    public Dictionary<int, int> polProg;
+
     public Building()
     {
         level = 1;
@@ -26,5 +30,13 @@ public class Building : MonoBehaviour
         {
             level++;
         }
+    }
+
+    /// <summary>
+    /// Calculates the building's cost and pollution progs
+    /// </summary>
+    public virtual void CalculateProg()
+    {
+        
     }
 }

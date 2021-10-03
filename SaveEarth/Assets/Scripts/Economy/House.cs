@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Increases population, increases city value in general
+/// </summary>
 public class House : Building
 {
     // Start is called before the first frame update
@@ -12,12 +15,13 @@ public class House : Building
     public House()
     {
         this.population = 20;
-        this.DID = new DataID(4, "House");
+        //this.DID = new DataID(4);
         this.pollutionOutput = 20;
     }
 
     public void IncreasePopulations()
     {
-        population += 30;
+        float decayConstant = 1 / 0.85f;
+        population = (int)(population * decayConstant);
     }
 }

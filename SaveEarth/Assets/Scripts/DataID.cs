@@ -2,46 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataID : MonoBehaviour
+[System.Serializable]
+public class DataID
 {
-    private int id;
-    private string name;
+    public int id;
+    public string DID;
+    public string name;
 
-    public int ID
+    public void SetName()
     {
-        get
+        if (DID.Length != 0 )
         {
-            return id;
+            string[] names = DID.Split('_');
+            if(names.Length==2)
+            {
+                this.name = names[1];
+            }
+            else
+            {
+                this.name = names[0];
+            }
         }
     }
-
-    public string Name
-    {
-        get
-        {
-            return name;
-        }
-    }
-    /// <summary>
-    /// Makes a DataId for ingame object
-    /// 0 - Town Center
-    /// 1 - Farm
-    /// 2 - Factory
-    /// 3 - Filteration Plant
-    /// 4 - House
-    /// 11 - Food
-    /// 12 - Wood
-    /// 13 - Stone
-    /// 14 - Metal
-    /// </summary>
-    /// <param name="ID"></param>
-    /// <param name="name"></param>
-    public DataID(int ID, string name)
-    {
-        this.id = ID;
-        this.name = name;
-    }
-   
 }
+
+[System.Serializable]
+public class DataIDList
+{
+    public List<DataID> dataList;
+}
+
 
 
