@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Farm : Building
 {
+    /// <summary>
+    /// Produces food, also in-game Currency
+    /// </summary>
     public Farm()
     {
         //this.DID = new DataID(1);

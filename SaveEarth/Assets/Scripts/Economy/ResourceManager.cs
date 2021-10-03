@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Will keep track of resources
+/// </summary>
 public class ResourceManager : MonoBehaviour
 {
-    int food = 400;
-    int wood = 200;
-    int stone = 150;
-    int metal = 100;
+    int currentFood = 400;
+    int currentWood = 200;
+    int currentStone = 150;
+    int currentMetal = 100;
 
     // production per min
     public int baseProductionRate = 100;

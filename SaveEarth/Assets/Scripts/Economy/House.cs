@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Increases population, increases city value in general
+/// </summary>
 public class House : Building
 {
     // Start is called before the first frame update

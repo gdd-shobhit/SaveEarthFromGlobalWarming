@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public Dictionary<DataID, Dictionary<int,int>> dataIDToPollution = new Dictionary<DataID, Dictionary<int, int>>();
     public float time = 0;
     private Dictionary<int, int> levelToPolutionOutput;
+    public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
 
     public GameManager()
     {
