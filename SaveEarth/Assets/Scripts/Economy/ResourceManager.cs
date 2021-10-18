@@ -15,14 +15,16 @@ public class ResourceManager : MonoBehaviour
     protected int currentWood = 200;
     protected int currentStone = 150;
     protected int currentMetal = 100;
+    protected int currentGold = 0;
     
 
     public GameObject foodTM;
     public GameObject woodTM;
     public GameObject stoneTM;
     public GameObject metalTM;
+    public GameObject goldTM;
 
-    
+
     // production per min
     public int baseProductionRate = 100;
 
@@ -38,6 +40,7 @@ public class ResourceManager : MonoBehaviour
             woodTM.GetComponent<TextMeshProUGUI>().text = currentWood.ToString();
             stoneTM.GetComponent<TextMeshProUGUI>().text = currentStone.ToString();
             metalTM.GetComponent<TextMeshProUGUI>().text = currentMetal.ToString();
+            goldTM.GetComponent<TextMeshProUGUI>().text = currentGold.ToString();
         }
         else
         {
