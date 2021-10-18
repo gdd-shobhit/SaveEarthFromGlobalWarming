@@ -52,10 +52,8 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         // Deals with Time
-        UpdateTime();
-        
+        UpdateTime();   
     }
 
     /// <summary>
@@ -77,9 +75,7 @@ public class GameManager : MonoBehaviour
             skillPoints++;
             totalDaysPassed = daysPassed;
             daysPassed = 0;
-        }
-            
-
+        }          
     }
 
     void PopulatePollutionEconomy()
