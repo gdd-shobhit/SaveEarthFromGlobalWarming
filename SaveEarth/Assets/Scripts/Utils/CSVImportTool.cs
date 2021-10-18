@@ -13,8 +13,6 @@ public class CSVImportTool : ToolEditor
     bool pollutionBool = true;
     bool BuildingBool = true;
 
-    
-
     [MenuItem("Tools/CSV Importer")]
     static void Init()
     {

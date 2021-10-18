@@ -2,16 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEditor.UI;
+using TMPro;
 
 /// <summary>
 /// Will keep track of resources
 /// </summary>
 public class ResourceManager : MonoBehaviour
 {
-    int currentFood = 400;
-    int currentWood = 200;
-    int currentStone = 150;
-    int currentMetal = 100;
+    protected int currentFood = 400;
+    protected int currentWood = 200;
+    protected int currentStone = 150;
+    protected int currentMetal = 100;
+    protected int currentGold = 0;
+    
+
+    public GameObject foodTM;
+    public GameObject woodTM;
+    public GameObject stoneTM;
+    public GameObject metalTM;
+    public GameObject goldTM;
+
 
     // production per min
     public int baseProductionRate = 100;
@@ -20,9 +32,15 @@ public class ResourceManager : MonoBehaviour
 
     void Start()
     {
+    
         if (instance == null)
         {
             instance = this;
+            foodTM.GetComponent<TextMeshProUGUI>().text = currentFood.ToString();
+            woodTM.GetComponent<TextMeshProUGUI>().text = currentWood.ToString();
+            stoneTM.GetComponent<TextMeshProUGUI>().text = currentStone.ToString();
+            metalTM.GetComponent<TextMeshProUGUI>().text = currentMetal.ToString();
+            goldTM.GetComponent<TextMeshProUGUI>().text = currentGold.ToString();
         }
         else
         {
