@@ -42,12 +42,9 @@ public class PlayerManager : MonoBehaviour
         map.SwapTile(dirtTile, grassTile);
 
         Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
-        //Vector3 mousePosition = new Vector3(mouseInput.Mouse.MousePosition.ReadValue<Vector2>().x, mouseInput.Mouse.MousePosition.ReadValue<Vector2>().y, -4.5f);
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 4.5f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
-        //Vector2 mousePosition = mainCamera.ScreenToWorldPoint(mouseInput.Mouse.MousePosition.ReadValue<Vector2>());
-        //Vector3Int gridPosition = map.WorldToCell(mousePosition);
         
         // On Tile Click
         if (map.HasTile(gridPosition))
@@ -67,9 +64,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void MoveCamera()
+    {
+        float speed = 3f;
+        Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
+        mainCamera.transform.position = new Vector3(mousePosition.x * speed * Time.deltaTime, mousePosition.y * speed * Time.deltaTime, -4.5f);
+    }
+
     // Update is called once per frame
     void Update()
     {
-
+        //MoveCamera();
     }
 }
