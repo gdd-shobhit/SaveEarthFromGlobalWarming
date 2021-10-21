@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
     private MouseInput mouseInput;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
+    [SerializeField] private Tilemap buildings;
+    [SerializeField] private Tilemap highlight;
     [SerializeField] private Grid grid;
 
     [SerializeField] private Tile grassTile;
@@ -47,6 +49,7 @@ public class PlayerManager : MonoBehaviour
         //Vector2 mousePosition = mainCamera.ScreenToWorldPoint(mouseInput.Mouse.MousePosition.ReadValue<Vector2>());
         //Vector3Int gridPosition = map.WorldToCell(mousePosition);
         
+        // On Tile Click
         if (map.HasTile(gridPosition))
         {
             //Put tile selection code here.
@@ -57,6 +60,11 @@ public class PlayerManager : MonoBehaviour
             map.SetTile(gridPosition, dirtTile);
         }
 
+
+        if (buildings.HasTile(gridPosition))
+        {
+
+        }
     }
 
     // Update is called once per frame
