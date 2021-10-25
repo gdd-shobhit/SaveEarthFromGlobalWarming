@@ -649,9 +649,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 771207755}
   - {fileID: 1740770365}
   - {fileID: 1229336043}
-  - {fileID: 771207755}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1266,7 +1266,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 276721183}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &771207756
 TilemapRenderer:
@@ -2401,7 +2401,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 276721183}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1229336044
 TilemapRenderer:
@@ -3025,11 +3025,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 963194227}
   map: {fileID: 1229336045}
-  buildings: {fileID: 0}
-  highlight: {fileID: 0}
+  buildings: {fileID: 1740770367}
+  highlight: {fileID: 771207757}
   grid: {fileID: 276721182}
   grassTile: {fileID: 11400000, guid: f32a8c49c203f7341a62a364a90292ed, type: 2}
   dirtTile: {fileID: 11400000, guid: 54305e6dc6a48bd408fe23f1a43b5b4a, type: 2}
+  highlightTile: {fileID: 11400000, guid: bb0e9bd24253d414c92a73d71b90a4fc, type: 2}
 --- !u!4 &1296121888
 Transform:
   m_ObjectHideFlags: 0
@@ -3928,7 +3929,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 276721183}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1740770366
 TilemapRenderer:
