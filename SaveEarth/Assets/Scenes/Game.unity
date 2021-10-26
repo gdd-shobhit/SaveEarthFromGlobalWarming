@@ -4588,9 +4588,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5006df41c7c4ee541a68d228a227cba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tempBuildingObj: {fileID: 8146336773960050179, guid: df1c12903aa788a4a8837cea1e39de7b, type: 3}
   selectedBuilding: {fileID: 0}
   tiles:
   - {fileID: 11400000, guid: 44a8771f159bc544dbbd3520e5db43dc, type: 2}
+  - {fileID: 11400000, guid: 83f4c6e46fd350549a6b754d0f27e6cc, type: 2}
+  - {fileID: 11400000, guid: c4f6cb26f78762644b769e40c28b78e3, type: 2}
+  - {fileID: 11400000, guid: abbc16fa6153fb643a43d7cc259ec08b, type: 2}
+  - {fileID: 11400000, guid: 175316809d1e25b4fae1dff0c43e5146, type: 2}
   mainCamera: {fileID: 963194227}
   map: {fileID: 1229336045}
   buildings: {fileID: 898689327}

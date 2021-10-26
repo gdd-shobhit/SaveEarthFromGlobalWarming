@@ -6,6 +6,9 @@ public class PlayerManager : MonoBehaviour
 {
 
     #region Variables
+    List<BuildingTracker> buildingList;
+    [SerializeField] private GameObject tempBuildingObj;
+
     private MouseInput mouseInput;
     private Cam cameraInput;
     public TileBase selectedBuilding;
@@ -29,6 +32,7 @@ public class PlayerManager : MonoBehaviour
         cameraInput = new Cam();
         Cursor.visible = true;
         tiles = new List<TileBase>();
+        buildingList = new List<BuildingTracker>();
     }
 
     void OnEnable()
@@ -82,6 +86,9 @@ public class PlayerManager : MonoBehaviour
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
         buildings.SetTile(highlightedPosition, tile);
+        GameObject temp = GameObject.Instantiate(tempBuildingObj);
+        BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+        buildingList.Add(building);
     }
 
     /// <summary>
@@ -92,5 +99,28 @@ public class PlayerManager : MonoBehaviour
         float speed = 10f;
         Vector2 movement = cameraInput.Keyboard.Keyboard.ReadValue<Vector2>();
         mainCamera.transform.Translate(new Vector3(movement.x * Time.deltaTime * speed, movement.y * Time.deltaTime * speed, 0f));
+    }
+}
+
+public class BuildingTracker
+{
+    protected int pollution;
+    protected Vector3Int position;
+    protected string building;
+    protected TileBase tile;
+    protected GameObject gameObject;
+
+    public Vector3Int Position { get => position; set => position = value; }
+    public int Pollution { get => pollution; }
+    public string Building { get => building; }
+    public TileBase Tile { get => tile; }
+    public GameObject GameObj { get => gameObject; }
+
+    public BuildingTracker(Vector3Int pos, TileBase _tile, GameObject _gameObj)
+    {
+        position = pos;
+        //building = _building;
+        tile = _tile;
+        gameObject = _gameObj;
     }
 }
