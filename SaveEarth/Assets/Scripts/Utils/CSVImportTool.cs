@@ -44,6 +44,8 @@ public class CSVImportTool : ToolEditor
                 did.SetName();
             }
 
+            GameManager.instance.dataIDList = dataIDs;
+
             if (groupEnabled)
             {
                 DataGenerationUtils.Generate(dataIDs, costBool, pollutionBool, BuildingBool);

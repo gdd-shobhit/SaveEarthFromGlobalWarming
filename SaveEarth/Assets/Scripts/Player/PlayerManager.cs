@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,7 +6,9 @@ public class PlayerManager : MonoBehaviour
 {
     private MouseInput mouseInput;
     private Cam cameraInput;
-
+    public TileBase selectedBuilding;
+    private Vector3Int test;
+    [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
     [SerializeField] private Tilemap buildings;
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
         mouseInput = new MouseInput();
         cameraInput = new Cam();
         Cursor.visible = true;
+        tiles = new List<TileBase>();
     }
 
     void OnEnable()
@@ -67,13 +69,23 @@ public class PlayerManager : MonoBehaviour
             highlight.ClearAllTiles();
             highlight.SetTile(gridPosition, highlightTile);
 
+            // Place Building at Selected Tile
+            if (!buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
+            {
+                Debug.Log("here");
+                test = gridPosition;
+            }
+
         }
 
-        // Place Building at Selected Tile
-        if (buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
-        {
 
-        }
+    }
+
+    public void SelectBuilding(TileBase tile)
+    {
+        // Scale the building the down
+        // Need to build when requirements are met
+        buildings.SetTile(test, tile);
     }
 
     void MoveCamera()
@@ -86,6 +98,6 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Dictionary<DataID, Dictionary<int,int>> dataIDToPollution = new Dictionary<DataID, Dictionary<int, int>>();
-
+    public DataIDList dataIDList = new DataIDList();
     /// <summary>
     /// Time passed since the level started
     /// </summary>
