@@ -21,7 +21,13 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Days passed since the game began. 2 min is 1 day (1 min is day and night)
     /// </summary>
-    public int daysPassed=0;
+    private int daysPassed=0;
+    public int totalDaysPassed = 0;
+
+    /// <summary>
+    /// 10 days passed would give you 1 skill point which you can put in the research tree
+    /// </summary>
+    public int skillPoints = 0;
 
     private Dictionary<int, int> levelToPolutionOutput;
     public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
@@ -46,10 +52,8 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         // Deals with Time
-        UpdateTime();
-        
+        UpdateTime();   
     }
 
     /// <summary>
@@ -60,7 +64,18 @@ public class GameManager : MonoBehaviour
         time += Time.deltaTime * timeMultiplier;
 
         if (time > 120.0f)
+        {
             daysPassed++;
+            totalDaysPassed = daysPassed;
+            time = 0;
+        }
+
+        if(daysPassed>=10)
+        {
+            skillPoints++;
+            totalDaysPassed = daysPassed;
+            daysPassed = 0;
+        }          
     }
 
     void PopulatePollutionEconomy()
