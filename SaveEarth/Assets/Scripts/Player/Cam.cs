@@ -32,7 +32,7 @@ public class @Cam : IInputActionCollection, IDisposable
                     ""name"": ""2D Vector"",
                     ""id"": ""ccc21a80-0755-4a8d-a1d9-8479fdddcbd8"",
                     ""path"": ""2DVector"",
-                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.2)"",
+                    ""interactions"": ""Hold(duration=0.2)"",
                     ""processors"": ""ScaleVector2(x=10,y=10)"",
                     ""groups"": """",
                     ""action"": ""Keyboard"",

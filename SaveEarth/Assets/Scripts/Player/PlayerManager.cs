@@ -4,10 +4,12 @@ using UnityEngine.Tilemaps;
 
 public class PlayerManager : MonoBehaviour
 {
+
+    #region Variables
     private MouseInput mouseInput;
     private Cam cameraInput;
     public TileBase selectedBuilding;
-    private Vector3Int test;
+    private Vector3Int highlightedPosition;
     [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
@@ -18,6 +20,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile grassTile;
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
+
+    #endregion
 
     void Awake()
     {
@@ -51,8 +55,6 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     void MouseClick()
     {
-        map.SwapTile(dirtTile, grassTile);
-
         Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 7f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -61,11 +63,7 @@ public class PlayerManager : MonoBehaviour
         if (map.HasTile(gridPosition))
         {
             //Put tile selection code here.
-            print($"Get Tile: {map.GetTile(gridPosition)}");
-            print($"Mouse pos: {mousePosition}");
-            print($"Grid Pos: {gridPosition}");
 
-            //map.SetTile(gridPosition, dirtTile);
             highlight.ClearAllTiles();
             highlight.SetTile(gridPosition, highlightTile);
 
@@ -73,31 +71,26 @@ public class PlayerManager : MonoBehaviour
             if (!buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
             {
                 Debug.Log("here");
-                test = gridPosition;
+                highlightedPosition = gridPosition;
             }
 
         }
-
-
     }
 
     public void SelectBuilding(TileBase tile)
     {
-        // Scale the building the down
+        // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildings.SetTile(test, tile);
+        buildings.SetTile(highlightedPosition, tile);
     }
 
+    /// <summary>
+    /// Needs plenty of work to work smoothly - Can integrate Cinemachine. - Durrell
+    /// </summary>
     void MoveCamera()
     {
-        float speed = 20f;
+        float speed = 10f;
         Vector2 movement = cameraInput.Keyboard.Keyboard.ReadValue<Vector2>();
-        mainCamera.transform.position += new Vector3(movement.x * speed * Time.deltaTime, movement.y * speed * Time.deltaTime, 0f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        mainCamera.transform.Translate(new Vector3(movement.x * Time.deltaTime * speed, movement.y * Time.deltaTime * speed, 0f));
     }
 }
