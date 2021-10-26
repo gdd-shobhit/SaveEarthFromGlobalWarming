@@ -7,11 +7,18 @@ using UnityEngine;
 /// </summary>
 public class Building : MonoBehaviour
 {
+    public int id;
+    public string didName;
+    public string buildingName;
+    public string pollution;
+    public string cost;
+
+
     public int level;
     public int pollutionOutput;
-    public DataID DID;
     public Dictionary<int, int> costProg;
     public Dictionary<int, int> polProg;
+    public DataID DID;
 
     public Building()
     {
@@ -39,4 +46,10 @@ public class Building : MonoBehaviour
     {
         
     }
+}
+
+[System.Serializable]
+public class BuildingList
+{
+    public List<Building> buildingList;
 }

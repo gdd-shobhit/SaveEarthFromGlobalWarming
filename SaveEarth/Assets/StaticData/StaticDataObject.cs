@@ -10,7 +10,7 @@ namespace StaticDataObject
         public int id;
         public string DID;
         public string name;
-        public List<Progressions> progressions;
+        public List<CostProgression> progressions;
     }
 
     [System.Serializable]

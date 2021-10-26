@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Economy
 {
-    class CostProgression : Progressions
+    class CostProgression : global::CostProgression
     {
 
     }

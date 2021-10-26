@@ -9,9 +9,16 @@ public class CSVImportTool : ToolEditor
 {
     string myString = "Hello World";
     bool groupEnabled;
+    bool dataIdData = true;
+    bool buildingData = true;
+    bool costData = true;
+    bool pollutionData = true;
     bool costBool = true;
     bool pollutionBool = true;
     bool BuildingBool = true;
+    static public DataIDList dataIDs = new DataIDList();
+    static public BuildingList buildingList = new BuildingList();
+    static public ProgressionsList progressionList = new ProgressionsList();
 
     [MenuItem("Tools/CSV Importer")]
     static void Init()
@@ -24,8 +31,12 @@ public class CSVImportTool : ToolEditor
     private void OnGUI()
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-        myString = EditorGUILayout.TextField("Path(after Assets)", myString);
+        dataIdData = EditorGUILayout.Toggle("DataIDs", dataIdData);
+        buildingData = EditorGUILayout.Toggle("Building Data", buildingData);
+        costData = EditorGUILayout.Toggle("Cost Data", costData);
+        pollutionData = EditorGUILayout.Toggle("Pollution Data", pollutionData);
 
+        // DataGeneration JSON
         groupEnabled = EditorGUILayout.BeginToggleGroup("Generate JSON", groupEnabled);
         costBool = EditorGUILayout.Toggle("Cost", costBool);
         pollutionBool = EditorGUILayout.Toggle("Pollution", pollutionBool);
@@ -34,17 +45,36 @@ public class CSVImportTool : ToolEditor
 
         if(GUILayout.Button("Import"))
         {
-            Debug.Log(Directory.GetCurrentDirectory()+ "\\Assets\\StaticData\\CSV\\DataId.csv");
-            string textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
-            DataIDList dataIDs = new DataIDList();
-
-            dataIDs.dataList = CSVParser.Deserialize<DataID>(textData).ToList();
-            foreach(DataID did in dataIDs.dataList)
+            List<string> dataPaths = new List<string>();
+            string textData;
+            if (dataIdData)
             {
-                did.SetName();
+                textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
+                dataIDs.dataList = CSVParser.Deserialize<DataID>(textData).ToList();
+                foreach (DataID did in dataIDs.dataList)
+                {
+                    did.SetName();
+                }
+            }
+            
+            if(buildingData)
+            {
+                textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\BuildingEconomy.csv");
+                buildingList.buildingList = CSVParser.Deserialize<Building>(textData).ToList();
             }
 
-            GameManager.instance.dataIDList = dataIDs;
+            if (costData)
+            {
+                textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\CostProgression.csv");
+                progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
+            }
+
+            if (pollutionData)
+            {
+                textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\PollutionProgression.csv");
+                progressionList.polProgs = CSVParser.Deserialize<PollutionProgression>(textData).ToList();
+            }
+
 
             if (groupEnabled)
             {
