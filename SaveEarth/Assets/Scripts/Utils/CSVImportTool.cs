@@ -69,7 +69,7 @@ public class CSVImportTool : ToolEditor
                 foreach (CostProgression cprog in progressionList.costProgs)
                 {
                     cprog.HandleProgression();
-                    Debug.Log(cprog.DID);
+               
                 }
             }
 
@@ -111,7 +111,6 @@ public class CSVImportTool : ToolEditor
         foreach (CostProgression cprog in progressionList.costProgs)
         {
             cprog.HandleProgression();
-            Debug.Log(cprog.DID);
         }
 
 

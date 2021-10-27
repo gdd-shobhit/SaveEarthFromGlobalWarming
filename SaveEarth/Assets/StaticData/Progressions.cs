@@ -20,6 +20,7 @@ public class CostProgression
     public int stone_3;
     public int metal_3;
 
+    public DataID actualDID = new DataID(); 
     private int maxLevel = 3;
 
     Dictionary<DataID, Dictionary<int, int>> dataIDToLevelProg = new Dictionary<DataID, Dictionary<int, int>>();
@@ -28,26 +29,33 @@ public class CostProgression
 
     public void HandleProgression()
     {
+        actualDID = CSVImportTool.dataIDs.FindDataID(DID.Split('_')[1]);
         List<int> foodValues = new List<int>();
-        int[] foodArray = { food_1, food_2, food_3 };
-        foodValues.AddRange(foodArray);
+        foodValues.Add(food_1);
+        foodValues.Add(food_2);
+        foodValues.Add(food_3);
 
         List<int> woodValues = new List<int>();
-        int[] woodArray = { wood_1, wood_2, wood_3 };
-        woodValues.AddRange(woodArray);
+        woodValues.Add(wood_1);
+        woodValues.Add(wood_2);
+        woodValues.Add(wood_3);
 
         List<int> stoneValues = new List<int>();
-        int[] stoneArray = { stone_1, stone_2, stone_3 };
-        stoneValues.AddRange(stoneArray);
+        stoneValues.Add(stone_1);
+        stoneValues.Add(stone_2);
+        stoneValues.Add(stone_3);
+
 
         List<int> metalValues = new List<int>();
-        int[] metalArray = { metal_1, metal_2, metal_3 };
-        metalValues.AddRange(metalArray);
+        metalValues.Add(metal_1);
+        metalValues.Add(metal_2);
+        metalValues.Add(metal_3);
 
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("resource_food"),foodValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("resource_wood"), foodValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("resource_stone"), foodValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("resource_metal"), foodValues);
+
+        FillLevelProg(CSVImportTool.dataIDs.FindDataID("food"),foodValues);
+        FillLevelProg(CSVImportTool.dataIDs.FindDataID("wood"), woodValues);
+        FillLevelProg(CSVImportTool.dataIDs.FindDataID("stone"), stoneValues);
+        FillLevelProg(CSVImportTool.dataIDs.FindDataID("metal"), metalValues);
         FillFullProgression();
     }
 
@@ -58,14 +66,13 @@ public class CostProgression
         {
             levelProg.Add(i, levelToValue[i-1]);
         }
-      
+
         dataIDToLevelProg.Add(did, levelProg);
-        levelProg.Clear();
     }
 
     void FillFullProgression()
     {
-        progression.Add(CSVImportTool.dataIDs.FindDataID(DID), dataIDToLevelProg);
+        progression.Add(CSVImportTool.dataIDs.FindDataID(DID.Split('_')[1]), dataIDToLevelProg);
     }
 }
 

@@ -18,7 +18,7 @@ public class Building : MonoBehaviour
     public int pollutionOutput;
     public Dictionary<DataID, Dictionary<int, int>> costProg;
     public Dictionary<int, int> polProg;
-    public DataID DID;
+    public DataID DID = new DataID();
 
     public Building()
     {
@@ -33,7 +33,7 @@ public class Building : MonoBehaviour
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
         // check if resources are enough to level up
-        if (ResourceManager.CheckRequirements(DID, level+1))
+        if (ResourceManager.instance.CheckRequirements(DID,level+1))
         {
             level++;
         }

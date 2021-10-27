@@ -11,11 +11,11 @@ using TMPro;
 /// </summary>
 public class ResourceManager : MonoBehaviour
 {
-    protected int currentFood = 400;
-    protected int currentWood = 200;
-    protected int currentStone = 150;
-    protected int currentMetal = 100;
-    protected int currentGold = 0;
+    public int currentFood = 500;
+    public int currentWood = 200;
+    public int currentStone = 150;
+    public int currentMetal = 100;
+    public int currentGold = 0;
     
 
     public GameObject foodTM;
@@ -49,18 +49,55 @@ public class ResourceManager : MonoBehaviour
 
     }
 
-
-    void DataIDToResources()
+    private void FixedUpdate()
     {
-
+       
     }
 
     /// <summary>
     /// Takes in DID and find its requirements and tells if it meets the levelupRequirements 
     /// </summary>
     /// <param name="did"></param>
-    internal static bool CheckRequirements(DataID did,int levelReq)
+    public bool CheckRequirements(DataID did, int levelToBe)
     {
+        foreach(CostProgression costProgression in GameManager.instance.costProg )
+        {
+            if(costProgression.actualDID == did)
+            {
+                Dictionary<int, int> foodLevelProg = new Dictionary<int, int>();
+                foreach (KeyValuePair<DataID,Dictionary<int,int>> something in costProgression.progression[did])
+                {                
+                   
+                    if(something.Key == GameManager.instance.dataIDList.FindDataID("food"))
+                    {
+                        foodLevelProg = costProgression.progression[did][something.Key];
+                    }                   
+                }         
+
+                //foodLevelProg = costProgression.progression[did][GameManager.instance.dataIDList.FindDataID("food")];
+                if(instance.currentFood >= foodLevelProg[levelToBe])
+                {
+                    instance.currentFood -= foodLevelProg[levelToBe];
+                    UpdateResources();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         return false;
+    }
+
+    private void UpdateResources()
+    {
+        foodTM.GetComponent<TextMeshProUGUI>().text = "";
+        foodTM.GetComponent<TextMeshProUGUI>().text = instance.currentFood.ToString();
+        woodTM.GetComponent<TextMeshProUGUI>().text = instance.currentWood.ToString();
+        stoneTM.GetComponent<TextMeshProUGUI>().text = instance.currentStone.ToString();
+        metalTM.GetComponent<TextMeshProUGUI>().text = instance.currentMetal.ToString();
+        goldTM.GetComponent<TextMeshProUGUI>().text = instance.currentGold.ToString();
     }
 }

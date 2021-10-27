@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile grassTile;
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
-    
+
 
     #endregion
 
@@ -65,7 +65,7 @@ public class PlayerManager : MonoBehaviour
         Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 7f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        
+
         // On Tile Click
         if (map.HasTile(gridPosition))
         {
@@ -77,7 +77,7 @@ public class PlayerManager : MonoBehaviour
             // Place Building at Selected Tile
             // canBuild necessary so that we dont make copies - Shobhit
             canBuild = !buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition) ? true : false;
-            if(canBuild)
+            if (canBuild)
                 highlightedPosition = gridPosition;
         }
     }
@@ -86,15 +86,27 @@ public class PlayerManager : MonoBehaviour
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        if(canBuild)
+        if (canBuild)
         {
-            buildings.SetTile(highlightedPosition, tile);
+           
             GameObject temp = Instantiate(tempBuildingObj);
-            BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
-            buildingList.Add(building);
-            canBuild = false;
+            if (tile.name.ToLower().Equals("towncenter"))
+                temp.AddComponent<TownCenter>();
+
+            if (ResourceManager.instance.CheckRequirements(temp.GetComponent<TownCenter>().DID, 1))
+            {
+                buildings.SetTile(highlightedPosition, tile);
+                BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+                buildingList.Add(building);
+                canBuild = false;
+            }
+            else
+            {
+                // NEED TO RETHINK THE LOGIC. DESTROY SHOULD NOT BE USED - Shobhit
+                Destroy(temp);
+            }
         }
-        
+
     }
 
     /// <summary>

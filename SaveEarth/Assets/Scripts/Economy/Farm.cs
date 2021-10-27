@@ -9,7 +9,7 @@ public class Farm : Building
     /// </summary>
     public Farm()
     {
-        //this.DID = new DataID(1);
+        DID = GameManager.instance.dataIDList.FindDataID("farm");
         this.pollutionOutput = -20;
     }
 }

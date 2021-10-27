@@ -7,8 +7,9 @@ public class TownCenter : Building
     
     public TownCenter()
     {
-        //this.DID = new DataID(0);
-        this.pollutionOutput = -20;
+        // sets the DID when its instantiated - Shobhit
+        DID = GameManager.instance.dataIDList.FindDataID("towncenter");
+        pollutionOutput = -20;
     }
 
     /// <summary>

@@ -4632,6 +4632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataIDList:
     dataList: []
+  costProg: []
   time: 0
   timeMultiplier: 1
   totalDaysPassed: 0
