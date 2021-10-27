@@ -4,10 +4,15 @@ using UnityEngine.Tilemaps;
 
 public class PlayerManager : MonoBehaviour
 {
+
+    #region Variables
+    List<BuildingTracker> buildingList;
+    [SerializeField] private GameObject tempBuildingObj;
+
     private MouseInput mouseInput;
     private Cam cameraInput;
     public TileBase selectedBuilding;
-    private Vector3Int test;
+    private Vector3Int highlightedPosition;
     [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
@@ -19,12 +24,15 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
 
+    #endregion
+
     void Awake()
     {
         mouseInput = new MouseInput();
         cameraInput = new Cam();
         Cursor.visible = true;
         tiles = new List<TileBase>();
+        buildingList = new List<BuildingTracker>();
     }
 
     void OnEnable()
@@ -51,8 +59,6 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     void MouseClick()
     {
-        map.SwapTile(dirtTile, grassTile);
-
         Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 7f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -61,11 +67,7 @@ public class PlayerManager : MonoBehaviour
         if (map.HasTile(gridPosition))
         {
             //Put tile selection code here.
-            print($"Get Tile: {map.GetTile(gridPosition)}");
-            print($"Mouse pos: {mousePosition}");
-            print($"Grid Pos: {gridPosition}");
 
-            //map.SetTile(gridPosition, dirtTile);
             highlight.ClearAllTiles();
             highlight.SetTile(gridPosition, highlightTile);
 
@@ -73,31 +75,52 @@ public class PlayerManager : MonoBehaviour
             if (!buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
             {
                 Debug.Log("here");
-                test = gridPosition;
+                highlightedPosition = gridPosition;
             }
 
         }
-
-
     }
 
     public void SelectBuilding(TileBase tile)
     {
-        // Scale the building the down
+        // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildings.SetTile(test, tile);
+        buildings.SetTile(highlightedPosition, tile);
+        GameObject temp = GameObject.Instantiate(tempBuildingObj);
+        BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+        buildingList.Add(building);
     }
 
+    /// <summary>
+    /// Needs plenty of work to work smoothly - Can integrate Cinemachine. - Durrell
+    /// </summary>
     void MoveCamera()
     {
-        float speed = 20f;
+        float speed = 10f;
         Vector2 movement = cameraInput.Keyboard.Keyboard.ReadValue<Vector2>();
-        mainCamera.transform.position += new Vector3(movement.x * speed * Time.deltaTime, movement.y * speed * Time.deltaTime, 0f);
+        mainCamera.transform.Translate(new Vector3(movement.x * Time.deltaTime * speed, movement.y * Time.deltaTime * speed, 0f));
     }
+}
 
-    // Update is called once per frame
-    void Update()
+public class BuildingTracker
+{
+    protected int pollution;
+    protected Vector3Int position;
+    protected string building;
+    protected TileBase tile;
+    protected GameObject gameObject;
+
+    public Vector3Int Position { get => position; set => position = value; }
+    public int Pollution { get => pollution; }
+    public string Building { get => building; }
+    public TileBase Tile { get => tile; }
+    public GameObject GameObj { get => gameObject; }
+
+    public BuildingTracker(Vector3Int pos, TileBase _tile, GameObject _gameObj)
     {
-
+        position = pos;
+        //building = _building;
+        tile = _tile;
+        gameObject = _gameObj;
     }
 }

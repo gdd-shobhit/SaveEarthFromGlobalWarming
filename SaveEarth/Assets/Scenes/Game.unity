@@ -360,7 +360,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 67068689}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1296121887}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: SelectBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: abbc16fa6153fb643a43d7cc259ec08b, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Tilemaps.TileBase, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &67068689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,7 +1293,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 372739035}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1296121887}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: SelectBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 83f4c6e46fd350549a6b754d0f27e6cc, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Tilemaps.TileBase, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &372739035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2668,25 +2692,43 @@ Tilemap:
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: 0.6
+      e00: 1.084227e-19
+      e01: 1.0494685e+13
+      e02: 1.0493763e+13
+      e03: 1.0493763e+13
+      e10: 4.09e-43
+      e11: 3.1e-44
+      e12: 3.1e-44
+      e13: 3.1e-44
+      e20: -3.9720527e+29
+      e21: -8.715338e+9
+      e22: -4.1683083
+      e23: -8.715338e+9
+      e30: 4.5905e-41
+      e31: 4.1e-43
+      e32: 4.08e-43
+      e33: 4.1e-43
+  - m_RefCount: 0
+    m_Data:
+      e00: 1.0494232e+13
       e01: 0
-      e02: 0
+      e02: -3.9720527e+29
       e03: 0
-      e10: 0
-      e11: 0.6
-      e12: 0
+      e10: 3.1e-44
+      e11: 0
+      e12: 4.5905e-41
       e13: 0
       e20: 0
       e21: 0
-      e22: 0.6
+      e22: 1.0494216e+13
       e23: 0
       e30: 0
-      e31: 0
-      e32: 0
+      e31: 7.34684e-40
+      e32: 3.1e-44
       e33: 1
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
+    m_Data: {r: -8.714977e+9, g: -8.714977e+9, b: -8.714977e+9, a: -8.714977e+9}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2810,25 +2852,25 @@ Tilemap:
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: -2.5244127e-29
-      e01: 1.5131078e+32
-      e02: 1.5130227e+32
-      e03: 1.5130227e+32
-      e10: 7.75e-43
-      e11: 2.51e-43
-      e12: 2.51e-43
-      e13: 2.51e-43
-      e20: 9.878733e+25
-      e21: 2.027893
-      e22: 0.0000000011273587
-      e23: 2.027893
+      e00: 1.084227e-19
+      e01: 1.0494685e+13
+      e02: 1.0493763e+13
+      e03: 1.0493763e+13
+      e10: 4.09e-43
+      e11: 3.1e-44
+      e12: 3.1e-44
+      e13: 3.1e-44
+      e20: -3.9720527e+29
+      e21: -8.717812e+9
+      e22: -5.177311
+      e23: -8.717812e+9
       e30: 4.5905e-41
-      e31: 7.78e-43
-      e32: 7.75e-43
-      e33: 7.78e-43
+      e31: 4.1e-43
+      e32: 4.08e-43
+      e33: 4.1e-43
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: 2.0278091, g: 2.0278091, b: 2.0278091, a: 2.0278091}
+    m_Data: {r: -8.717451e+9, g: -8.717451e+9, b: -8.717451e+9, a: -8.717451e+9}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4546,9 +4588,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5006df41c7c4ee541a68d228a227cba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tempBuildingObj: {fileID: 8146336773960050179, guid: df1c12903aa788a4a8837cea1e39de7b, type: 3}
   selectedBuilding: {fileID: 0}
   tiles:
   - {fileID: 11400000, guid: 44a8771f159bc544dbbd3520e5db43dc, type: 2}
+  - {fileID: 11400000, guid: 83f4c6e46fd350549a6b754d0f27e6cc, type: 2}
+  - {fileID: 11400000, guid: c4f6cb26f78762644b769e40c28b78e3, type: 2}
+  - {fileID: 11400000, guid: abbc16fa6153fb643a43d7cc259ec08b, type: 2}
+  - {fileID: 11400000, guid: 175316809d1e25b4fae1dff0c43e5146, type: 2}
   mainCamera: {fileID: 963194227}
   map: {fileID: 1229336045}
   buildings: {fileID: 898689327}
@@ -5804,7 +5851,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1769961118}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1296121887}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: SelectBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 175316809d1e25b4fae1dff0c43e5146, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Tilemaps.TileBase, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1769961118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5925,7 +5984,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1881410427}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1296121887}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: SelectBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: c4f6cb26f78762644b769e40c28b78e3, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Tilemaps.TileBase, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1881410427
 MonoBehaviour:
   m_ObjectHideFlags: 0
