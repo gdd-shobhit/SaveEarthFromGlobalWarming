@@ -29,6 +29,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int skillPoints = 0;
 
+    /// <summary>
+    /// Total Pollution Value
+    /// </summary>
+    public int pollutionValue = 0;
+
+    public HealthBar pollutionBar;
     private Dictionary<int, int> levelToPolutionOutput;
     public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
 

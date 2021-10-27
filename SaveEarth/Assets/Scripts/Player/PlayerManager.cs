@@ -93,7 +93,16 @@ public class PlayerManager : MonoBehaviour
             if (tile.name.ToLower().Equals("towncenter"))
                 temp.AddComponent<TownCenter>();
 
-            if (ResourceManager.instance.CheckRequirements(temp.GetComponent<TownCenter>().DID, 1))
+            else if (tile.name.ToLower().Equals("farm"))
+                temp.AddComponent<Farm>();
+            else if (tile.name.ToLower().Equals("house"))
+                temp.AddComponent<House>();
+            else if (tile.name.ToLower().Equals("filterationplant"))
+                temp.AddComponent<FilterPlants>();
+            else if (tile.name.ToLower().Equals("factory"))
+                temp.AddComponent<Factory>();
+
+            if (ResourceManager.instance.CheckRequirements(temp.GetComponent<Building>().DID, 1))
             {
                 buildings.SetTile(highlightedPosition, tile);
                 BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);

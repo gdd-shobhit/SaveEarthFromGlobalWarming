@@ -10,4 +10,9 @@ public class SceneHandler : MonoBehaviour
         CSVImportTool.TestMethod();
         SceneManager.LoadScene(1);
     }
+
+    public void ExitApp()
+    {
+        Application.Quit(1);
+    }
 }
