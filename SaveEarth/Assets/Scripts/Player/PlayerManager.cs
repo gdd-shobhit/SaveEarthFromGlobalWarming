@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     private Cam cameraInput;
     public TileBase selectedBuilding;
     private Vector3Int highlightedPosition;
+    private bool canBuild = true;
     [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile grassTile;
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
+    
 
     #endregion
 
@@ -59,10 +61,11 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     void MouseClick()
     {
+
         Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 7f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-
+        
         // On Tile Click
         if (map.HasTile(gridPosition))
         {
@@ -72,12 +75,10 @@ public class PlayerManager : MonoBehaviour
             highlight.SetTile(gridPosition, highlightTile);
 
             // Place Building at Selected Tile
-            if (!buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
-            {
-                Debug.Log("here");
+            // canBuild necessary so that we dont make copies - Shobhit
+            canBuild = !buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition) ? true : false;
+            if(canBuild)
                 highlightedPosition = gridPosition;
-            }
-
         }
     }
 
@@ -85,10 +86,15 @@ public class PlayerManager : MonoBehaviour
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildings.SetTile(highlightedPosition, tile);
-        GameObject temp = GameObject.Instantiate(tempBuildingObj);
-        BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
-        buildingList.Add(building);
+        if(canBuild)
+        {
+            buildings.SetTile(highlightedPosition, tile);
+            GameObject temp = Instantiate(tempBuildingObj);
+            BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+            buildingList.Add(building);
+            canBuild = false;
+        }
+        
     }
 
     /// <summary>

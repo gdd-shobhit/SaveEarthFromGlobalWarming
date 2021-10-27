@@ -16,7 +16,7 @@ public class Building : MonoBehaviour
 
     public int level;
     public int pollutionOutput;
-    public Dictionary<int, int> costProg;
+    public Dictionary<DataID, Dictionary<int, int>> costProg;
     public Dictionary<int, int> polProg;
     public DataID DID;
 

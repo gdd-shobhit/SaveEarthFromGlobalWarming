@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public DataIDList dataIDList;
+    public List<CostProgression> costProg;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
             instance = this;
             dataIDList = new DataIDList();
             dataIDList = CSVImportTool.dataIDs;
-            Debug.Log(dataIDList.dataList[0].DID);
+            costProg = CSVImportTool.progressionList.costProgs;
         }
         else
         {
