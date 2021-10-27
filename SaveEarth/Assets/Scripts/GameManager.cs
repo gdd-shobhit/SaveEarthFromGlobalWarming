@@ -6,8 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public Dictionary<DataID, Dictionary<int,int>> dataIDToPollution = new Dictionary<DataID, Dictionary<int, int>>();
-    public DataIDList dataIDList = new DataIDList();
+    public DataIDList dataIDList;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -42,6 +41,9 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            dataIDList = new DataIDList();
+            dataIDList = CSVImportTool.dataIDs;
+            Debug.Log(dataIDList.dataList[0].DID);
         }
         else
         {

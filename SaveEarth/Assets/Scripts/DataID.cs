@@ -24,12 +24,28 @@ public class DataID
             }
         }
     }
+
+   
 }
+
 
 [System.Serializable]
 public class DataIDList
 {
     public List<DataID> dataList;
+
+    public DataID FindDataID(string name)
+    {
+        foreach (DataID did in dataList)
+        {
+            if (did.DID.Equals(name))
+            {
+                return did;
+            }
+        }
+        //if not found
+        return null;
+    }
 }
 
 
