@@ -22,21 +22,12 @@ public class CostProgression
 
     private int maxLevel = 3;
 
-    Dictionary<DataID, Dictionary<int, int>> dataIDToLevelProg;
+    Dictionary<DataID, Dictionary<int, int>> dataIDToLevelProg = new Dictionary<DataID, Dictionary<int, int>>();
     // buildings dataID mapped to dictionary of Resource dataID mapped to level and value
-    public Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>> progression;
+    public Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>> progression = new Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>>();
 
-    public CostProgression()
+    public void HandleProgression()
     {
-        progression = new Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>>();
-    
-        dataIDToLevelProg = new Dictionary<DataID, Dictionary<int, int>>();
-        
-        HandleProgression();       
-    }
-    void HandleProgression()
-    {
-        Debug.Log(food_1);
         List<int> foodValues = new List<int>();
         int[] foodArray = { food_1, food_2, food_3 };
         foodValues.AddRange(foodArray);
@@ -74,7 +65,6 @@ public class CostProgression
 
     void FillFullProgression()
     {
-        Debug.Log(dataIDToLevelProg);
         progression.Add(CSVImportTool.dataIDs.FindDataID(DID), dataIDToLevelProg);
     }
 }

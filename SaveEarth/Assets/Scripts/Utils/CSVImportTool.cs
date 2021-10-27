@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 public class CSVImportTool : ToolEditor
 {
@@ -43,7 +42,7 @@ public class CSVImportTool : ToolEditor
         BuildingBool = EditorGUILayout.Toggle("Building", BuildingBool);
         EditorGUILayout.EndToggleGroup();
 
-        if(GUILayout.Button("Import"))
+        if (GUILayout.Button("Import"))
         {
             List<string> dataPaths = new List<string>();
             string textData;
@@ -56,8 +55,8 @@ public class CSVImportTool : ToolEditor
                     did.SetName();
                 }
             }
-            
-            if(buildingData)
+
+            if (buildingData)
             {
                 textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\BuildingEconomy.csv");
                 buildingList.buildingList = CSVParser.Deserialize<Building>(textData).ToList();
@@ -67,6 +66,11 @@ public class CSVImportTool : ToolEditor
             {
                 textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\CostProgression.csv");
                 progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
+                foreach (CostProgression cprog in progressionList.costProgs)
+                {
+                    cprog.HandleProgression();
+                    Debug.Log(cprog.DID);
+                }
             }
 
             if (pollutionData)
@@ -81,5 +85,46 @@ public class CSVImportTool : ToolEditor
                 DataGenerationUtils.Generate(dataIDs, costBool, pollutionBool, BuildingBool);
             }
         }
+    }
+
+    static public void TestMethod()
+    {
+        List<string> dataPaths = new List<string>();
+        string textData;
+
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
+        dataIDs.dataList = CSVParser.Deserialize<DataID>(textData).ToList();
+        foreach (DataID did in dataIDs.dataList)
+        {
+            did.SetName();
+        }
+
+
+        //if (buildingData)
+        //{
+        //    textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\BuildingEconomy.csv");
+        //    buildingList.buildingList = CSVParser.Deserialize<Building>(textData).ToList();
+        //}
+
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\CostProgression.csv");
+        progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
+        foreach (CostProgression cprog in progressionList.costProgs)
+        {
+            cprog.HandleProgression();
+            Debug.Log(cprog.DID);
+        }
+
+
+        //if (pollutionData)
+        //{
+        //    textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\PollutionProgression.csv");
+        //    progressionList.polProgs = CSVParser.Deserialize<PollutionProgression>(textData).ToList();
+        //}
+
+
+        //if (groupEnabled)
+        //{
+        //    DataGenerationUtils.Generate(dataIDs, costBool, pollutionBool, BuildingBool);
+        //}
     }
 }
