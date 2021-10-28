@@ -16,12 +16,20 @@ public class House : Building
     {
         this.population = 20;
         DID = GameManager.instance.dataIDList.FindDataID("house");
-        this.pollutionOutput = 20;
+        polProg = GameManager.instance.polProg[4].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
     }
 
     public void IncreasePopulations()
     {
         float decayConstant = 1 / 0.85f;
         population = (int)(population * decayConstant);
+    }
+
+    public override void LevelUp()
+    {
+        base.LevelUp();
+        IncreasePopulations();
     }
 }

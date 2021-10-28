@@ -18,7 +18,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int currentStone = 1000;
     [SerializeField] private int currentMetal = 1000;
     [SerializeField] private int currentGold = 1000;
-    
+    [SerializeField] public int foodOutput = 0;
     
 
     public GameObject foodTM;
@@ -29,7 +29,7 @@ public class ResourceManager : MonoBehaviour
 
 
     // production per min
-    public int baseProductionRate = 100;
+    [SerializeField] public int baseProductionRate;
 
     public static ResourceManager instance;
 
@@ -39,6 +39,7 @@ public class ResourceManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            baseProductionRate = 0;
             foodTM.GetComponent<TextMeshProUGUI>().text = currentFood.ToString();
             woodTM.GetComponent<TextMeshProUGUI>().text = currentWood.ToString();
             stoneTM.GetComponent<TextMeshProUGUI>().text = currentStone.ToString();
@@ -146,5 +147,19 @@ public class ResourceManager : MonoBehaviour
         instance.currentMetal += 3;
         metalTM.GetComponent<TextMeshProUGUI>().text = instance.currentMetal.ToString();
     }
+
+    /// <summary>
+    /// Handles the changes in the resources when days are passed
+    /// </summary>
+    public void HandleResourcesOutput()
+    {
+        instance.currentFood += (foodOutput + baseProductionRate);
+        instance.currentWood += baseProductionRate/2;
+        instance.currentStone += baseProductionRate/3;
+        instance.currentMetal += baseProductionRate/4;
+        UpdateResources();
+    }
+
+   
 
 }

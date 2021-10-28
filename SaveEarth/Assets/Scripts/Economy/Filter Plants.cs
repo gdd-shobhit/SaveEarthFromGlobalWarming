@@ -11,6 +11,8 @@ public class FilterPlants : Building
    public FilterPlants()
     {
         DID = GameManager.instance.dataIDList.FindDataID("filterationplant");
-        this.pollutionOutput = -20;
+        polProg = GameManager.instance.polProg[3].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
     }
 }

@@ -5,11 +5,15 @@ using UnityEngine;
 public class TownCenter : Building
 {
     
+    
     public TownCenter()
     {
         // sets the DID when its instantiated - Shobhit
         DID = GameManager.instance.dataIDList.FindDataID("towncenter");
-        pollutionOutput = -20;
+        polProg = GameManager.instance.polProg[0].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
+
     }
 
     /// <summary>
@@ -20,7 +24,9 @@ public class TownCenter : Building
         // if requirements are met
         // Requirements - Food, Wood, Metal, Stone, Population, Factories number,
         // Farm Number, Filteration Plant Numbers and their levels
-        ResourceManager.instance.baseProductionRate += 50;
+        ResourceManager.instance.baseProductionRate += 10;
         base.LevelUp();
     }
+
+
 }

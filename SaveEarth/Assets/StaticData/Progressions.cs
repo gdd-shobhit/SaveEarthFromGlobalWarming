@@ -79,6 +79,28 @@ public class CostProgression
 [System.Serializable]
 public class PollutionProgression
 {
+    public int id;
+    public string DID;
+    public int PO_1;
+    public int PO_2;
+    public int PO_3;
+    public int PO_4;
+
+    public DataID actualDID = new DataID();
+    public Dictionary<DataID, List<int>> progression = new Dictionary<DataID, List<int>>();
+
+    public void HandleProgression()
+    {
+        actualDID = CSVImportTool.dataIDs.FindDataID(DID.Split('_')[1]);
+        List<int> levelProg = new List<int>();
+        // adding 0 to get 0 index as 0 for convenience purposes
+        levelProg.Add(0);
+        levelProg.Add(PO_1);
+        levelProg.Add(PO_2);
+        levelProg.Add(PO_3);
+        levelProg.Add(PO_4);
+        progression.Add(actualDID, levelProg);
+    }
 
 }
 

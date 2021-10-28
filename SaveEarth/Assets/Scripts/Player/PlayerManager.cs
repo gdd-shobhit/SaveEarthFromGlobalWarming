@@ -6,7 +6,7 @@ public class PlayerManager : MonoBehaviour
 {
 
     #region Variables
-    List<BuildingTracker> buildingList;
+    [SerializeField] private List<BuildingTracker> buildingList;
     [SerializeField] private GameObject tempBuildingObj;
 
     private MouseInput mouseInput;
@@ -87,35 +87,35 @@ public class PlayerManager : MonoBehaviour
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
         if (canBuild)
-        {
-           
+        {   
             GameObject temp = Instantiate(tempBuildingObj);
-            if (tile.name.ToLower().Equals("towncenter"))
-                temp.AddComponent<TownCenter>();
 
-            else if (tile.name.ToLower().Equals("farm"))
-                temp.AddComponent<Farm>();
-            else if (tile.name.ToLower().Equals("house"))
-                temp.AddComponent<House>();
-            else if (tile.name.ToLower().Equals("filterationplant"))
-                temp.AddComponent<FilterPlants>();
-            else if (tile.name.ToLower().Equals("factory"))
-                temp.AddComponent<Factory>();
-
-            if (ResourceManager.instance.CheckRequirements(temp.GetComponent<Building>().DID, 1))
+            if(ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(tile.name.ToLower()), 1))
             {
                 buildings.SetTile(highlightedPosition, tile);
+                switch(tile.name.ToLower())
+                {
+                    case "towncenter":
+                        temp.AddComponent<TownCenter>();
+                        break;
+                    case "farm":
+                        temp.AddComponent<Farm>();
+                        break;
+                    case "house":
+                        temp.AddComponent<House>();
+                        break;
+                    case "factory":
+                        temp.AddComponent<Factory>();
+                        break;
+                    case "filterationplant":
+                        temp.AddComponent<FilterPlants>();
+                        break;
+                }
                 BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
                 buildingList.Add(building);
                 canBuild = false;
-            }
-            else
-            {
-                // NEED TO RETHINK THE LOGIC. DESTROY SHOULD NOT BE USED - Shobhit
-                Destroy(temp);
-            }
+            }         
         }
-
     }
 
     /// <summary>
