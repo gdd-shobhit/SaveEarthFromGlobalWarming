@@ -18,7 +18,8 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int currentStone = 1000;
     [SerializeField] private int currentMetal = 1000;
     [SerializeField] private int currentGold = 1000;
-    [SerializeField] public int foodOutput = 0;
+    public int foodOutput = 0;
+    public int goldOutput = 0;
     
 
     public GameObject foodTM;
@@ -157,6 +158,7 @@ public class ResourceManager : MonoBehaviour
         instance.currentWood += baseProductionRate/2;
         instance.currentStone += baseProductionRate/3;
         instance.currentMetal += baseProductionRate/4;
+        instance.currentGold += goldOutput;
         UpdateResources();
     }
 

@@ -17,7 +17,7 @@ public class HealthBar : MonoBehaviour
         slider.value = pollution;
     }
 
-    public void SetHealth(int health)
+    public void SetHealth(float health)
     {
         slider.value = health;
     }

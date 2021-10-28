@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int pollutionValue = 0;
 
-    [SerializeField] private int health = 100;
+    [SerializeField] private float health = 100;
     public Text pollutionOutputText;
     public Text daysPassedText;
     public Text skillPointsText;
@@ -82,14 +82,14 @@ public class GameManager : MonoBehaviour
         {
             daysPassed++;
             totalDaysPassed++;
-            daysPassedText.text = "Days Survided: " + totalDaysPassed;
-            health -= (pollutionValue / 20);
+            daysPassedText.text = "Days Survived: " + totalDaysPassed;
+            health -= ((float)pollutionValue / 20);
             healthbar.SetHealth(health);
             ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }
 
-        if(daysPassed>=10)
+        if(daysPassed>=30)
         {
             skillPoints++;
             skillPointsText.text = "Skill Points: " + skillPoints;
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
     {
         if(skillPoints>0)
         {
-            ResourceManager.instance.baseProductionRate += 5;
+            ResourceManager.instance.baseProductionRate += 3;
             skillPoints--;
         }
     }

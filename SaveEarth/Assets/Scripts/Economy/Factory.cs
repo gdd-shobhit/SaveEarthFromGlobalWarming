@@ -7,11 +7,14 @@ using UnityEngine;
 /// </summary>
 public class Factory : Building
 {
+    public int goldCoinsOutput=0;
     public Factory()
     {
         DID = GameManager.instance.dataIDList.FindDataID("factory");
         polProg = GameManager.instance.polProg[2].progression[DID];
         pollutionOutput = polProg[1];
+        goldCoinsOutput = 3;
+        ResourceManager.instance.goldOutput = goldCoinsOutput;
         UpdatePollution();
     }
 }
