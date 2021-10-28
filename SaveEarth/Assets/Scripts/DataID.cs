@@ -32,13 +32,28 @@ public class DataID
 [System.Serializable]
 public class DataIDList
 {
+    static public DataIDList instance;
     public List<DataID> dataList;
+
+    void Start()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            instance.dataList = this.dataList;
+        }
+        else
+        {
+            // something;
+        }
+
+    }
 
     public DataID FindDataID(string name)
     {
         foreach (DataID did in dataList)
         {
-            if (did.DID.Equals(name))
+            if (did.name.Equals(name))
             {
                 return did;
             }

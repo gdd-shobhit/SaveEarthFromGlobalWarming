@@ -69,7 +69,7 @@ public class CSVImportTool : ToolEditor
                 foreach (CostProgression cprog in progressionList.costProgs)
                 {
                     cprog.HandleProgression();
-                    Debug.Log(cprog.DID);
+
                 }
             }
 
@@ -108,19 +108,19 @@ public class CSVImportTool : ToolEditor
 
         textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\CostProgression.csv");
         progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
+
         foreach (CostProgression cprog in progressionList.costProgs)
         {
             cprog.HandleProgression();
-            Debug.Log(cprog.DID);
         }
 
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\PollutionProgression.csv");
+        progressionList.polProgs = CSVParser.Deserialize<PollutionProgression>(textData).ToList();
 
-        //if (pollutionData)
-        //{
-        //    textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\PollutionProgression.csv");
-        //    progressionList.polProgs = CSVParser.Deserialize<PollutionProgression>(textData).ToList();
-        //}
-
+        foreach (PollutionProgression pprog in progressionList.polProgs)
+        {
+            pprog.HandleProgression();
+        }
 
         //if (groupEnabled)
         //{

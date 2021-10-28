@@ -8,11 +8,11 @@ using UnityEngine;
 /// </summary>
 public class FilterPlants : Building
 {
-
-   
    public FilterPlants()
     {
-        //this.DID = new DataID(3);
-        this.pollutionOutput = -20;
+        DID = GameManager.instance.dataIDList.FindDataID("filterationplant");
+        polProg = GameManager.instance.polProg[3].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
     }
 }

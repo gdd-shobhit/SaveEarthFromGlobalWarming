@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public DataIDList dataIDList;
+    public List<CostProgression> costProg;
+    public List<PollutionProgression> polProg;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -28,14 +31,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int skillPoints = 0;
 
+    /// <summary>
+    /// Total Pollution Value
+    /// </summary>
+    public int pollutionValue = 0;
+
+    [SerializeField] private int health = 100;
+    public Text pollutionOutputText;
+    public Text daysPassedText;
+    public Text skillPointsText;
+
+
+    public HealthBar healthbar;
     private Dictionary<int, int> levelToPolutionOutput;
     public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
 
-    public GameManager()
-    {
-        PopulatePollutionEconomy();       
-    }
-    
     void Start()
     {
         if (instance == null)
@@ -43,7 +53,9 @@ public class GameManager : MonoBehaviour
             instance = this;
             dataIDList = new DataIDList();
             dataIDList = CSVImportTool.dataIDs;
-            Debug.Log(dataIDList.dataList[0].DID);
+            costProg = CSVImportTool.progressionList.costProgs;
+            polProg = CSVImportTool.progressionList.polProgs;
+            healthbar = new HealthBar();
         }
         else
         {
@@ -55,7 +67,8 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         // Deals with Time
-        UpdateTime();   
+        UpdateTime();
+        pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
     }
 
     /// <summary>
@@ -68,14 +81,18 @@ public class GameManager : MonoBehaviour
         if (time > 120.0f)
         {
             daysPassed++;
-            totalDaysPassed = daysPassed;
+            totalDaysPassed++;
+            daysPassedText.text = "Days Survided: " + totalDaysPassed;
+            health -= (pollutionValue / 20);
+            healthbar.SetHealth(health);
+            ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }
 
         if(daysPassed>=10)
         {
             skillPoints++;
-            totalDaysPassed = daysPassed;
+            skillPointsText.text = "Skill Points: " + skillPoints;
             daysPassed = 0;
         }          
     }
@@ -83,7 +100,6 @@ public class GameManager : MonoBehaviour
     void PopulatePollutionEconomy()
     {
         // Json file will be inputed
-
     }
 
     DataID GetDID(GameObject gameObject)
@@ -91,4 +107,22 @@ public class GameManager : MonoBehaviour
         return gameObject.GetComponent<DataID>();
     }
 
+    public void IncreaseTimeBy(int multiplier)
+    {
+        timeMultiplier *= multiplier;
+    }
+
+    public void SetTimeToDefault()
+    {
+        timeMultiplier = 1;
+    }
+
+    public void SkillToBaseProduction()
+    {
+        if(skillPoints>0)
+        {
+            ResourceManager.instance.baseProductionRate += 5;
+            skillPoints--;
+        }
+    }
 }

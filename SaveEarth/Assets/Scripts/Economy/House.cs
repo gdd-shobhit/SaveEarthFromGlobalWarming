@@ -15,13 +15,21 @@ public class House : Building
     public House()
     {
         this.population = 20;
-        //this.DID = new DataID(4);
-        this.pollutionOutput = 20;
+        DID = GameManager.instance.dataIDList.FindDataID("house");
+        polProg = GameManager.instance.polProg[4].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
     }
 
     public void IncreasePopulations()
     {
         float decayConstant = 1 / 0.85f;
         population = (int)(population * decayConstant);
+    }
+
+    public override void LevelUp()
+    {
+        base.LevelUp();
+        IncreasePopulations();
     }
 }

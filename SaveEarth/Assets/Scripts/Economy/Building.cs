@@ -16,13 +16,21 @@ public class Building : MonoBehaviour
 
     public int level;
     public int pollutionOutput;
-    public Dictionary<int, int> costProg;
-    public Dictionary<int, int> polProg;
-    public DataID DID;
+    public Dictionary<DataID, Dictionary<int, int>> costProg;
+    public List<int> polProg = new List<int>();
+    public DataID DID = new DataID();
 
     public Building()
     {
-        level = 1;
+        level = 1;    
+    }
+
+    /// <summary>
+    /// Whenever building is initiated, update the pollution
+    /// </summary>
+    public void UpdatePollution()
+    {
+        GameManager.instance.pollutionValue += pollutionOutput;
     }
 
     /// <summary>
@@ -33,9 +41,11 @@ public class Building : MonoBehaviour
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
         // check if resources are enough to level up
-        if (ResourceManager.CheckRequirements(DID, level+1))
+        if (ResourceManager.instance.CheckRequirements(DID,level+1) && level < 4)
         {
             level++;
+            pollutionOutput = polProg[level];
+            UpdatePollution();
         }
     }
 

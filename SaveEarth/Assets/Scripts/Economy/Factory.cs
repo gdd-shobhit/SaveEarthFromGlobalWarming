@@ -9,7 +9,9 @@ public class Factory : Building
 {
     public Factory()
     {
-        //this.DID = new DataID(2);
-        this.pollutionOutput = 60;
+        DID = GameManager.instance.dataIDList.FindDataID("factory");
+        polProg = GameManager.instance.polProg[2].progression[DID];
+        pollutionOutput = polProg[1];
+        UpdatePollution();
     }
 }
