@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerInput playerInput;
     public TileBase selectedBuilding;
     private Vector3Int highlightedPosition;
+    private bool canBuild = true;
     [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
@@ -77,11 +78,11 @@ public class PlayerManager : MonoBehaviour
             highlight.SetTile(gridPosition, highlightTile);
 
             // Place Building at Selected Tile
-            if (!buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition))
-            {
-                Debug.Log("here");
+            // canBuild necessary so that we dont make copies - Shobhit
+            canBuild = !buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition) ? true : false;
+            if (canBuild)
                 highlightedPosition = gridPosition;
-            }
+            
 
         }
     }
@@ -90,10 +91,36 @@ public class PlayerManager : MonoBehaviour
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildings.SetTile(highlightedPosition, tile);
-        GameObject temp = GameObject.Instantiate(tempBuildingObj);
-        BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
-        buildingList.Add(building);
+        if (canBuild)
+        {
+            GameObject temp = Instantiate(tempBuildingObj);
+
+            if (ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(tile.name.ToLower()), 1))
+            {
+                buildings.SetTile(highlightedPosition, tile);
+                switch (tile.name.ToLower())
+                {
+                    case "towncenter":
+                        temp.AddComponent<TownCenter>();
+                        break;
+                    case "farm":
+                        temp.AddComponent<Farm>();
+                        break;
+                    case "house":
+                        temp.AddComponent<House>();
+                        break;
+                    case "factory":
+                        temp.AddComponent<Factory>();
+                        break;
+                    case "filterationplant":
+                        temp.AddComponent<FilterPlants>();
+                        break;
+                }
+                BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+                buildingList.Add(building);
+                canBuild = false;
+            }
+        }
     }
 
     
