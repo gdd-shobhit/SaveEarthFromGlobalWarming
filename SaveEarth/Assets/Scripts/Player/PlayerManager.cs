@@ -9,8 +9,7 @@ public class PlayerManager : MonoBehaviour
     List<BuildingTracker> buildingList;
     [SerializeField] private GameObject tempBuildingObj;
 
-    private MouseInput mouseInput;
-    private Cam cameraInput;
+    private PlayerInput playerInput;
     public TileBase selectedBuilding;
     private Vector3Int highlightedPosition;
     [SerializeField] private List<TileBase> tiles;
@@ -24,12 +23,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
 
+    // for camera controls (temporary until after milestone 2, just for working sake)
+    private Vector2 move;
+    [SerializeField] private float cameraSpeed = 10f;
     #endregion
 
     void Awake()
     {
-        mouseInput = new MouseInput();
-        cameraInput = new Cam();
+        playerInput = new PlayerInput();
         Cursor.visible = true;
         tiles = new List<TileBase>();
         buildingList = new List<BuildingTracker>();
@@ -37,21 +38,25 @@ public class PlayerManager : MonoBehaviour
 
     void OnEnable()
     {
-        mouseInput.Enable();
-        cameraInput.Enable();
+        playerInput.Enable();
     }
 
     void OnDisable()
     {
-        mouseInput.Disable();
-        cameraInput.Disable();
+        playerInput.Disable();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        mouseInput.Mouse.MouseClick.performed += _ => MouseClick();
-        cameraInput.Keyboard.Keyboard.performed += _ => MoveCamera();
+        playerInput.Mouse.MouseClick.performed += _ => MouseClick();
+    }
+
+    private void Update()
+    {
+        move = playerInput.Keyboard.Movement.ReadValue<Vector2>();
+        Vector3 movement = new Vector3(move.x * cameraSpeed * Time.deltaTime, move.y * cameraSpeed * Time.deltaTime, 0f);
+        mainCamera.transform.Translate(movement);
     }
 
     /// <summary>
@@ -59,7 +64,7 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     void MouseClick()
     {
-        Vector2 mousePosition = mouseInput.Mouse.MousePosition.ReadValue<Vector2>();
+        Vector2 mousePosition = playerInput.Mouse.MousePosition.ReadValue<Vector2>();
         mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 7f));
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
@@ -91,15 +96,7 @@ public class PlayerManager : MonoBehaviour
         buildingList.Add(building);
     }
 
-    /// <summary>
-    /// Needs plenty of work to work smoothly - Can integrate Cinemachine. - Durrell
-    /// </summary>
-    void MoveCamera()
-    {
-        float speed = 10f;
-        Vector2 movement = cameraInput.Keyboard.Keyboard.ReadValue<Vector2>();
-        mainCamera.transform.Translate(new Vector3(movement.x * Time.deltaTime * speed, movement.y * Time.deltaTime * speed, 0f));
-    }
+    
 }
 
 public class BuildingTracker

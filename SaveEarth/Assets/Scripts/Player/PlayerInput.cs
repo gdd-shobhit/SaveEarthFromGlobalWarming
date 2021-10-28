@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Mouse.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Player/PlayerInput.inputactions'
 
 using System;
 using System.Collections;
@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public class @MouseInput : IInputActionCollection, IDisposable
+public class @PlayerInput : IInputActionCollection, IDisposable
 {
     public InputActionAsset asset { get; }
-    public @MouseInput()
+    public @PlayerInput()
     {
         asset = InputActionAsset.FromJson(@"{
-    ""name"": ""Mouse"",
+    ""name"": ""PlayerInput"",
     ""maps"": [
         {
             ""name"": ""Mouse"",
@@ -59,6 +59,77 @@ public class @MouseInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Keyboard"",
+            ""id"": ""c672a847-a9e1-4787-a531-8f3a00325721"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4de84b51-1e4f-409c-b083-9b106f6c91f3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Press,Hold""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Movement"",
+                    ""id"": ""8ee6bddf-b6e5-4e94-b4ff-dc05ecae2d38"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a561aa29-9159-4856-b16c-c9e5f1d11607"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""48c1e39b-5ed9-41aa-8cf6-44807f4af9bc"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b84ea065-cdfe-43fa-b8ce-d94729a6cc22"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8943cdcc-8b28-4b95-8748-e0bd22a0cd16"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -67,6 +138,9 @@ public class @MouseInput : IInputActionCollection, IDisposable
         m_Mouse = asset.FindActionMap("Mouse", throwIfNotFound: true);
         m_Mouse_MouseClick = m_Mouse.FindAction("MouseClick", throwIfNotFound: true);
         m_Mouse_MousePosition = m_Mouse.FindAction("MousePosition", throwIfNotFound: true);
+        // Keyboard
+        m_Keyboard = asset.FindActionMap("Keyboard", throwIfNotFound: true);
+        m_Keyboard_Movement = m_Keyboard.FindAction("Movement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -120,8 +194,8 @@ public class @MouseInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Mouse_MousePosition;
     public struct MouseActions
     {
-        private @MouseInput m_Wrapper;
-        public MouseActions(@MouseInput wrapper) { m_Wrapper = wrapper; }
+        private @PlayerInput m_Wrapper;
+        public MouseActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouseClick => m_Wrapper.m_Mouse_MouseClick;
         public InputAction @MousePosition => m_Wrapper.m_Mouse_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
@@ -153,9 +227,46 @@ public class @MouseInput : IInputActionCollection, IDisposable
         }
     }
     public MouseActions @Mouse => new MouseActions(this);
+
+    // Keyboard
+    private readonly InputActionMap m_Keyboard;
+    private IKeyboardActions m_KeyboardActionsCallbackInterface;
+    private readonly InputAction m_Keyboard_Movement;
+    public struct KeyboardActions
+    {
+        private @PlayerInput m_Wrapper;
+        public KeyboardActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Keyboard_Movement;
+        public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(KeyboardActions set) { return set.Get(); }
+        public void SetCallbacks(IKeyboardActions instance)
+        {
+            if (m_Wrapper.m_KeyboardActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
+            }
+            m_Wrapper.m_KeyboardActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+            }
+        }
+    }
+    public KeyboardActions @Keyboard => new KeyboardActions(this);
     public interface IMouseActions
     {
         void OnMouseClick(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
+    }
+    public interface IKeyboardActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
     }
 }

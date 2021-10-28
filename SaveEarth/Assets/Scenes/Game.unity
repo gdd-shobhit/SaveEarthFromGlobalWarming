@@ -3212,9 +3212,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 57
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -4604,6 +4604,7 @@ MonoBehaviour:
   grassTile: {fileID: 11400000, guid: f32a8c49c203f7341a62a364a90292ed, type: 2}
   dirtTile: {fileID: 11400000, guid: 54305e6dc6a48bd408fe23f1a43b5b4a, type: 2}
   highlightTile: {fileID: 11400000, guid: bb0e9bd24253d414c92a73d71b90a4fc, type: 2}
+  cameraSpeed: 10
 --- !u!4 &1296121888
 Transform:
   m_ObjectHideFlags: 0
