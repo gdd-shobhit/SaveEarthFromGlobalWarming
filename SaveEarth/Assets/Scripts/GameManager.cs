@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int pollutionValue = 0;
 
-    [SerializeField] private float health = 100;
+    public float health = 100;
     public Text pollutionOutputText;
     public Text daysPassedText;
     public Text skillPointsText;
@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
             daysPassedText.text = "Days Survived: " + totalDaysPassed;
             health -= ((float)pollutionValue / 20);
             healthbar.SetHealth(health);
+            ResourceManager.instance.baseProductionRate = 0;
             ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }
