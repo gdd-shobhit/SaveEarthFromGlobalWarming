@@ -1,0 +1,6 @@
+﻿ID,DID,PO_1,PO_2,PO_3,PO_4
+0,building_towncenter,0,0,20,40
+1,building_farm,5,10,20,40
+2,building_factory,60,140,300,400
+3,building_filterationplant,-20,-50,-150,-300
+4,building_house,20,40,60,100

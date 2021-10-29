@@ -19,8 +19,9 @@ public class SceneHandler : MonoBehaviour
 
     public void SwitchToGame()
     {
-        CSVImportTool.TestMethod();
+        
         SceneManager.LoadScene("Game");
+        CSVImportTool.TestMethod();
     }
 
     public void SwitchToExitScreen()

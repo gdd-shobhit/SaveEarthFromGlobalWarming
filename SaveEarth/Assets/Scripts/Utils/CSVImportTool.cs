@@ -87,12 +87,19 @@ public class CSVImportTool : MonoBehaviour
     //    }
     //}
 
+    private string dataID_path = "";
+    private void Start()
+    {
+       
+    }
+
+
     static public void TestMethod()
     {
         List<string> dataPaths = new List<string>();
         string textData;
 
-        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\DataId.csv");
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\Resources\\StaticData\\CSV\\DataId.csv");
         dataIDs.dataList = CSVParser.Deserialize<DataID>(textData).ToList();
         foreach (DataID did in dataIDs.dataList)
         {
@@ -106,7 +113,7 @@ public class CSVImportTool : MonoBehaviour
         //    buildingList.buildingList = CSVParser.Deserialize<Building>(textData).ToList();
         //}
 
-        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\CostProgression.csv");
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\Resources\\StaticData\\CSV\\CostProgression.csv");
         progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
 
         foreach (CostProgression cprog in progressionList.costProgs)
@@ -114,7 +121,7 @@ public class CSVImportTool : MonoBehaviour
             cprog.HandleProgression();
         }
 
-        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\StaticData\\CSV\\PollutionProgression.csv");
+        textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\Resources\\StaticData\\CSV\\PollutionProgression.csv");
         progressionList.polProgs = CSVParser.Deserialize<PollutionProgression>(textData).ToList();
 
         foreach (PollutionProgression pprog in progressionList.polProgs)
@@ -128,3 +135,4 @@ public class CSVImportTool : MonoBehaviour
         //}
     }
 }
+

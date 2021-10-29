@@ -1,0 +1,6 @@
+﻿ID,DataID,Name,Pollution,Cost
+0,building_towncenter,Town Center,pol_prog,cost_prog
+1,building_farm,Farm,pol_prog,cost_prog
+2,building_factory,Factory,pol_prog,cost_prog
+3,building_filterationplant,Filteration Plant,pol_prog,cost_prog
+4,building_house,House,pol_prog,cost_prog
