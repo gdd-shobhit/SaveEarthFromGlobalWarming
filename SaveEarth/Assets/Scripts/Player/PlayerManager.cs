@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,7 +7,8 @@ public class PlayerManager : MonoBehaviour
 {
 
     #region Variables
-    List<BuildingTracker> buildingList;
+    //List<BuildingTracker> buildingList;
+    Dictionary<Vector3Int, BuildingTracker> buildingList;
     [SerializeField] private GameObject tempBuildingObj;
 
     private PlayerInput playerInput;
@@ -23,6 +25,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile grassTile;
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile highlightTile;
+    [SerializeField] private Tile woodTile;
+    [SerializeField] private Tile stoneTile;
+    [SerializeField] private Tile metalTile;
+
 
     // for camera controls (temporary until after milestone 2, just for working sake)
     private Vector2 move;
@@ -34,7 +40,7 @@ public class PlayerManager : MonoBehaviour
         playerInput = new PlayerInput();
         Cursor.visible = true;
         tiles = new List<TileBase>();
-        buildingList = new List<BuildingTracker>();
+        buildingList = new Dictionary<Vector3Int, BuildingTracker>();
     }
 
     void OnEnable()
@@ -82,7 +88,8 @@ public class PlayerManager : MonoBehaviour
             canBuild = !buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition) ? true : false;
             if (canBuild)
                 highlightedPosition = gridPosition;
-            
+
+            ResourceClicker(gridPosition);
 
         }
     }
@@ -117,13 +124,85 @@ public class PlayerManager : MonoBehaviour
                         break;
                 }
                 BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
-                buildingList.Add(building);
+                buildingList.Add(highlightedPosition, building);
                 canBuild = false;
             }
         }
     }
 
-    
+    /// <summary>
+    /// Runs on coroutine to create new clicker tiles and swaps them out when timer is complete, rinse and repeat.
+    /// -- Durrell
+    /// </summary>
+    private void CreateResourceClicker()
+    {
+        // get random position on tilemap.
+        Vector3Int position = Vector3Int.zero;  // zero for now until I figure out random positions on our tilemap.
+
+        if(map.HasTile(position))
+        {
+            // make sure a building doesn't exist on that tile.
+            if (buildingList.ContainsKey(position)) // if so, find another position.
+            {
+                // Create new random position.
+            }
+            else // if not, proceed.
+            {
+                // random clicker tile
+                int random = Random.Range(0, 2);
+
+                // swap tile with resource clicker tile.
+                // 0 = Wood, 1 = Stone, 2 = Metal
+                switch (random)
+                {
+                    case 0:
+                        map.SwapTile(map.GetTile(position), woodTile);
+                        break;
+                    case 1:
+                        map.SwapTile(map.GetTile(position), stoneTile);
+                        break;
+                    case 2:
+                        map.SwapTile(map.GetTile(position), metalTile);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
+            // replace tile when completed.
+            map.SwapTile(map.GetTile(position), grassTile);
+        }
+
+    }
+
+    /// <summary>
+    /// Checks if tile is a resource clicker or not.
+    /// -- Durrell
+    /// </summary>
+    /// <param name="position"></param>
+    private void ResourceClicker(Vector3Int position)
+    {
+        // Create cookie clicker element on tiles - Durrell
+        // check if tile has resource item on it.
+        var tile = map.GetTile(position);
+        switch (tile.name)
+        {
+            case "wood_clicker":
+                // Add resources for wood when clicked.
+                break;
+            case "stone_clicker":
+                // Add resources for stone when clicked.
+                break;
+            case "metal_clicker":
+                // Add resources for metal when clicked.
+                break;
+            default:
+                print("Tile is not a clicker!");
+                break;
+        }
+    }
+
 }
 
 public class BuildingTracker
