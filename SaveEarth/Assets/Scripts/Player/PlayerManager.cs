@@ -64,6 +64,8 @@ public class PlayerManager : MonoBehaviour
         move = playerInput.Keyboard.Movement.ReadValue<Vector2>();
         Vector3 movement = new Vector3(move.x * cameraSpeed * Time.deltaTime, move.y * cameraSpeed * Time.deltaTime, 0f);
         mainCamera.transform.Translate(movement);
+
+        CreateResourceClicker();
     }
 
     /// <summary>
@@ -78,8 +80,11 @@ public class PlayerManager : MonoBehaviour
         // On Tile Click
         if (map.HasTile(gridPosition))
         {
-            //Put tile selection code here.
+            print($"Grid Position: {gridPosition}");
 
+
+            //Put tile selection code here.
+            
             highlight.ClearAllTiles();
             highlight.SetTile(gridPosition, highlightTile);
 
@@ -136,8 +141,11 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     private void CreateResourceClicker()
     {
+        int randomX = Random.Range(-3, 4);
+        int randomY = Random.Range(-3, 3);
+
         // get random position on tilemap.
-        Vector3Int position = Vector3Int.zero;  // zero for now until I figure out random positions on our tilemap.
+        Vector3Int position = new Vector3Int(randomX, randomY, 0);
 
         if(map.HasTile(position))
         {
@@ -145,6 +153,11 @@ public class PlayerManager : MonoBehaviour
             if (buildingList.ContainsKey(position)) // if so, find another position.
             {
                 // Create new random position.
+                randomX = Random.Range(-3, 4);
+                randomY = Random.Range(-3, 3);
+
+                // get random position on tilemap.
+                position = new Vector3Int(randomX, randomY, 0);
             }
             else // if not, proceed.
             {
@@ -157,11 +170,14 @@ public class PlayerManager : MonoBehaviour
                 {
                     case 0:
                         map.SwapTile(map.GetTile(position), woodTile);
+                        print("resource clicker created");
                         break;
                     case 1:
+                        print("resource clicker created");
                         map.SwapTile(map.GetTile(position), stoneTile);
                         break;
                     case 2:
+                        print("resource clicker created");
                         map.SwapTile(map.GetTile(position), metalTile);
                         break;
                     default:
