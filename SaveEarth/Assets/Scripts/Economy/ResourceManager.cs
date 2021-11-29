@@ -10,15 +10,23 @@ using TMPro;
 public class ResourceManager : MonoBehaviour
 {
     public GameObject resourcesReqPanel;
+    public GameObject infoPanel;
+    public GameObject infoPanelLabel;
+    public GameObject infoPanelFood;
+    public GameObject infoPanelWood;
+    public GameObject infoPanelStone;
+    public GameObject infoPanelMetal;
+    public GameObject infoPanelGold;
+
     [SerializeField] private int amountOfClicks = 0;
-    [SerializeField] private int currentFood = 1000;
-    [SerializeField] private int currentWood = 1000;
-    [SerializeField] private int currentStone = 1000;
-    [SerializeField] private int currentMetal = 1000;
-    [SerializeField] private int currentGold = 1000;
+    [SerializeField] private int currentFood = 800;
+    [SerializeField] private int currentWood = 700;
+    [SerializeField] private int currentStone = 500;
+    [SerializeField] private int currentMetal = 400;
+    [SerializeField] private int currentGold = 500;
     public int foodOutput = 0;
     public int goldOutput = 0;
-    
+
 
     public GameObject foodTM;
     public GameObject woodTM;
@@ -34,7 +42,7 @@ public class ResourceManager : MonoBehaviour
 
     void Start()
     {
-    
+
         if (instance == null)
         {
             instance = this;
@@ -52,6 +60,59 @@ public class ResourceManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Displays requirements of the building
+    /// </summary>
+    public void DisplayInfo(string buildingName, int levelToBe)
+    {
+        infoPanel.SetActive(true);
+        infoPanelLabel.GetComponent<TextMeshProUGUI>().text = buildingName;
+        DataID did = GameManager.instance.dataIDList.FindDataID(buildingName.ToLower());
+        foreach (CostProgression costProgression in GameManager.instance.costProg)
+        {
+            if (costProgression.actualDID == did )
+            {
+                Dictionary<int, int> foodLevelProg = new Dictionary<int, int>();
+                Dictionary<int, int> woodLevelProg = new Dictionary<int, int>();
+                Dictionary<int, int> stoneLevelProg = new Dictionary<int, int>();
+                Dictionary<int, int> metalLevelProg = new Dictionary<int, int>();
+                Dictionary<int, int> goldLevelProg = new Dictionary<int, int>();
+
+                foreach (KeyValuePair<DataID, Dictionary<int, int>> something in costProgression.progression[did])
+                {
+                    if (something.Key.name.Equals("food"))
+                    {
+                        foodLevelProg = costProgression.progression[did][something.Key];
+                    }
+                    else if (something.Key.name.Equals("wood"))
+                    {
+                        woodLevelProg = costProgression.progression[did][something.Key];
+                    }
+                    else if (something.Key.name.Equals("stone"))
+                    {
+                        stoneLevelProg = costProgression.progression[did][something.Key];
+                    }
+                    else if (something.Key.name.Equals("metal"))
+                    {
+                        metalLevelProg = costProgression.progression[did][something.Key];
+                    }
+                    else if(something.Key.name.Equals("gold"))
+                    {
+                        goldLevelProg = costProgression.progression[did][something.Key];
+                    }
+                }
+                infoPanelFood.GetComponent<TextMeshProUGUI>().text = foodLevelProg[levelToBe].ToString();
+                infoPanelGold.GetComponent<TextMeshProUGUI>().text = goldLevelProg[levelToBe].ToString();
+                infoPanelWood.GetComponent<TextMeshProUGUI>().text = woodLevelProg[levelToBe].ToString();
+                infoPanelMetal.GetComponent<TextMeshProUGUI>().text = metalLevelProg[levelToBe].ToString();
+                infoPanelStone.GetComponent<TextMeshProUGUI>().text = stoneLevelProg[levelToBe].ToString();
+
+
+            }
+        }
+    }
+
     /// <summary>
     /// Takes in DID and find its requirements and tells if it meets the levelupRequirements 
     /// </summary>
@@ -66,6 +127,7 @@ public class ResourceManager : MonoBehaviour
                 Dictionary<int, int> woodLevelProg = new Dictionary<int, int>();
                 Dictionary<int, int> stoneLevelProg = new Dictionary<int, int>();
                 Dictionary<int, int> metalLevelProg = new Dictionary<int, int>();
+                Dictionary<int, int> goldLevelProg = new Dictionary<int, int>();
 
                 foreach (KeyValuePair<DataID,Dictionary<int,int>> something in costProgression.progression[did])
                 {                                
@@ -85,17 +147,23 @@ public class ResourceManager : MonoBehaviour
                     {
                         metalLevelProg = costProgression.progression[did][something.Key];
                     }
-                }         
+                    else if(something.Key.name.Equals("gold"))
+                    {
+                        goldLevelProg = costProgression.progression[did][something.Key];
+                    }
+                }
 
-                if(instance.currentFood >= foodLevelProg[levelToBe] && instance.currentWood >= woodLevelProg[levelToBe]
-                    && instance.currentStone >= stoneLevelProg[levelToBe] && instance.currentMetal >= metalLevelProg[levelToBe])
+
+
+                if (instance.currentFood >= foodLevelProg[levelToBe] && instance.currentWood >= woodLevelProg[levelToBe]
+                    && instance.currentStone >= stoneLevelProg[levelToBe] && instance.currentMetal >= metalLevelProg[levelToBe] && instance.currentGold >= goldLevelProg[levelToBe])
                 {
                     
                     instance.currentFood -= foodLevelProg[levelToBe];
-                    Debug.Log("" + instance.currentFood + " food level prog: " + foodLevelProg[levelToBe]);
                     instance.currentWood -= woodLevelProg[levelToBe];
                     instance.currentStone -= stoneLevelProg[levelToBe];
                     instance.currentMetal -= metalLevelProg[levelToBe];
+                    instance.currentGold -= goldLevelProg[levelToBe];
                     UpdateResources();
                     return true;
                 }
@@ -113,12 +181,6 @@ public class ResourceManager : MonoBehaviour
 
     private void UpdateResources()
     {
-        //foodTM.GetComponent<TextMeshProUGUI>().text = "";
-        //woodTM.GetComponent<TextMeshProUGUI>().text = "";
-        //stoneTM.GetComponent<TextMeshProUGUI>().text = "";
-        //metalTM.GetComponent<TextMeshProUGUI>().text = "";
-        //goldTM.GetComponent<TextMeshProUGUI>().text = "";
-
         foodTM.GetComponent<TextMeshProUGUI>().text = instance.currentFood.ToString();
         woodTM.GetComponent<TextMeshProUGUI>().text = instance.currentWood.ToString();
         stoneTM.GetComponent<TextMeshProUGUI>().text = instance.currentStone.ToString();

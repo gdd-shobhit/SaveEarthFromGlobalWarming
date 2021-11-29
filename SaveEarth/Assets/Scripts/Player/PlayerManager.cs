@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerManager : MonoBehaviour
     public TileBase selectedBuilding;
     private Vector3Int highlightedPosition;
     private bool canBuild = true;
+    public string buildingToBeBuild = "";
+    private TileBase tileToBePlace = null;
     [SerializeField] private List<TileBase> tiles;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Tilemap map;
@@ -39,7 +42,6 @@ public class PlayerManager : MonoBehaviour
     {
         playerInput = new PlayerInput();
         Cursor.visible = true;
-        tiles = new List<TileBase>();
         buildingList = new Dictionary<Vector3Int, BuildingTracker>();
     }
 
@@ -99,40 +101,70 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void SelectBuilding(TileBase tile)
+
+    public void SelectBuilding(GameObject building)
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
+        buildingToBeBuild = building.name.ToLower();
+        ResourceManager.instance.DisplayInfo(building.name, 1);
+    }
+
+    public void BuildBuilding()
+    {
         if (canBuild)
         {
             GameObject temp = Instantiate(tempBuildingObj);
-
-            if (ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(tile.name.ToLower()), 1))
+            if (ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(buildingToBeBuild), 1))
             {
-                buildings.SetTile(highlightedPosition, tile);
-                switch (tile.name.ToLower())
+                switch (buildingToBeBuild)
                 {
                     case "towncenter":
-                        temp.AddComponent<TownCenter>();
+                        {
+                            buildings.SetTile(highlightedPosition, tiles[0]);
+                            temp.AddComponent<TownCenter>();
+                        }
+                       
                         break;
                     case "farm":
-                        temp.AddComponent<Farm>();
-                        break;
-                    case "house":
-                        temp.AddComponent<House>();
+                        {
+                            buildings.SetTile(highlightedPosition, tiles[1]);
+                            temp.AddComponent<Farm>();
+                        }                     
                         break;
                     case "factory":
-                        temp.AddComponent<Factory>();
+                        {
+                            buildings.SetTile(highlightedPosition, tiles[2]);
+                            temp.AddComponent<Factory>();
+                        }
+                      
                         break;
                     case "filterationplant":
-                        temp.AddComponent<FilterPlants>();
+                        {
+                            buildings.SetTile(highlightedPosition, tiles[3]);
+                            temp.AddComponent<FilterPlants>();
+                        }
+                        break;
+                    case "house":
+                        {
+                            buildings.SetTile(highlightedPosition, tiles[4]);
+                            temp.AddComponent<House>();
+                        }
+                        
                         break;
                 }
-                BuildingTracker building = new BuildingTracker(highlightedPosition, tile, temp);
+                BuildingTracker building = new BuildingTracker(highlightedPosition, tileToBePlace, temp);
                 buildingList.Add(highlightedPosition, building);
                 canBuild = false;
             }
+            
+            else
+            {
+                Destroy(temp);
+            }
+
         }
+        
     }
 
     /// <summary>

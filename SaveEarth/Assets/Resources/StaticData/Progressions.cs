@@ -11,14 +11,17 @@ public class CostProgression
     public int wood_1;
     public int stone_1;
     public int metal_1;
+    public int gold_1;
     public int food_2;
     public int wood_2;
     public int stone_2;
     public int metal_2;
+    public int gold_2;
     public int food_3;
     public int wood_3;
     public int stone_3;
     public int metal_3;
+    public int gold_3;
 
     public DataID actualDID = new DataID(); 
     private int maxLevel = 3;
@@ -51,11 +54,17 @@ public class CostProgression
         metalValues.Add(metal_2);
         metalValues.Add(metal_3);
 
+        List<int> goldValues = new List<int>();
+        goldValues.Add(gold_1);
+        goldValues.Add(gold_2);
+        goldValues.Add(gold_3);
+
 
         FillLevelProg(CSVImportTool.dataIDs.FindDataID("food"),foodValues);
         FillLevelProg(CSVImportTool.dataIDs.FindDataID("wood"), woodValues);
         FillLevelProg(CSVImportTool.dataIDs.FindDataID("stone"), stoneValues);
         FillLevelProg(CSVImportTool.dataIDs.FindDataID("metal"), metalValues);
+        FillLevelProg(CSVImportTool.dataIDs.FindDataID("gold"), goldValues);
         FillFullProgression();
     }
 

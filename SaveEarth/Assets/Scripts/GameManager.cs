@@ -85,17 +85,9 @@ public class GameManager : MonoBehaviour
             daysPassedText.text = "Days Survived: " + totalDaysPassed;
             health -= ((float)pollutionValue / 20);
             healthbar.SetHealth(health);
-            ResourceManager.instance.baseProductionRate = 0;
             ResourceManager.instance.HandleResourcesOutput();
             time = 0;
-        }
-
-        if(daysPassed>=30)
-        {
-            skillPoints++;
-            skillPointsText.text = "Skill Points: " + skillPoints;
-            daysPassed = 0;
-        }          
+        }    
     }
 
     void PopulatePollutionEconomy()
@@ -110,6 +102,7 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseTimeBy(int multiplier)
     {
+        if (timeMultiplier < 10)
         timeMultiplier *= multiplier;
     }
 
@@ -118,12 +111,17 @@ public class GameManager : MonoBehaviour
         timeMultiplier = 1;
     }
 
-    public void SkillToBaseProduction()
+
+    /// <summary>
+    /// Upgrades the skills in the trees
+    /// </summary>
+    /// <param name="index">Takes in the research that was clicked. Goes from top to bottom and left to right.</param>
+    public void SkillTreeUpgrades(int index)
     {
-        if(skillPoints>0)
+        switch(index)
         {
-            ResourceManager.instance.baseProductionRate += 3;
-            skillPoints--;
+            case 0: ResourceManager.instance.baseProductionRate += 4;
+                break;
         }
     }
 }
