@@ -3773,7 +3773,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &811624294
@@ -3972,7 +3972,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &898689327
@@ -5625,7 +5625,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1229336045
@@ -6216,11 +6216,12 @@ MonoBehaviour:
   highlight: {fileID: 811624294}
   grid: {fileID: 276721182}
   grassTile: {fileID: 11400000, guid: f32a8c49c203f7341a62a364a90292ed, type: 2}
-  dirtTile: {fileID: 11400000, guid: 54305e6dc6a48bd408fe23f1a43b5b4a, type: 2}
+  dirtTile: {fileID: 0}
   highlightTile: {fileID: 11400000, guid: bb0e9bd24253d414c92a73d71b90a4fc, type: 2}
   woodTile: {fileID: 11400000, guid: 54305e6dc6a48bd408fe23f1a43b5b4a, type: 2}
   stoneTile: {fileID: 11400000, guid: 6a29188f967531f4ab286828e57e43f6, type: 2}
   metalTile: {fileID: 11400000, guid: e5b1737c673886f49939bc1180f5269d, type: 2}
+  clickerTimer: 5
   cameraSpeed: 10
 --- !u!4 &1296121888
 Transform:
