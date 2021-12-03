@@ -13,7 +13,7 @@ public class Factory : Building
         DID = GameManager.instance.dataIDList.FindDataID("factory");
         polProg = GameManager.instance.polProg[2].progression[DID];
         pollutionOutput = polProg[1];
-        goldCoinsOutput = 3;
+        goldCoinsOutput = 20;
         ResourceManager.instance.goldOutput = goldCoinsOutput;
         UpdatePollution();
     }

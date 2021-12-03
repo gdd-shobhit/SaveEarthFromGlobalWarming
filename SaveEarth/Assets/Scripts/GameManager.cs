@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     /// Time passed since the level started
     /// </summary>
     public float time = 0;
+    public bool healthLess80 = false;
+    public bool healthLess60 = false;
 
     /// <summary>
     /// To make the time go faster so that the player doesnt have to wait.
@@ -84,6 +86,14 @@ public class GameManager : MonoBehaviour
             totalDaysPassed++;
             daysPassedText.text = "Days Survived: " + totalDaysPassed;
             health -= ((float)pollutionValue / 20);
+            if (healthLess60 && health >= 60)
+            {
+                health = 60;
+            }
+            else if(healthLess80 && health >= 80)
+            {
+                health = 80;
+            }
             healthbar.SetHealth(health);
             ResourceManager.instance.HandleResourcesOutput();
             time = 0;
@@ -104,6 +114,12 @@ public class GameManager : MonoBehaviour
     {
         if (timeMultiplier < 10)
         timeMultiplier *= multiplier;
+
+        else
+        {
+            timeMultiplier = 20;
+        }
+        
     }
 
     public void SetTimeToDefault()

@@ -4931,11 +4931,11 @@ MonoBehaviour:
   infoPanelMetal: {fileID: 255829271}
   infoPanelGold: {fileID: 232407672}
   amountOfClicks: 0
-  currentFood: 1000
-  currentWood: 1000
-  currentStone: 1000
-  currentMetal: 1000
-  currentGold: 500
+  currentFood: 15000
+  currentWood: 15000
+  currentStone: 15000
+  currentMetal: 15000
+  currentGold: 11000
   foodOutput: 0
   goldOutput: 0
   foodTM: {fileID: 1737542520}
@@ -6253,6 +6253,8 @@ MonoBehaviour:
   costProg: []
   polProg: []
   time: 0
+  healthLess80: 0
+  healthLess60: 0
   timeMultiplier: 1
   totalDaysPassed: 0
   skillPoints: 0
