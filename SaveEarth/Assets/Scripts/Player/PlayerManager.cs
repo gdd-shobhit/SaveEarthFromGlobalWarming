@@ -32,6 +32,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Tile stoneTile;
     [SerializeField] private Tile metalTile;
 
+    [SerializeField] private float clickerTimer = 10.0f;
+    private IEnumerator coroutine;
+    private Vector3Int clickerPosition;
 
     // for camera controls (temporary until after milestone 2, just for working sake)
     private Vector2 move;
@@ -40,6 +43,7 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
+        map.CompressBounds();
         playerInput = new PlayerInput();
         Cursor.visible = true;
         buildingList = new Dictionary<Vector3Int, BuildingTracker>();
@@ -59,6 +63,8 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         playerInput.Mouse.MouseClick.performed += _ => MouseClick();
+        coroutine = CreateClicker(clickerTimer);
+        StartCoroutine(coroutine);
     }
 
     private void Update()
@@ -66,8 +72,6 @@ public class PlayerManager : MonoBehaviour
         move = playerInput.Keyboard.Movement.ReadValue<Vector2>();
         Vector3 movement = new Vector3(move.x * cameraSpeed * Time.deltaTime, move.y * cameraSpeed * Time.deltaTime, 0f);
         mainCamera.transform.Translate(movement);
-
-        CreateResourceClicker();
     }
 
     /// <summary>
@@ -173,55 +177,57 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     private void CreateResourceClicker()
     {
-        int randomX = Random.Range(-3, 4);
-        int randomY = Random.Range(-3, 3);
+        // Get random position on tilemap.
+        var gridSize = map.size;
+        var randomPos = new Vector3Int(Random.Range(0, gridSize.x), Random.Range(0, gridSize.y), Random.Range(0, gridSize.z));
+        var randomTile = map.GetTile(randomPos);
 
-        // get random position on tilemap.
-        Vector3Int position = new Vector3Int(randomX, randomY, 0);
-
-        if(map.HasTile(position))
+        // Check if randomposition exists on existing tiles.
+        if (randomTile != null)
         {
-            // make sure a building doesn't exist on that tile.
-            if (buildingList.ContainsKey(position)) // if so, find another position.
+            // If building exists on tile, re-run our randomizer
+            if (buildingList.ContainsKey(randomPos))
             {
-                // Create new random position.
-                randomX = Random.Range(-3, 4);
-                randomY = Random.Range(-3, 3);
-
-                // get random position on tilemap.
-                position = new Vector3Int(randomX, randomY, 0);
+                CreateResourceClicker();
             }
-            else // if not, proceed.
+            else
             {
-                // random clicker tile
+                // Randomize which tile it becomes
+                // 0 - Wood     1 - Stone       2 - Metal
                 int random = Random.Range(0, 2);
 
-                // swap tile with resource clicker tile.
-                // 0 = Wood, 1 = Stone, 2 = Metal
                 switch (random)
                 {
                     case 0:
-                        map.SwapTile(map.GetTile(position), woodTile);
-                        print("resource clicker created");
+                        map.SetTile(randomPos, woodTile);
                         break;
                     case 1:
-                        print("resource clicker created");
-                        map.SwapTile(map.GetTile(position), stoneTile);
+                        map.SetTile(randomPos, stoneTile);
                         break;
                     case 2:
-                        print("resource clicker created");
-                        map.SwapTile(map.GetTile(position), metalTile);
+                        map.SetTile(randomPos, metalTile);
                         break;
                     default:
                         break;
                 }
             }
 
-
-            // replace tile when completed.
-            map.SwapTile(map.GetTile(position), grassTile);
+            clickerPosition = randomPos;
         }
+        else // If tile doesn't exist on the map, find another random position.
+        {
+            CreateResourceClicker();
+        }
+    }
 
+    private IEnumerator CreateClicker(float timer)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(timer);
+            map.SetTile(clickerPosition, grassTile);
+            CreateResourceClicker();
+        }
     }
 
     /// <summary>
@@ -236,13 +242,13 @@ public class PlayerManager : MonoBehaviour
         var tile = map.GetTile(position);
         switch (tile.name)
         {
-            case "wood_clicker":
+            case "wood_tile":
                 // Add resources for wood when clicked.
                 break;
-            case "stone_clicker":
+            case "stone_tile":
                 // Add resources for stone when clicked.
                 break;
-            case "metal_clicker":
+            case "metal_tile":
                 // Add resources for metal when clicked.
                 break;
             default:
