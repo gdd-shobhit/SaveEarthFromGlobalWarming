@@ -20,9 +20,9 @@ public class ResourceManager : MonoBehaviour
 
     [SerializeField] private int amountOfClicks = 0;
     [SerializeField] private int currentFood = 800;
-    [SerializeField] private int currentWood = 700;
-    [SerializeField] private int currentStone = 500;
-    [SerializeField] private int currentMetal = 400;
+    public int currentWood = 700;
+    public int currentStone = 500;
+    public int currentMetal = 400;
     [SerializeField] private int currentGold = 500;
     public int foodOutput = 0;
     public int goldOutput = 0;
@@ -47,11 +47,7 @@ public class ResourceManager : MonoBehaviour
         {
             instance = this;
             baseProductionRate = 0;
-            foodTM.GetComponent<TextMeshProUGUI>().text = currentFood.ToString();
-            woodTM.GetComponent<TextMeshProUGUI>().text = currentWood.ToString();
-            stoneTM.GetComponent<TextMeshProUGUI>().text = currentStone.ToString();
-            metalTM.GetComponent<TextMeshProUGUI>().text = currentMetal.ToString();
-            goldTM.GetComponent<TextMeshProUGUI>().text = currentGold.ToString();
+            UpdateResources();
         }
         else
         {
@@ -179,7 +175,7 @@ public class ResourceManager : MonoBehaviour
         return false;
     }
 
-    private void UpdateResources()
+    public void UpdateResources()
     {
         foodTM.GetComponent<TextMeshProUGUI>().text = instance.currentFood.ToString();
         woodTM.GetComponent<TextMeshProUGUI>().text = instance.currentWood.ToString();

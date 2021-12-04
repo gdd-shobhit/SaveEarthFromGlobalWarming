@@ -194,8 +194,8 @@ public class PlayerManager : MonoBehaviour
             {
                 // Randomize which tile it becomes
                 // 0 - Wood     1 - Stone       2 - Metal
-                int random = Random.Range(0, 2);
-
+                int random = Random.Range(0, 3);
+                
                 switch (random)
                 {
                     case 0:
@@ -240,21 +240,25 @@ public class PlayerManager : MonoBehaviour
         // Create cookie clicker element on tiles - Durrell
         // check if tile has resource item on it.
         var tile = map.GetTile(position);
+        Debug.Log(tile);
         switch (tile.name)
         {
             case "wood_tile":
-                // Add resources for wood when clicked.
+                ResourceManager.instance.currentWood += 5;
                 break;
             case "stone_tile":
                 // Add resources for stone when clicked.
+                ResourceManager.instance.currentStone += 4;
                 break;
             case "metal_tile":
                 // Add resources for metal when clicked.
+                ResourceManager.instance.currentMetal += 3;
                 break;
             default:
                 print("Tile is not a clicker!");
                 break;
         }
+        ResourceManager.instance.UpdateResources();
     }
 
 }

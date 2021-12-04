@@ -1461,7 +1461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &275020168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4931,11 +4931,11 @@ MonoBehaviour:
   infoPanelMetal: {fileID: 255829271}
   infoPanelGold: {fileID: 232407672}
   amountOfClicks: 0
-  currentFood: 15000
-  currentWood: 15000
-  currentStone: 15000
-  currentMetal: 15000
-  currentGold: 11000
+  currentFood: 1500
+  currentWood: 1500
+  currentStone: 1500
+  currentMetal: 1500
+  currentGold: 1100
   foodOutput: 0
   goldOutput: 0
   foodTM: {fileID: 1737542520}
@@ -8018,7 +8018,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Days Survided: 0'
+  m_Text: 'Days Survived: 0'
 --- !u!222 &1894882268
 CanvasRenderer:
   m_ObjectHideFlags: 0
