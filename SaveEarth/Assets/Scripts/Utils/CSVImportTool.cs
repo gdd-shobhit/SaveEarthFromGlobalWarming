@@ -137,6 +137,7 @@ public class CSVImportTool : MonoBehaviour
 "2,building_factory,800,400,300,500,250,1600,900,800,900,700,3500,1500,1400,1200,700\n" +
 "3,building_filterationplant,400,300,200,100,500,1000,800,700,350,1500,2500,1600,1200,750,1500\n" +
 "4,building_house,150,100,50,50,50,250,250,100,100,150,400,400,300,250,150";
+
         progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
 
         foreach (CostProgression cprog in progressionList.costProgs)
