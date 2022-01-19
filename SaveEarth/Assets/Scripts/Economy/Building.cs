@@ -36,12 +36,12 @@ public class Building : MonoBehaviour
     /// <summary>
     /// Level Up the Building if the required resources are met
     /// </summary>
-    public virtual void LevelUp()
+    public virtual void LevelUp(int incomingLevel)
     {
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
         // check if resources are enough to level up
-        if (ResourceManager.instance.CheckRequirements(DID,level+1) && level < 4)
+        if (ResourceManager.instance.CheckRequirements(DID,incomingLevel) && incomingLevel < 4)
         {
             level++;
             pollutionOutput = polProg[level];

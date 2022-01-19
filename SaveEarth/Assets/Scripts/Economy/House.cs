@@ -27,9 +27,9 @@ public class House : Building
         population = (int)(population * decayConstant);
     }
 
-    public override void LevelUp()
+    public override void LevelUp(int incomingLevel)
     {
-        base.LevelUp();
+        base.LevelUp(incomingLevel);
         IncreasePopulations();
     }
 }

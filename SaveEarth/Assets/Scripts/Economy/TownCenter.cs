@@ -19,13 +19,13 @@ public class TownCenter : Building
     /// <summary>
     /// Level Ups the the town center by 1
     /// </summary>
-    public override void LevelUp()
+    public override void LevelUp(int incomingLevel)
     {
         // if requirements are met
         // Requirements - Food, Wood, Metal, Stone, Population, Factories number,
         // Farm Number, Filteration Plant Numbers and their levels
         ResourceManager.instance.baseProductionRate += 10;
-        base.LevelUp();
+        base.LevelUp(incomingLevel);
     }
 
 
