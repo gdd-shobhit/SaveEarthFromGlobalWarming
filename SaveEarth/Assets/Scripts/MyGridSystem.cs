@@ -6,23 +6,31 @@ using System;
 
 public class MyGridSystem : MonoBehaviour
 {
+    public enum Resources
+    {
+        None,
+        Wood,
+        Stone,
+        Metal
+    }
+
     [SerializeField]
     private GameObject testBuilding;
     private Grid myGrid;
     public Vector3 cellSize;
     public GameObject gridLines;
     public List<GridObject> gridObjects;
-    private int[,] gridSize;
+    private Vector2 gridSize;
     private void Awake()
     {
         myGrid = GetComponent<Grid>();
         gridObjects = new List<GridObject>();
         cellSize = myGrid.cellSize;
-        gridSize = new int[10, 10];
+        gridSize = new Vector2(10, 10);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < gridSize.x; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < gridSize.y; j++)
             {
                 Vector3 worldLocation = myGrid.GetCellCenterWorld(new Vector3Int(i * (int)cellSize.x, j * (int)cellSize.y, 0));
                 GridObject toAddInList = new GridObject(Instantiate(gridLines, worldLocation, Quaternion.identity), myGrid);
@@ -40,6 +48,7 @@ public class MyGridSystem : MonoBehaviour
         GameObject visualObject;
         public GameObject buildingObject;
         public Vector3 worldLocation;
+        public Resources TileType;
         // assuming the everything is empty
         public bool canBuild;
         Grid grid;
