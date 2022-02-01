@@ -46,7 +46,7 @@ public class CSVImportTool : EditorWindow
         EditorGUILayout.EndToggleGroup();
 
         // Resources Map Vector changes
-        resourcesMapBool = EditorGUILayout.BeginToggleGroup("Generate Resource Map", groupEnabled);
+        resourcesMapBool = EditorGUILayout.BeginToggleGroup("Generate Resource Map", resourcesMapBool);
         woodBool = EditorGUILayout.Toggle("Wood Map Changed", woodBool);
         stoneBool = EditorGUILayout.Toggle("Stone Map Changed", stoneBool);
         metalBool = EditorGUILayout.Toggle("Metal Map Changed", metalBool);
