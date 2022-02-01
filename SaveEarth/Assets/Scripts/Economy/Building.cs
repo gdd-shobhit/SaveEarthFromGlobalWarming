@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
     public string pollution;
     public string cost;
 
+    public ScriptableObject buildingData;
 
     public int level;
     public int pollutionOutput;
