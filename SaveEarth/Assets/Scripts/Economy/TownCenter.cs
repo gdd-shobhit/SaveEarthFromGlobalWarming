@@ -25,6 +25,7 @@ public class TownCenter : Building
         // Requirements - Food, Wood, Metal, Stone, Population, Factories number,
         // Farm Number, Filteration Plant Numbers and their levels
         ResourceManager.instance.baseProductionRate += 10;
+        
         base.LevelUp();
     }
 

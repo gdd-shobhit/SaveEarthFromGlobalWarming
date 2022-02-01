@@ -36,7 +36,7 @@ public class ResourceManager : MonoBehaviour
 
 
     // production per min
-    [SerializeField] public int baseProductionRate;
+    public int baseProductionRate;
 
     public static ResourceManager instance;
 

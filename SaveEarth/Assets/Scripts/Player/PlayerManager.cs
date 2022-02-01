@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 
 public class PlayerManager : MonoBehaviour
@@ -13,7 +14,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject tempBuildingObj;
 
     private PlayerInput playerInput;
-    public TileBase selectedBuilding;
+    public GameObject resourcesRequiredPanel; 
     private Vector3Int highlightedPosition;
     private bool canBuild = true;
     public string buildingToBeBuild = "";
@@ -88,23 +89,65 @@ public class PlayerManager : MonoBehaviour
         {
             print($"Grid Position: {gridPosition}");
 
-
             //Put tile selection code here.
+            //Deprecated Code for highlighting
+            //highlight.ClearAllTiles();
+            //highlight.SetTile(gridPosition, highlightTile);
             
-            highlight.ClearAllTiles();
-            highlight.SetTile(gridPosition, highlightTile);
-
+            // Highlighting Tile with Light 2D - Shobhit Dhamania
+            Transform something = GameObject.FindGameObjectWithTag("SelectionLight").transform;
+            something.position = grid.GetCellCenterWorld(gridPosition);
+            StopAllCoroutines();
+            StartCoroutine(Fade(something.gameObject));
+            //GameObject.FindGameObjectWithTag("SelectionLight").transform.position = new Vector3(tx,ty,0);
             // Place Building at Selected Tile
             // canBuild necessary so that we dont make copies - Shobhit
-            canBuild = !buildings.HasTile(gridPosition) && highlight.HasTile(gridPosition) ? true : false;
+            canBuild = !buildings.HasTile(gridPosition)? true : false;
             if (canBuild)
                 highlightedPosition = gridPosition;
+            else
+            {
+                //check for what building
+                Building selectedBuilding = buildingList[gridPosition].GameObj.GetComponent<Building>();
+
+                selectedBuilding.LevelUp();
+                // get its information 
+                // check if can upgrade - probably make a method
+                // display the upgrade UI somehow
+                // change the level and output rates according to the level
+                // play some Particle System
+            }
 
             ResourceClicker(gridPosition);
 
         }
     }
 
+
+    // Coroutine for selection of Tile 
+    IEnumerator Fade(GameObject gameObject)
+    {
+        Light2D lt = gameObject.GetComponent<Light2D>();
+        float c = lt.intensity;
+        for (float alpha = 0.44f; alpha >= 0; alpha -= 0.03f)
+        {
+            Debug.Log("here");
+            c = alpha;
+            lt.intensity = c;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        for (float alpha = 0f; alpha <= 0.44; alpha += 0.03f)
+        {
+            Debug.Log("here");
+            c = alpha;
+            lt.intensity = c;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        StartCoroutine(Fade(gameObject));
+
+    }
 
     public void SelectBuilding(GameObject building)
     {
