@@ -20,6 +20,8 @@ public class MyGridSystem : MonoBehaviour
         cellSize = myGrid.cellSize;
         gridSize = new int[10, 10];
 
+        // Drawing the tiles for better visuability - Will eventually add Empty meshes for collision but no visual reference
+        // so terrain can be visible and will only serve as visual
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -53,7 +55,7 @@ public class MyGridSystem : MonoBehaviour
 
         private void OnDrawGizmos()
         {
-            Handles.Label(worldLocation, visualObject.name, GUIStyle.none);
+            Handles.Label(worldLocation, "("+worldLocation.x+","+worldLocation.y+")", GUIStyle.none);
         }
 
     }
