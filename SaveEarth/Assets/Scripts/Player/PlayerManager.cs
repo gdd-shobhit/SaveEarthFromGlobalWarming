@@ -110,7 +110,7 @@ public class PlayerManager : MonoBehaviour
                 //check for what building
                 Building selectedBuilding = buildingList[gridPosition].GameObj.GetComponent<Building>();
 
-                selectedBuilding.LevelUp(selectedBuilding.level + 1);
+                selectedBuilding.LevelUp();
                 // get its information 
                 // check if can upgrade - probably make a method
                 // display the upgrade UI somehow

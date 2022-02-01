@@ -164,19 +164,6 @@ public class CSVImportTool : EditorWindow
         //"3,building_filterationplant,400,300,200,100,500,1000,800,700,350,1500,2500,1600,1200,750,1500\n" +
         //"4,building_house,150,100,50,50,50,250,250,100,100,150,400,400,300,250,150";
 
-<<<<<<< Updated upstream
-        textData = "ID,DID,food_1,wood_1,stone_1,metal_1,gold_1,food_2,wood_2,stone_2,metal_2,gold_2,food_3,wood_3,stone_3,metal_3,gold_3\n" +
-"0,building_towncenter,0,200,200,300,0,1500,1800,800,700,500,3500,3800,2800,1800,1400\n" +
-"1,building_farm,200,100,300,100,0,500,250,100,75,100,1000,500,200,100,200\n" +
-"2,building_factory,800,400,300,500,250,1600,900,800,900,700,3500,1500,1400,1200,700\n" +
-"3,building_filterationplant,400,300,200,100,500,1000,800,700,350,1500,2500,1600,1200,750,1500\n" +
-"4,building_house,150,100,50,50,50,250,250,100,100,150,400,400,300,250,150";
-<<<<<<< Updated upstream
-=======
-
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
         progressionList.costProgs = CSVParser.Deserialize<CostProgression>(textData).ToList();
 
         foreach (CostProgression cprog in progressionList.costProgs)
