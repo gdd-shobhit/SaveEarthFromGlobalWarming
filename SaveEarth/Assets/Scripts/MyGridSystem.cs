@@ -28,6 +28,7 @@ public class MyGridSystem : MonoBehaviour
         cellSize = myGrid.cellSize;
         gridSize = new Vector2(10, 10);
 
+
         for (int i = 0; i < gridSize.x; i++)
         {
             for (int j = 0; j < gridSize.y; j++)
@@ -62,7 +63,7 @@ public class MyGridSystem : MonoBehaviour
 
         private void OnDrawGizmos()
         {
-            Handles.Label(worldLocation, visualObject.name, GUIStyle.none);
+            Handles.Label(worldLocation, "("+worldLocation.x+","+worldLocation.y+")", GUIStyle.none);
         }
 
     }
