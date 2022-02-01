@@ -6,7 +6,6 @@ using UnityEditor;
 
 public class CSVImportTool : EditorWindow
 {
-    string myString = "Hello World";
     bool groupEnabled;
     bool dataIdData = true;
     bool buildingData = true;
@@ -14,6 +13,12 @@ public class CSVImportTool : EditorWindow
     bool pollutionData = true;
     bool costBool = true;
     bool pollutionBool = true;
+
+    // for resources
+    bool resourcesMapBool;
+    bool woodBool = true;
+    bool metalBool = true;
+    bool stoneBool = true;
     static public DataIDList dataIDs = new DataIDList();
     static public BuildingList buildingList = new BuildingList();
     static public ProgressionsList progressionList = new ProgressionsList();
@@ -38,6 +43,13 @@ public class CSVImportTool : EditorWindow
         groupEnabled = EditorGUILayout.BeginToggleGroup("Generate JSON", groupEnabled);
         costBool = EditorGUILayout.Toggle("Cost", costBool);
         pollutionBool = EditorGUILayout.Toggle("Pollution", pollutionBool);
+        EditorGUILayout.EndToggleGroup();
+
+        // Resources Map Vector changes
+        resourcesMapBool = EditorGUILayout.BeginToggleGroup("Generate Resource Map", groupEnabled);
+        woodBool = EditorGUILayout.Toggle("Wood Map Changed", woodBool);
+        stoneBool = EditorGUILayout.Toggle("Stone Map Changed", stoneBool);
+        metalBool = EditorGUILayout.Toggle("Metal Map Changed", metalBool);
         EditorGUILayout.EndToggleGroup();
 
         if (GUILayout.Button("Import"))
@@ -91,22 +103,66 @@ public class CSVImportTool : EditorWindow
             }
 
 
+            // Resource mapping through list of vectors transfered to SOs
+            if (resourcesMapBool)
+            {
+                ResourceSO[] resourceSO = Resources.FindObjectsOfTypeAll<ResourceSO>();
+
+                // Filters out the script and keeps the actual SOs
+                List<ResourceSO> filteredResources = resourceSO.Where(x => x.name != "").ToList();
+
+                foreach (DataID did in dataIDs.dataList)
+                {
+                    for (int i = 0; i < filteredResources.Count; i++)
+                    {
+                        //Debug.Log(did.name + "   " + filteredSOs[0].name);
+                        if (did.name == filteredResources[i].name.ToLower())
+                        {
+                            filteredResources[i].dataId = did;
+                            if (woodBool)
+                            {
+                                // filteredResources[i].positionOnMap = some list from csv importer tool                   
+                            }
+
+                            if (stoneBool)
+                            {
+
+                            }
+                            // filteredResources[i].positionOnMap = some list from csv importer tool   
+
+                            if (metalBool)
+                            {
+
+                            }
+                            // filteredResources[i].positionOnMap = some list from csv importer tool   
+                        }
+                    }
+                }
+
+            }
+
+
             // Finding SOs with BuildingSO - will include the actual script too
             BuildingSO[] foundSOs = Resources.FindObjectsOfTypeAll<BuildingSO>();
 
             // Filters out the script and keeps the actual SOs
             List<BuildingSO> filteredSOs = foundSOs.Where(x => x.name != "").ToList();
 
-            foreach(DataID did in dataIDs.dataList)
+            foreach (DataID did in dataIDs.dataList)
             {
-                for(int i=0; i<filteredSOs.Count;i++)
+                for (int i = 0; i < filteredSOs.Count; i++)
                 {
                     //Debug.Log(did.name + "   " + filteredSOs[0].name);
-                    if(did.name == filteredSOs[i].name.ToLower())
-                    {        
-                        filteredSOs[i].dataId = did;
-                        filteredSOs[i].costProg = progressionList.costProgs.Where(x => x.actualDID == did).ToList()[0];
-                        filteredSOs[i].pollutionProg = progressionList.polProgs.Where(x => x.actualDID == did).ToList()[0];
+                    if (did.name == filteredSOs[i].name.ToLower())
+                    {
+                        if (dataIdData)
+                            filteredSOs[i].dataId = did;
+
+                        if (costData)
+                            filteredSOs[i].costProg = progressionList.costProgs.Where(x => x.actualDID == did).ToList()[0];
+
+                        if (pollutionData)
+                            filteredSOs[i].pollutionProg = progressionList.polProgs.Where(x => x.actualDID == did).ToList()[0];
                     }
                 }
             }
@@ -120,7 +176,7 @@ public class CSVImportTool : EditorWindow
     {
         List<string> dataPaths = new List<string>();
         string textData;
-   
+
         textData = File.ReadAllText(Directory.GetCurrentDirectory() + "\\Assets\\Resources\\StaticData\\CSV\\DataId.csv");
 
         // Use this for this build - Need to figure our how to include Excel files into the build / Resources folder
