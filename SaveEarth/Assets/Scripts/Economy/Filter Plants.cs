@@ -10,9 +10,10 @@ public class FilterPlants : Building
 {
    public FilterPlants()
     {
-        DID = GameManager.instance.dataIDList.FindDataID("filterationplant");
-        polProg = GameManager.instance.polProg[3].progression[DID];
-        pollutionOutput = polProg[1];
+        buildingData = GameManager.instance.buildingSOs[2];
+        level = 1;
+        DID = buildingData.dataId;
+        pollutionOutput = buildingData.pollutionProg.levelProg[1];
         UpdatePollution();
     }
 }

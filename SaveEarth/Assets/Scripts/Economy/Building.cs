@@ -7,23 +7,18 @@ using UnityEngine;
 /// </summary>
 public class Building : MonoBehaviour
 {
-    public int id;
-    public string didName;
-    public string buildingName;
-    public string pollution;
-    public string cost;
 
-    public ScriptableObject buildingData;
+    // needs to be deprecated - It will only hold its SO in ht end
+    public BuildingSO buildingData;
 
     public int level;
     public int pollutionOutput;
-    public Dictionary<DataID, Dictionary<int, int>> costProg;
-    public List<int> polProg = new List<int>();
     public DataID DID = new DataID();
 
     public Building()
     {
-        level = 1;    
+        level = 1;
+        pollutionOutput = 0;
     }
 
     /// <summary>
@@ -31,7 +26,7 @@ public class Building : MonoBehaviour
     /// </summary>
     public void UpdatePollution()
     {
-        GameManager.instance.pollutionValue += pollutionOutput;
+        GameManager.instance.pollutionValue = pollutionOutput;
     }
 
     /// <summary>
@@ -39,28 +34,21 @@ public class Building : MonoBehaviour
     /// </summary>
     public virtual void LevelUp()
     {
+        level++;
+        pollutionOutput = buildingData.pollutionProg.levelProg[level];
+        UpdatePollution();
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
         // check if resources are enough to level up
-        if (ResourceManager.instance.CheckRequirements(DID,level+1) && level < 4)
-        {
-            level++;
-            pollutionOutput = polProg[level];
-            UpdatePollution();
-        }
+        //if (ResourceManager.instance.CheckRequirements(DID,level+1) && level < 4)
+        //{
+        //    level++;
+        //    pollutionOutput = buildingData.pollutionProg.progressionByLevel[level];
+        //    UpdatePollution();
+        //}
     }
 
-    /// <summary>
-    /// Calculates the building's cost and pollution progs
-    /// </summary>
-    public virtual void CalculateProg()
-    {
-        
-    }
-}
+ 
 
-[System.Serializable]
-public class BuildingList
-{
-    public List<Building> buildingList;
+   
 }

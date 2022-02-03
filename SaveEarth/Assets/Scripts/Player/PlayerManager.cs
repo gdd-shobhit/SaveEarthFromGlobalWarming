@@ -5,6 +5,9 @@ using UnityEngine.Tilemaps;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 
+/// <summary>
+/// A lot of it will get deprecated due to shifting to 3D
+/// </summary>
 public class PlayerManager : MonoBehaviour
 {
 
@@ -117,8 +120,6 @@ public class PlayerManager : MonoBehaviour
                 // change the level and output rates according to the level
                 // play some Particle System
             }
-
-            ResourceClicker(gridPosition);
 
         }
     }
@@ -271,37 +272,6 @@ public class PlayerManager : MonoBehaviour
             map.SetTile(clickerPosition, grassTile);
             CreateResourceClicker();
         }
-    }
-
-    /// <summary>
-    /// Checks if tile is a resource clicker or not.
-    /// -- Durrell
-    /// </summary>
-    /// <param name="position"></param>
-    private void ResourceClicker(Vector3Int position)
-    {
-        // Create cookie clicker element on tiles - Durrell
-        // check if tile has resource item on it.
-        var tile = map.GetTile(position);
-        Debug.Log(tile);
-        switch (tile.name)
-        {
-            case "wood_tile":
-                ResourceManager.instance.currentWood += 5;
-                break;
-            case "stone_tile":
-                // Add resources for stone when clicked.
-                ResourceManager.instance.currentStone += 4;
-                break;
-            case "metal_tile":
-                // Add resources for metal when clicked.
-                ResourceManager.instance.currentMetal += 3;
-                break;
-            default:
-                print("Tile is not a clicker!");
-                break;
-        }
-        ResourceManager.instance.UpdateResources();
     }
 
 }

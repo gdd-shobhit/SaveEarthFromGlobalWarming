@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public DataIDList dataIDList;
     public List<CostProgression> costProg;
     public List<PollutionProgression> polProg;
+    public List<BuildingSO> buildingSOs;
+    public List<ResourceSO> resourceSOs;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
     {
         // Deals with Time
         UpdateTime();
-        pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
+        //pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
     }
 
     /// <summary>
