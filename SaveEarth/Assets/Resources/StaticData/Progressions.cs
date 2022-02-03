@@ -97,18 +97,27 @@ public class PollutionProgression
 
     public DataID actualDID = new DataID();
     public Dictionary<DataID, List<int>> progression = new Dictionary<DataID, List<int>>();
-
+    public Dictionary<int,int> progressionByLevel = new Dictionary<int,int>();
+    public List<int> levelProg = new List<int>();
     public void HandleProgression()
     {
         actualDID = CSVImportTool.dataIDs.FindDataID(DID.Split('_')[1]);
-        List<int> levelProg = new List<int>();
+        
         // adding 0 to get 0 index as 0 for convenience purposes
         levelProg.Add(0);
         levelProg.Add(PO_1);
         levelProg.Add(PO_2);
         levelProg.Add(PO_3);
         levelProg.Add(PO_4);
-        progression.Add(actualDID, levelProg);
+
+        //progressionByLevel.Add(0, 0);
+        //progressionByLevel.Add(1, PO_1);
+        //progressionByLevel.Add(2, PO_2);
+        //progressionByLevel.Add(3, PO_3);
+        //progressionByLevel.Add(4, PO_4);
+
+        //Debug.Log(progressionByLevel[1]);
+        //progression.Add(actualDID, levelProg);
     }
 
 }

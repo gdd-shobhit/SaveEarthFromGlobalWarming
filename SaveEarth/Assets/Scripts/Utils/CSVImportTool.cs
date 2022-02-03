@@ -20,7 +20,6 @@ public class CSVImportTool : EditorWindow
     bool metalBool = true;
     bool stoneBool = true;
     static public DataIDList dataIDs = new DataIDList();
-    static public BuildingList buildingList = new BuildingList();
     static public ProgressionsList progressionList = new ProgressionsList();
 
     [MenuItem("Tools/CSV Importer")]
@@ -46,7 +45,7 @@ public class CSVImportTool : EditorWindow
         EditorGUILayout.EndToggleGroup();
 
         // Resources Map Vector changes
-        resourcesMapBool = EditorGUILayout.BeginToggleGroup("Generate Resource Map", groupEnabled);
+        resourcesMapBool = EditorGUILayout.BeginToggleGroup("Generate Resource Map", resourcesMapBool);
         woodBool = EditorGUILayout.Toggle("Wood Map Changed", woodBool);
         stoneBool = EditorGUILayout.Toggle("Stone Map Changed", stoneBool);
         metalBool = EditorGUILayout.Toggle("Metal Map Changed", metalBool);
@@ -148,6 +147,7 @@ public class CSVImportTool : EditorWindow
             // Filters out the script and keeps the actual SOs
             List<BuildingSO> filteredSOs = foundSOs.Where(x => x.name != "").ToList();
 
+            // Populates the SOs when clicked on import
             foreach (DataID did in dataIDs.dataList)
             {
                 for (int i = 0; i < filteredSOs.Count; i++)

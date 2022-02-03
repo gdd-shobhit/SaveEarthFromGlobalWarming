@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// Will keep track of resources
@@ -17,23 +18,17 @@ public class ResourceManager : MonoBehaviour
     public GameObject infoPanelStone;
     public GameObject infoPanelMetal;
     public GameObject infoPanelGold;
+    public Slider foodSlider;
+    public Slider woodSlider;
+    public Slider stoneSlider;
+    public Slider metalSlider;
+    public Slider goldSlider;
+    public ResourceStorageSO resourceStorageSO;
 
     [SerializeField] private int amountOfClicks = 0;
-    [SerializeField] private int currentFood = 800;
-    public int currentWood = 700;
-    public int currentStone = 500;
-    public int currentMetal = 400;
     [SerializeField] private int currentGold = 500;
     public int foodOutput = 0;
     public int goldOutput = 0;
-
-
-    public GameObject foodTM;
-    public GameObject woodTM;
-    public GameObject stoneTM;
-    public GameObject metalTM;
-    public GameObject goldTM;
-
 
     // production per min
     public int baseProductionRate;
@@ -47,6 +42,11 @@ public class ResourceManager : MonoBehaviour
         {
             instance = this;
             baseProductionRate = 0;
+            foodSlider.maxValue = resourceStorageSO.foodStorage;
+            woodSlider.maxValue = resourceStorageSO.woodStorage;
+            stoneSlider.maxValue = resourceStorageSO.stoneStorage;
+            metalSlider.maxValue = resourceStorageSO.metalStorage;
+            goldSlider.maxValue = resourceStorageSO.goldStorage;
             UpdateResources();
         }
         else
@@ -151,15 +151,15 @@ public class ResourceManager : MonoBehaviour
 
 
 
-                if (instance.currentFood >= foodLevelProg[levelToBe] && instance.currentWood >= woodLevelProg[levelToBe]
-                    && instance.currentStone >= stoneLevelProg[levelToBe] && instance.currentMetal >= metalLevelProg[levelToBe] && instance.currentGold >= goldLevelProg[levelToBe])
+                if (resourceStorageSO.food >= foodLevelProg[levelToBe] && resourceStorageSO.wood >= woodLevelProg[levelToBe]
+                    && resourceStorageSO.stone >= stoneLevelProg[levelToBe] && resourceStorageSO.metal >= metalLevelProg[levelToBe] && resourceStorageSO.gold >= goldLevelProg[levelToBe])
                 {
-                    
-                    instance.currentFood -= foodLevelProg[levelToBe];
-                    instance.currentWood -= woodLevelProg[levelToBe];
-                    instance.currentStone -= stoneLevelProg[levelToBe];
-                    instance.currentMetal -= metalLevelProg[levelToBe];
-                    instance.currentGold -= goldLevelProg[levelToBe];
+
+                    resourceStorageSO.food -= foodLevelProg[levelToBe];
+                    resourceStorageSO.wood -= woodLevelProg[levelToBe];
+                    resourceStorageSO.stone -= stoneLevelProg[levelToBe];
+                    resourceStorageSO.metal -= metalLevelProg[levelToBe];
+                    resourceStorageSO.gold -= goldLevelProg[levelToBe];
                     UpdateResources();
                     return true;
                 }
@@ -177,32 +177,11 @@ public class ResourceManager : MonoBehaviour
 
     public void UpdateResources()
     {
-        foodTM.GetComponent<TextMeshProUGUI>().text = instance.currentFood.ToString();
-        woodTM.GetComponent<TextMeshProUGUI>().text = instance.currentWood.ToString();
-        stoneTM.GetComponent<TextMeshProUGUI>().text = instance.currentStone.ToString();
-        metalTM.GetComponent<TextMeshProUGUI>().text = instance.currentMetal.ToString();
-        goldTM.GetComponent<TextMeshProUGUI>().text = instance.currentGold.ToString();
-    }
-
-    public void WoodClicker()
-    {
-        amountOfClicks++;
-        instance.currentWood += 5;
-        woodTM.GetComponent<TextMeshProUGUI>().text = instance.currentWood.ToString();
-    }
-
-    public void StoneClicker()
-    {
-        amountOfClicks++;
-        instance.currentStone += 4;
-        stoneTM.GetComponent<TextMeshProUGUI>().text = instance.currentStone.ToString();
-    }
-
-    public void MetalClicker()
-    {
-        amountOfClicks++;
-        instance.currentMetal += 3;
-        metalTM.GetComponent<TextMeshProUGUI>().text = instance.currentMetal.ToString();
+        foodSlider.value = resourceStorageSO.food;
+        woodSlider.value = resourceStorageSO.wood;
+        stoneSlider.value = resourceStorageSO.stone;
+        metalSlider.value = resourceStorageSO.metal;
+        goldSlider.value = resourceStorageSO.gold;
     }
 
     /// <summary>
@@ -210,14 +189,29 @@ public class ResourceManager : MonoBehaviour
     /// </summary>
     public void HandleResourcesOutput()
     {
-        instance.currentFood += (foodOutput + baseProductionRate);
-        instance.currentWood += baseProductionRate/2;
-        instance.currentStone += baseProductionRate/3;
-        instance.currentMetal += baseProductionRate/4;
-        instance.currentGold += goldOutput;
+        resourceStorageSO.food += (foodOutput + baseProductionRate);
+        //instance.currentWood += baseProductionRate/2;
+        //instance.currentStone += baseProductionRate/3;
+        //instance.currentMetal += baseProductionRate/4;
+        resourceStorageSO.gold += goldOutput;
         UpdateResources();
     }
 
-   
+    /// <summary>
+    /// WORKS!
+    /// </summary>
+    public void IncreaseFoodTest()
+    {
+
+        foodSlider.value+=5000;
+        foodSlider.GetComponentInChildren<TextMeshProUGUI>().text = foodSlider.value.ToString();
+
+        //while(foodSlider.value < foodSlider.value + 5000)
+        //{
+        //    foodSlider.value++;
+        //    foodSlider.GetComponentInChildren<TextMeshProUGUI>().text = foodSlider.ToString();
+        //}
+    }
+
 
 }

@@ -13,5 +13,5 @@ public class BuildingSO : ScriptableObject
     // in seconds
     public int timeToBuild = 30;
 
-    public int level = 1;
+    public int maxLevel = 10;
 }

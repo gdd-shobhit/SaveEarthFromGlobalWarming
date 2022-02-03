@@ -10,11 +10,12 @@ public class Farm : Building
     /// </summary>
     public Farm()
     {
-        DID = GameManager.instance.dataIDList.FindDataID("farm");
-        polProg = GameManager.instance.polProg[1].progression[DID];
-        pollutionOutput = polProg[1];
-        foodOutput = 25;
-        ResourceManager.instance.foodOutput += foodOutput;
+        buildingData = GameManager.instance.buildingSOs[3];
+        level = 1;
+        DID = buildingData.dataId;
+        pollutionOutput = buildingData.pollutionProg.levelProg[1];
+
+        //ResourceManager.instance.foodOutput += foodOutput;
         UpdatePollution();
     }
 

@@ -15,9 +15,10 @@ public class House : Building
     public House()
     {
         this.population = 20;
-        DID = GameManager.instance.dataIDList.FindDataID("house");
-        polProg = GameManager.instance.polProg[4].progression[DID];
-        pollutionOutput = polProg[1];
+        buildingData = GameManager.instance.buildingSOs[4];
+        level = 1;
+        DID = buildingData.dataId;
+        pollutionOutput = buildingData.pollutionProg.levelProg[1];
         UpdatePollution();
     }
 

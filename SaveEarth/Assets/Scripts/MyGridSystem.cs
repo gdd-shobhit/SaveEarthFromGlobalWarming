@@ -40,6 +40,19 @@ public class MyGridSystem : MonoBehaviour
         }
     }
 
+    public GridObject GetGridObject(float x, float z)
+    {
+        foreach(GridObject gridObject in gridObjects)
+        {
+            if(gridObject.worldLocation.x == x && gridObject.worldLocation.z == z)
+            {
+                return gridObject;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// An Object that will contain information like position, value, type etc
     /// </summary>
@@ -48,6 +61,7 @@ public class MyGridSystem : MonoBehaviour
         // just for visual reference, can be ommitted into transparent meshes for invisible grid of gridobjects
         GameObject visualObject;
         public GameObject buildingObject;
+        public BuildingSO buildingSO;
         public Vector3 worldLocation;
         public Resources TileType;
         // assuming the everything is empty
@@ -61,11 +75,6 @@ public class MyGridSystem : MonoBehaviour
             canBuild = true;
         }
 
-        private void OnDrawGizmos()
-        {
-            Handles.Label(worldLocation, "("+worldLocation.x+","+worldLocation.y+")", GUIStyle.none);
-        }
-
     }
 
     private void Update()
@@ -76,25 +85,22 @@ public class MyGridSystem : MonoBehaviour
             Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
 
             Debug.Log(positionToBePlaced);
-            foreach (GridObject gridObject in gridObjects)
+            GridObject gridObject = GetGridObject(positionToBePlaced.x, positionToBePlaced.z);
+            if (gridObject != null && gridObject.canBuild)
             {
-                GameObject instantiatedBuilding;
-                if (gridObject.worldLocation.x == positionToBePlaced.x && gridObject.worldLocation.z == positionToBePlaced.z)
-                {
-                    if(gridObject.canBuild)
-                    {
-                        instantiatedBuilding = Instantiate(testBuilding, positionToBePlaced, Quaternion.identity);
-                        gridObject.canBuild = false;
-                        gridObject.buildingObject = instantiatedBuilding;
-                        // go into Coroutine to Show Selection Mode - there is a 'Building' there
-                        return;
-                    }
-                    else
-                    {
-                        StartCoroutine(SelectionOfBuilding(gridObject));
-                    }                 
-                }
-            }       
+                gridObject.buildingObject = Instantiate(testBuilding, positionToBePlaced, Quaternion.identity);
+                gridObject.canBuild = false;
+                Debug.Log(gridObject);
+                gridObject.buildingObject.AddComponent<Factory>();
+              
+            }
+            else
+            {
+                StartCoroutine(SelectionOfBuilding(gridObject));
+                // for testing purposes
+                gridObject.buildingObject.GetComponent<Building>().LevelUp();
+            }                 
+                   
         }
     }
 
