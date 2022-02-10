@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public List<PollutionProgression> polProg;
     public List<BuildingSO> buildingSOs;
     public List<ResourceSO> resourceSOs;
+    public Transform lightTransform;
+    private float dayChangingSpeed = 1f;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateTime()
     {
+        lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
         time += Time.deltaTime * timeMultiplier;
 
         if (time > 120.0f)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366756, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1427,6 +1427,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b56a326c7b0caec45a52b9555ae391d6, type: 2}
   - {fileID: 11400000, guid: 1df8b5a4f7770084698a8ffdf9cc61e7, type: 2}
   resourceSOs: []
+  lightTransform: {fileID: 1681393287}
   time: 0
   healthLess80: 0
   healthLess60: 0
@@ -2198,8 +2199,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testBuilding: {fileID: 92260907152039988, guid: d2b2f3f55b5d8a245a302b870f33ad4f, type: 3}
+  ghost: {fileID: 0}
   cellSize: {x: 0, y: 0, z: 0}
   gridLines: {fileID: 5904334990741480239, guid: 5753d2ddedf06db47847db1b05ee728f, type: 3}
+  currentMode: 0
+  buildingPS: {fileID: 1551494778287644, guid: 63206a6b58e89d74483b27ded7f2e41c, type: 3}
 --- !u!156049354 &1648063441
 Grid:
   m_ObjectHideFlags: 0
@@ -2313,13 +2317,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681393285}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
 --- !u!1 &1804332510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,7 +2397,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.5415094, g: 0.71981126, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
