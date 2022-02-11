@@ -14,20 +14,35 @@ public class MyGridSystem : MonoBehaviour
         Metal
     }
 
+    public enum Mode
+    {
+        Brush,
+        Selection
+    }
+
     [SerializeField]
     private GameObject testBuilding;
+    public GameObject ghost;
     private Grid myGrid;
     public Vector3 cellSize;
     public GameObject gridLines;
     public List<GridObject> gridObjects;
     private Vector2 gridSize;
+    public static MyGridSystem instance;
+    public Mode currentMode;
+    public GameObject buildingPS;
+
+
     private void Awake()
     {
+        currentMode = Mode.Selection;
         myGrid = GetComponent<Grid>();
         gridObjects = new List<GridObject>();
         cellSize = myGrid.cellSize;
-        gridSize = new Vector2(10, 10);
-
+        gridSize = new Vector2(30, 30);
+        ghost = Instantiate(testBuilding);
+        ghost.SetActive(false);
+        //ghost.AddComponent<GhostBuilding>();
 
         for (int i = 0; i < gridSize.x; i++)
         {
@@ -38,13 +53,23 @@ public class MyGridSystem : MonoBehaviour
                 gridObjects.Add(toAddInList);
             }
         }
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(instance);
+        }
     }
+
+
 
     public GridObject GetGridObject(float x, float z)
     {
-        foreach(GridObject gridObject in gridObjects)
+        foreach (GridObject gridObject in gridObjects)
         {
-            if(gridObject.worldLocation.x == x && gridObject.worldLocation.z == z)
+            if (gridObject.worldLocation.x == x && gridObject.worldLocation.z == z)
             {
                 return gridObject;
             }
@@ -63,6 +88,8 @@ public class MyGridSystem : MonoBehaviour
         public GameObject buildingObject;
         public BuildingSO buildingSO;
         public Vector3 worldLocation;
+        // for bigger buildings
+        public List<Vector3> allWorldLocation;
         public Resources TileType;
         // assuming the everything is empty
         public bool canBuild;
@@ -79,28 +106,65 @@ public class MyGridSystem : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            StopAllCoroutines();
-            Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
-
-            Debug.Log(positionToBePlaced);
-            GridObject gridObject = GetGridObject(positionToBePlaced.x, positionToBePlaced.z);
-            if (gridObject != null && gridObject.canBuild)
+            if (currentMode == Mode.Brush)
             {
-                gridObject.buildingObject = Instantiate(testBuilding, positionToBePlaced, Quaternion.identity);
-                gridObject.canBuild = false;
-                Debug.Log(gridObject);
-                gridObject.buildingObject.AddComponent<Factory>();
-              
+                currentMode = Mode.Selection;
+                ghost.SetActive(false);
             }
             else
             {
-                StartCoroutine(SelectionOfBuilding(gridObject));
-                // for testing purposes
-                gridObject.buildingObject.GetComponent<Building>().LevelUp();
-            }                 
-                   
+                currentMode = Mode.Brush;
+                ghost.SetActive(true);
+            }
+        }
+
+        if (currentMode == Mode.Brush)
+        {
+            // adds a temporary building to see where to place it
+            if (ghost.GetComponent<GhostBuilding>() == null)
+                ghost.AddComponent<GhostBuilding>();
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+                ChangeRotation(ghost.GetComponent<GhostBuilding>());
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Destroy(ghost.GetComponent<GhostBuilding>());
+                StopAllCoroutines();
+                Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
+
+                Debug.Log(positionToBePlaced);
+                GridObject gridObject = GetGridObject(positionToBePlaced.x, positionToBePlaced.z);
+                if (gridObject != null && gridObject.canBuild)
+                {
+                    gridObject.buildingObject = Instantiate(ghost);
+                    GameObject ps = Instantiate(buildingPS, positionToBePlaced, Quaternion.identity);
+                    positionToBePlaced.y = 0.5f;
+                    gridObject.buildingObject.transform.position = Vector3.Lerp(gridObject.buildingObject.transform.position, positionToBePlaced, Time.deltaTime * 20f);
+                    gridObject.canBuild = false;
+                    gridObject.buildingObject.AddComponent<Factory>();
+
+                }
+                else
+                {
+                    StartCoroutine(SelectionOfBuilding(gridObject));
+                    // for testing purposes
+                    gridObject.buildingObject.GetComponent<Building>().LevelUp();
+                }
+            }
+        }
+    }
+
+    private void ChangeRotation(GhostBuilding ghost)
+    {
+        switch(ghost.currentDir)
+        {
+            case GhostBuilding.Dir.Up: ghost.currentDir = GhostBuilding.Dir.Right; break;
+            case GhostBuilding.Dir.Right: ghost.currentDir = GhostBuilding.Dir.Down; break;
+            case GhostBuilding.Dir.Down: ghost.currentDir = GhostBuilding.Dir.Left; break;
+            case GhostBuilding.Dir.Left: ghost.currentDir = GhostBuilding.Dir.Up; break;
         }
     }
 
@@ -109,7 +173,7 @@ public class MyGridSystem : MonoBehaviour
         Vector3 scale = incomingGridObject.buildingObject.transform.localScale;
         incomingGridObject.buildingObject.transform.localScale *= 1.25f;
         yield return new WaitForSeconds(0.2f);
-        incomingGridObject.buildingObject.transform.localScale = Vector3.Lerp(scale, incomingGridObject.buildingObject.transform.localScale,0f);
+        incomingGridObject.buildingObject.transform.localScale = Vector3.Lerp(scale, incomingGridObject.buildingObject.transform.localScale, 0f);
 
     }
 
@@ -118,7 +182,7 @@ public class MyGridSystem : MonoBehaviour
     /// Ray Casts in 3D to get mouse position with respect to World
     /// </summary>
     /// <returns></returns>
-    private Vector3 GetMouseWorldPosition()
+    public Vector3 GetMouseWorldPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit rayHit, 999f))
@@ -136,7 +200,7 @@ public class MyGridSystem : MonoBehaviour
     /// </summary>
     /// <param name="incomingVector"></param>
     /// <returns>Center for the mouse position selected as a Vector3</returns>
-    private Vector3 GetExactCenter(Vector3 incomingVector)
+    public Vector3 GetExactCenter(Vector3 incomingVector)
     {
         Vector3 center = new Vector3((int)incomingVector.x, (int)incomingVector.y, (int)incomingVector.z);
         center.x += 0.5f;
@@ -147,7 +211,6 @@ public class MyGridSystem : MonoBehaviour
 
     }
 
-    
 }
 
 
