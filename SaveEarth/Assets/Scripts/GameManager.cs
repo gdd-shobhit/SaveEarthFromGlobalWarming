@@ -6,6 +6,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public enum TimeOfTheDay
+    {
+        Morning,
+        Afternoon,
+        Evening,
+        Night
+    }
+
     public static GameManager instance;
     public DataIDList dataIDList;
     public List<CostProgression> costProg;
@@ -14,6 +22,8 @@ public class GameManager : MonoBehaviour
     public List<ResourceSO> resourceSOs;
     public Transform lightTransform;
     private float dayChangingSpeed = 1f;
+    public bool isItDay = true;
+    public TimeOfTheDay currentTimeOfTheDay=TimeOfTheDay.Morning;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -82,9 +92,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateTime()
     {
-        lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
+        
         time += Time.deltaTime * timeMultiplier;
 
+        CheckForTimeOfTheDay();
+ 
         if (time > 120.0f)
         {
             daysPassed++;
@@ -103,6 +115,32 @@ public class GameManager : MonoBehaviour
             ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }    
+    }
+
+    private void CheckForTimeOfTheDay()
+    {
+        lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
+
+        Debug.Log(lightTransform.rotation.eulerAngles.x);
+        if (lightTransform.rotation.eulerAngles.x >= 0 && lightTransform.rotation.eulerAngles.x <= 60)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Morning;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 60 && lightTransform.rotation.eulerAngles.x <= 120)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Afternoon;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 120 && lightTransform.rotation.eulerAngles.x <= 190)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Evening;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 190 && lightTransform.rotation.eulerAngles.x <= 359)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Night;
+        }
     }
 
     void PopulatePollutionEconomy()

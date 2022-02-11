@@ -39,7 +39,7 @@ public class MyGridSystem : MonoBehaviour
         myGrid = GetComponent<Grid>();
         gridObjects = new List<GridObject>();
         cellSize = myGrid.cellSize;
-        gridSize = new Vector2(10, 10);
+        gridSize = new Vector2(30, 30);
         ghost = Instantiate(testBuilding);
         ghost.SetActive(false);
         //ghost.AddComponent<GhostBuilding>();
