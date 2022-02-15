@@ -29,7 +29,7 @@ public class GhostBuilding : MonoBehaviour
         targetPosition += CalculateOffset(currentDir);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 30f);
         // rotation
-        transform.rotation = Quaternion.Lerp(transform.rotation, GetEuler(currentDir,targetPosition), Time.deltaTime * 15f) ;
+        transform.rotation = Quaternion.Lerp(transform.rotation, GetEuler(currentDir), Time.deltaTime * 15f) ;
     }
 
     private Vector3 CalculateOffset(Dir incomingDir)
@@ -44,22 +44,21 @@ public class GhostBuilding : MonoBehaviour
         }
     }
 
-    Quaternion GetEuler(Dir incomingDir, Vector3 targetPosition)
+    Quaternion GetEuler(Dir incomingDir)
     {
         switch(incomingDir)
         {
             case Dir.Up:
                 {
-                    targetPosition += new Vector3(1, 0, -1);
                     return Quaternion.Euler(0, 0, 0);
                 }
                 
             case Dir.Right:
                 {
-
+                    return Quaternion.Euler(0, 90, 0);
                 }
 
-                return Quaternion.Euler(0, 90, 0);
+              
             case Dir.Down: return Quaternion.Euler(0, 180, 0);
             case Dir.Left: return Quaternion.Euler(0, 270, 0);
                 default: return Quaternion.Euler(0, 0, 0);

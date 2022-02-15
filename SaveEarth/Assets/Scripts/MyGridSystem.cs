@@ -106,6 +106,7 @@ public class MyGridSystem : MonoBehaviour
 
     private void Update()
     {
+        //ChangeMode();
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (currentMode == Mode.Brush)
@@ -135,14 +136,14 @@ public class MyGridSystem : MonoBehaviour
                 StopAllCoroutines();
                 Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
 
-                Debug.Log(positionToBePlaced);
                 GridObject gridObject = GetGridObject(positionToBePlaced.x, positionToBePlaced.z);
                 if (gridObject != null && gridObject.canBuild)
                 {
                     gridObject.buildingObject = Instantiate(ghost);
                     GameObject ps = Instantiate(buildingPS, positionToBePlaced, Quaternion.identity);
-                    positionToBePlaced.y = 0.5f;
-                    gridObject.buildingObject.transform.position = Vector3.Lerp(gridObject.buildingObject.transform.position, positionToBePlaced, Time.deltaTime * 20f);
+                    Vector3 actualPosition = ghost.transform.position;
+                    actualPosition.y = 0.5f;
+                    gridObject.buildingObject.transform.position = Vector3.Lerp(gridObject.buildingObject.transform.position, actualPosition, Time.deltaTime * 20f);
                     gridObject.canBuild = false;
                     gridObject.buildingObject.AddComponent<Factory>();
 
@@ -155,6 +156,12 @@ public class MyGridSystem : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ChangeMode()
+    {
+        currentMode = Mode.Brush;
+        ghost.SetActive(true);
     }
 
     private void ChangeRotation(GhostBuilding ghost)

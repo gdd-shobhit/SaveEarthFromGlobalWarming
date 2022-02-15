@@ -121,7 +121,6 @@ public class GameManager : MonoBehaviour
     {
         lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
 
-        Debug.Log(lightTransform.rotation.eulerAngles.x);
         if (lightTransform.rotation.eulerAngles.x >= 0 && lightTransform.rotation.eulerAngles.x <= 60)
         {
             currentTimeOfTheDay = TimeOfTheDay.Morning;
