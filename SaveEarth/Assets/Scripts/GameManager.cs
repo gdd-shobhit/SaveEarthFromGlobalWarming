@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         {
             daysPassed++;
             totalDaysPassed++;
-            daysPassedText.text = "Days Survived: " + totalDaysPassed;
+            //daysPassedText.text = "Days Survived: " + totalDaysPassed;
             health -= ((float)pollutionValue / 20);
             if (healthLess60 && health >= 60)
             {

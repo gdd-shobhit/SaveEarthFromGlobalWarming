@@ -16,8 +16,7 @@ public class Showcase : MonoBehaviour
     {
         if(gameObject.activeSelf)
         {
-            angle++;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), Time.deltaTime * 15f);
+            gameObject.transform.Rotate(Vector3.up, 10f*Time.deltaTime);
         }
        
     }

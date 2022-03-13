@@ -14,10 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataId:
     id: 0
-    DID: 
-    name: 
-  list:
-    costProgs: []
-    polProgs: []
+    DID: building_towncenter
+    name: towncenter
+  size: 2
+  costProg:
+    id: 0
+    DID: building_towncenter
+    food_1: 0
+    wood_1: 200
+    stone_1: 200
+    metal_1: 300
+    gold_1: 0
+    food_2: 1500
+    wood_2: 1800
+    stone_2: 800
+    metal_2: 700
+    gold_2: 500
+    food_3: 3500
+    wood_3: 3800
+    stone_3: 2800
+    metal_3: 1800
+    gold_3: 1400
+    actualDID:
+      id: 0
+      DID: building_towncenter
+      name: towncenter
+  pollutionProg:
+    id: 0
+    DID: building_towncenter
+    PO_1: 0
+    PO_2: 0
+    PO_3: 20
+    PO_4: 40
+    actualDID:
+      id: 0
+      DID: building_towncenter
+      name: towncenter
+    levelProg: 0000000000000000000000001400000028000000
   timeToBuild: 30
-  level: 1
+  maxLevel: 10
