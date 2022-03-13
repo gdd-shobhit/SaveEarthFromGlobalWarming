@@ -154,8 +154,8 @@ public class PlayerManager : MonoBehaviour
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildingToBeBuild = building.name.ToLower();
-        ResourceManager.instance.DisplayInfo(building.name, 1);
+        //buildingToBeBuild = building.name.ToLower();
+        //ResourceManager.instance.DisplayInfo(building.name, 1);
     }
 
     public void BuildBuilding()

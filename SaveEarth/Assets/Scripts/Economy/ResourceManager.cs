@@ -18,12 +18,22 @@ public class ResourceManager : MonoBehaviour
     public GameObject infoPanelStone;
     public GameObject infoPanelMetal;
     public GameObject infoPanelGold;
+    public GameObject infoPanelPollution;
     public Slider foodSlider;
     public Slider woodSlider;
     public Slider stoneSlider;
     public Slider metalSlider;
     public Slider goldSlider;
+
+    public TextMeshProUGUI foodUI;
+    public TextMeshProUGUI woodUI;
+    public TextMeshProUGUI metalUI;
+    public TextMeshProUGUI goldUI;
+    public TextMeshProUGUI crystalUI;
+
     public ResourceStorageSO resourceStorageSO;
+
+    public BuildingSO selectedBuildingReq;
 
     [SerializeField] private int amountOfClicks = 0;
     [SerializeField] private int currentGold = 500;
@@ -56,58 +66,6 @@ public class ResourceManager : MonoBehaviour
 
     }
 
-
-    /// <summary>
-    /// Displays requirements of the building
-    /// </summary>
-    public void DisplayInfo(string buildingName, int levelToBe)
-    {
-        infoPanel.SetActive(true);
-        infoPanelLabel.GetComponent<TextMeshProUGUI>().text = buildingName;
-        DataID did = GameManager.instance.dataIDList.FindDataID(buildingName.ToLower());
-        foreach (CostProgression costProgression in GameManager.instance.costProg)
-        {
-            if (costProgression.actualDID == did )
-            {
-                Dictionary<int, int> foodLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> woodLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> stoneLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> metalLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> goldLevelProg = new Dictionary<int, int>();
-
-                foreach (KeyValuePair<DataID, Dictionary<int, int>> something in costProgression.progression[did])
-                {
-                    if (something.Key.name.Equals("food"))
-                    {
-                        foodLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("wood"))
-                    {
-                        woodLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("stone"))
-                    {
-                        stoneLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("metal"))
-                    {
-                        metalLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if(something.Key.name.Equals("gold"))
-                    {
-                        goldLevelProg = costProgression.progression[did][something.Key];
-                    }
-                }
-                infoPanelFood.GetComponent<TextMeshProUGUI>().text = foodLevelProg[levelToBe].ToString();
-                infoPanelGold.GetComponent<TextMeshProUGUI>().text = goldLevelProg[levelToBe].ToString();
-                infoPanelWood.GetComponent<TextMeshProUGUI>().text = woodLevelProg[levelToBe].ToString();
-                infoPanelMetal.GetComponent<TextMeshProUGUI>().text = metalLevelProg[levelToBe].ToString();
-                infoPanelStone.GetComponent<TextMeshProUGUI>().text = stoneLevelProg[levelToBe].ToString();
-
-
-            }
-        }
-    }
 
     /// <summary>
     /// Takes in DID and find its requirements and tells if it meets the levelupRequirements 
@@ -182,6 +140,12 @@ public class ResourceManager : MonoBehaviour
         stoneSlider.value = resourceStorageSO.stone;
         metalSlider.value = resourceStorageSO.metal;
         goldSlider.value = resourceStorageSO.gold;
+
+        foodUI.text = foodSlider.value.ToString();
+        woodUI.text = woodSlider.value.ToString();
+        metalUI.text = metalSlider.value.ToString();
+        goldUI.text = goldSlider.value.ToString();
+        crystalUI.text = stoneSlider.value.ToString();
     }
 
     /// <summary>
@@ -189,7 +153,7 @@ public class ResourceManager : MonoBehaviour
     /// </summary>
     public void HandleResourcesOutput()
     {
-        resourceStorageSO.food += (foodOutput + baseProductionRate);
+        resourceStorageSO.food += foodOutput + baseProductionRate;
         //instance.currentWood += baseProductionRate/2;
         //instance.currentStone += baseProductionRate/3;
         //instance.currentMetal += baseProductionRate/4;
@@ -203,8 +167,17 @@ public class ResourceManager : MonoBehaviour
     public void IncreaseFoodTest()
     {
 
-        foodSlider.value+=5000;
+        foodSlider.value = 5000;
         foodSlider.GetComponentInChildren<TextMeshProUGUI>().text = foodSlider.value.ToString();
+        infoPanel.SetActive(true);
+        infoPanelLabel.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.dataId.name;
+        infoPanelFood.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.food_1.ToString();
+        infoPanelGold.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.gold_1.ToString();
+        infoPanelWood.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.wood_1.ToString();
+        infoPanelMetal.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.metal_1.ToString();
+        infoPanelStone.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.stone_1.ToString();
+
+        infoPanelPollution.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.pollutionProg.levelProg[1].ToString();
 
         //while(foodSlider.value < foodSlider.value + 5000)
         //{
@@ -213,5 +186,59 @@ public class ResourceManager : MonoBehaviour
         //}
     }
 
+    /// <summary>
+    /// Displays requirements of the building
+    /// </summary>
+    public void DisplayInfo()
+    {
+ 
+        //DataID did = GameManager.instance.dataIDList.FindDataID(buildingName.ToLower());
+        //foreach (CostProgression costProgression in GameManager.instance.costProg)
+        //{
+        //    if (costProgression.actualDID == did )
+        //    {
+        //        Dictionary<int, int> foodLevelProg = new Dictionary<int, int>();
+        //        Dictionary<int, int> woodLevelProg = new Dictionary<int, int>();
+        //        Dictionary<int, int> stoneLevelProg = new Dictionary<int, int>();
+        //        Dictionary<int, int> metalLevelProg = new Dictionary<int, int>();
+        //        Dictionary<int, int> goldLevelProg = new Dictionary<int, int>();
+
+        //        foreach (KeyValuePair<DataID, Dictionary<int, int>> something in costProgression.progression[did])
+        //        {
+        //            if (something.Key.name.Equals("food"))
+        //            {
+        //                foodLevelProg = costProgression.progression[did][something.Key];
+        //            }
+        //            else if (something.Key.name.Equals("wood"))
+        //            {
+        //                woodLevelProg = costProgression.progression[did][something.Key];
+        //            }
+        //            else if (something.Key.name.Equals("stone"))
+        //            {
+        //                stoneLevelProg = costProgression.progression[did][something.Key];
+        //            }
+        //            else if (something.Key.name.Equals("metal"))
+        //            {
+        //                metalLevelProg = costProgression.progression[did][something.Key];
+        //            }
+        //            else if(something.Key.name.Equals("gold"))
+        //            {
+        //                goldLevelProg = costProgression.progression[did][something.Key];
+        //            }
+        //        }
+
+
+        //        //infoPanelFood.GetComponent<TextMeshProUGUI>().text = foodLevelProg[levelToBe].ToString();
+        //        //infoPanelGold.GetComponent<TextMeshProUGUI>().text = goldLevelProg[levelToBe].ToString();
+        //        //infoPanelWood.GetComponent<TextMeshProUGUI>().text = woodLevelProg[levelToBe].ToString();
+        //        //infoPanelMetal.GetComponent<TextMeshProUGUI>().text = metalLevelProg[levelToBe].ToString();
+        //        //infoPanelStone.GetComponent<TextMeshProUGUI>().text = stoneLevelProg[levelToBe].ToString();
+        //    }
+
+        //}
+
+     
+
+    }
 
 }

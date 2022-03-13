@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GhostBuilding : MonoBehaviour
+public class GhostBuilding : Building
 {
+
     public Transform visual;
     public Dir currentDir;
+    public BuildingType currentType;
+    public MeshRenderer rendererForBuilding;
     public enum Dir
     {
         Up,
@@ -15,21 +18,39 @@ public class GhostBuilding : MonoBehaviour
         Left,
     }
 
+    public enum BuildingType
+    {
+        Towncenter,
+        House
+    }
+
     // Start is called before the first frame update
     void Start()
     {
        currentDir = Dir.Up;
+       currentType = BuildingType.House;
     }
 
     private void LateUpdate()
     {
         Vector3 targetPosition = MyGridSystem.instance.GetExactCenter(MyGridSystem.instance.GetMouseWorldPosition());
-        Debug.Log(targetPosition);
-        targetPosition.y = 1f;
-        targetPosition += CalculateOffset(currentDir);
+        switch(currentType)
+        {
+            case BuildingType.Towncenter: targetPosition.y = 1f;
+                break;
+                case BuildingType.House : targetPosition.y = 1f;
+                break;
+        }
+
+        if(buildingData != null && buildingData.size == 2)
+            targetPosition += CalculateBigBuildingOffset();
+
+        //targetPosition += CalculateOffset(currentDir);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 30f);
         // rotation
-        transform.rotation = Quaternion.Lerp(transform.rotation, GetEuler(currentDir,targetPosition), Time.deltaTime * 15f) ;
+        transform.rotation = Quaternion.Lerp(transform.rotation, GetEuler(currentDir), Time.deltaTime * 15f) ;
+
+        
     }
 
     private Vector3 CalculateOffset(Dir incomingDir)
@@ -44,22 +65,26 @@ public class GhostBuilding : MonoBehaviour
         }
     }
 
-    Quaternion GetEuler(Dir incomingDir, Vector3 targetPosition)
+    private Vector3 CalculateBigBuildingOffset()
+    {
+        return new Vector3(0.5f,0, 0.5f);
+    }
+
+    Quaternion GetEuler(Dir incomingDir)
     {
         switch(incomingDir)
         {
             case Dir.Up:
                 {
-                    targetPosition += new Vector3(1, 0, -1);
                     return Quaternion.Euler(0, 0, 0);
                 }
                 
             case Dir.Right:
                 {
-
+                    return Quaternion.Euler(0, 90, 0);
                 }
 
-                return Quaternion.Euler(0, 90, 0);
+              
             case Dir.Down: return Quaternion.Euler(0, 180, 0);
             case Dir.Left: return Quaternion.Euler(0, 270, 0);
                 default: return Quaternion.Euler(0, 0, 0);

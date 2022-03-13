@@ -13,11 +13,43 @@ MonoBehaviour:
   m_Name: factory
   m_EditorClassIdentifier: 
   dataId:
-    id: 0
-    DID: 
-    name: 
-  list:
-    costProgs: []
-    polProgs: []
+    id: 2
+    DID: building_factory
+    name: factory
+  size: 2
+  costProg:
+    id: 2
+    DID: building_factory
+    food_1: 800
+    wood_1: 400
+    stone_1: 300
+    metal_1: 500
+    gold_1: 250
+    food_2: 1600
+    wood_2: 900
+    stone_2: 800
+    metal_2: 900
+    gold_2: 700
+    food_3: 3500
+    wood_3: 1500
+    stone_3: 1400
+    metal_3: 1200
+    gold_3: 700
+    actualDID:
+      id: 2
+      DID: building_factory
+      name: factory
+  pollutionProg:
+    id: 2
+    DID: building_factory
+    PO_1: 50
+    PO_2: 140
+    PO_3: 300
+    PO_4: 400
+    actualDID:
+      id: 2
+      DID: building_factory
+      name: factory
+    levelProg: 00000000320000008c0000002c01000090010000
   timeToBuild: 30
-  level: 1
+  maxLevel: 10

@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         {
             daysPassed++;
             totalDaysPassed++;
-            daysPassedText.text = "Days Survived: " + totalDaysPassed;
+            //daysPassedText.text = "Days Survived: " + totalDaysPassed;
             health -= ((float)pollutionValue / 20);
             if (healthLess60 && health >= 60)
             {
@@ -121,7 +121,6 @@ public class GameManager : MonoBehaviour
     {
         lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
 
-        Debug.Log(lightTransform.rotation.eulerAngles.x);
         if (lightTransform.rotation.eulerAngles.x >= 0 && lightTransform.rotation.eulerAngles.x <= 60)
         {
             currentTimeOfTheDay = TimeOfTheDay.Morning;

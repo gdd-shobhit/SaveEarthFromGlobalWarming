@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1019492974369894, guid: 14cbbc4aabee1584895f6723e09fbbec, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019492974369894, guid: 14cbbc4aabee1584895f6723e09fbbec, type: 3}
       propertyPath: m_Name
       value: TestBuilding Variant
       objectReference: {fileID: 0}
@@ -78,7 +82,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1019492974369894, guid: 14cbbc4aabee1584895f6723e09fbbec, type: 3}
   m_PrefabInstance: {fileID: 91296811220040786}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-1745870499667102867
+--- !u!4 &95892516137062294 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4772202873533380, guid: 14cbbc4aabee1584895f6723e09fbbec, type: 3}
+  m_PrefabInstance: {fileID: 91296811220040786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7573382826320080387
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,11 +96,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 92260907152039988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Script: {fileID: 11500000, guid: 2059d88a6c8463f439357415f649de4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: da78c10a8e3e742469eb58694fbb9d3a, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
+  buildingData: {fileID: 11400000, guid: 1df8b5a4f7770084698a8ffdf9cc61e7, type: 2}
+  level: 1
+  pollutionOutput: 0
+  DID:
+    id: 0
+    DID: 
+    name: 
+  visual: {fileID: 95892516137062294}
+  currentDir: 0
+  currentType: 0

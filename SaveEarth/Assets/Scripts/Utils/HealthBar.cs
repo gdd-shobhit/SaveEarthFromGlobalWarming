@@ -51,14 +51,14 @@ public class HealthBar : MonoBehaviour
         }
         else
         {
-            if (health <= 100)
-            {
-                slider.value = health;
-            }
-            else
-            {
-                slider.value = 100;
-            }
+            //if (health <= 100)
+            //{
+            //    slider.value = health;
+            //}
+            //else
+            //{
+            //    slider.value = 100;
+            //}
         }
     }
 }
