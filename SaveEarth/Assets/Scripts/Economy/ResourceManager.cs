@@ -24,6 +24,13 @@ public class ResourceManager : MonoBehaviour
     public Slider stoneSlider;
     public Slider metalSlider;
     public Slider goldSlider;
+
+    public TextMeshProUGUI foodUI;
+    public TextMeshProUGUI woodUI;
+    public TextMeshProUGUI metalUI;
+    public TextMeshProUGUI goldUI;
+    public TextMeshProUGUI crystalUI;
+
     public ResourceStorageSO resourceStorageSO;
 
     public BuildingSO selectedBuildingReq;
@@ -133,6 +140,12 @@ public class ResourceManager : MonoBehaviour
         stoneSlider.value = resourceStorageSO.stone;
         metalSlider.value = resourceStorageSO.metal;
         goldSlider.value = resourceStorageSO.gold;
+
+        foodUI.text = foodSlider.value.ToString();
+        woodUI.text = woodSlider.value.ToString();
+        metalUI.text = metalSlider.value.ToString();
+        goldUI.text = goldSlider.value.ToString();
+        crystalUI.text = stoneSlider.value.ToString();
     }
 
     /// <summary>
@@ -140,7 +153,7 @@ public class ResourceManager : MonoBehaviour
     /// </summary>
     public void HandleResourcesOutput()
     {
-        resourceStorageSO.food += (foodOutput + baseProductionRate);
+        resourceStorageSO.food += foodOutput + baseProductionRate;
         //instance.currentWood += baseProductionRate/2;
         //instance.currentStone += baseProductionRate/3;
         //instance.currentMetal += baseProductionRate/4;
