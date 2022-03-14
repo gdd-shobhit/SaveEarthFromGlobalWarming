@@ -21,26 +21,23 @@ public class GhostBuilding : Building
     public enum BuildingType
     {
         Towncenter,
-        House
+        House,
+        Factory,
+        FilterationPlant,
+        Farm
     }
 
     // Start is called before the first frame update
     void Start()
     {
        currentDir = Dir.Up;
-       currentType = BuildingType.House;
+        currentType = BuildingType.House;
     }
 
     private void LateUpdate()
     {
         Vector3 targetPosition = MyGridSystem.instance.GetExactCenter(MyGridSystem.instance.GetMouseWorldPosition());
-        switch(currentType)
-        {
-            case BuildingType.Towncenter: targetPosition.y = 1f;
-                break;
-                case BuildingType.House : targetPosition.y = 1f;
-                break;
-        }
+        targetPosition.y = 1f;
 
         if(buildingData != null && buildingData.size == 2)
             targetPosition += CalculateBigBuildingOffset();

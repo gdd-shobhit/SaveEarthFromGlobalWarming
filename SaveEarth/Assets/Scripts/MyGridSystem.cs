@@ -23,7 +23,8 @@ public class MyGridSystem : MonoBehaviour
     public enum BuildingBrush
     {
         Towncenter,
-        House
+        House,
+        Factory
     }
 
     [SerializeField]
@@ -39,7 +40,10 @@ public class MyGridSystem : MonoBehaviour
     public Mode currentMode;
     public GameObject buildingPS;
     public BuildingBrush currentBuildingBrush;
-    
+    public GameObject treeCluster;
+    public GameObject rocks;
+    public GameObject crystals;
+
     public List<Material> buildMaterials;
 
 
@@ -61,6 +65,30 @@ public class MyGridSystem : MonoBehaviour
             {
                 Vector3 worldLocation = myGrid.GetCellCenterWorld(new Vector3Int(i * (int)cellSize.x, j * (int)cellSize.y, 0));
                 GridObject toAddInList = new GridObject(Instantiate(gridLines, worldLocation, Quaternion.identity), myGrid);
+                int randomNess = UnityEngine.Random.Range(1, 101);
+                //int randomNessStone = UnityEngine.Random.Range(1, 101);
+                if (randomNess % 4 == 0)
+                {
+                    worldLocation.y = 0.75f;
+                    toAddInList.buildingObject = Instantiate(treeCluster, worldLocation, Quaternion.identity);
+                    toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
+                    toAddInList.canBuild = false;
+                }
+                else if(randomNess % 13 == 0)
+                {
+                    worldLocation.y = 0.8f;
+                    toAddInList.buildingObject = Instantiate(rocks, worldLocation, Quaternion.identity);
+                    toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
+                    toAddInList.canBuild = false;
+
+                }
+                else if(randomNess % 41 == 0 )
+                {
+                    worldLocation.y = 1f;
+                    toAddInList.buildingObject = Instantiate(crystals, worldLocation, Quaternion.identity);
+                    toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
+                    toAddInList.canBuild = false;
+                }
                 gridObjects.Add(toAddInList);
             }
         }
@@ -136,16 +164,20 @@ public class MyGridSystem : MonoBehaviour
             bool canBuild = false;
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-               
-                if (currentBuildingBrush == BuildingBrush.Towncenter)
+                switch(currentBuildingBrush)
                 {
-                    currentBuildingBrush = BuildingBrush.House;
-                    ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.House;
-                }
-                else
-                {
-                    currentBuildingBrush= BuildingBrush.Towncenter;
-                    ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Towncenter;
+                    case BuildingBrush.Towncenter:
+                        currentBuildingBrush = BuildingBrush.House;
+                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.House;
+                        break;
+                        case BuildingBrush.House:
+                        currentBuildingBrush = BuildingBrush.Factory;
+                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Factory;
+                        break;
+                    case BuildingBrush.Factory:
+                        currentBuildingBrush = BuildingBrush.Towncenter;
+                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Towncenter;
+                        break;
                 }
 
                 CheckBuildingBrush();
@@ -201,6 +233,8 @@ public class MyGridSystem : MonoBehaviour
                     ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[2];
                 else if (currentBuildingBrush == BuildingBrush.Towncenter)
                     ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[3];
+                else if (currentBuildingBrush == BuildingBrush.Factory)
+                    ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[3];
                 Destroy(ghost.GetComponent<GhostBuilding>());
                 StopAllCoroutines();
                 Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
@@ -216,7 +250,7 @@ public class MyGridSystem : MonoBehaviour
                     if (ghost.GetComponent<GhostBuilding>().buildingData != null && ghost.GetComponent<GhostBuilding>().buildingData.size == 2)
                     {
                         OccupyMoreSpace(gridObject);
-                        actualPosition.y = -1.25f;
+                        actualPosition.y = -1f;
                     }
                     
                     gridObject.buildingObject.transform.position = Vector3.Lerp(gridObject.buildingObject.transform.position, actualPosition, Time.deltaTime * 20f);
@@ -247,17 +281,17 @@ public class MyGridSystem : MonoBehaviour
 
     private void CheckBuildingBrush()
     {
+        Destroy(ghost);
         switch (currentBuildingBrush)
         {
             case BuildingBrush.Towncenter:
-                Destroy(ghost);
                 ghost = Instantiate(testBuildingsPrefabs[1]);
-                
-                
                 break;
             case BuildingBrush.House:
-                Destroy(ghost);
                 ghost = Instantiate(testBuildingsPrefabs[0]);
+                break;
+            case BuildingBrush.Factory:
+                ghost = Instantiate(testBuildingsPrefabs[2]);
                 break;
         }
     }
