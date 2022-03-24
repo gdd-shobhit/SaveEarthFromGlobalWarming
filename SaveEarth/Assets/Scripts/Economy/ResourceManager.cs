@@ -21,7 +21,7 @@ public class ResourceManager : MonoBehaviour
     public GameObject infoPanelPollution;
     public Slider foodSlider;
     public Slider woodSlider;
-    public Slider stoneSlider;
+    public Slider crystalSlider;
     public Slider metalSlider;
     public Slider goldSlider;
 
@@ -54,10 +54,10 @@ public class ResourceManager : MonoBehaviour
             baseProductionRate = 0;
             foodSlider.maxValue = resourceStorageSO.foodStorage;
             woodSlider.maxValue = resourceStorageSO.woodStorage;
-            stoneSlider.maxValue = resourceStorageSO.stoneStorage;
+            crystalSlider.maxValue = resourceStorageSO.stoneStorage;
             metalSlider.maxValue = resourceStorageSO.metalStorage;
             goldSlider.maxValue = resourceStorageSO.goldStorage;
-            UpdateResources();
+            UpdateResources(resourceStorageSO.food, resourceStorageSO.wood, resourceStorageSO.metal, resourceStorageSO.gold, resourceStorageSO.stone,true);
         }
         else
         {
@@ -71,81 +71,40 @@ public class ResourceManager : MonoBehaviour
     /// Takes in DID and find its requirements and tells if it meets the levelupRequirements 
     /// </summary>
     /// <param name="did"></param>
-    public bool CheckRequirements(DataID did, int levelToBe)
+    public bool CheckRequirements(BuildingSO BSO, int levelToBe)
     {
-        foreach(CostProgression costProgression in GameManager.instance.costProg )
+        if (foodSlider.value >= BSO.costProg.foodValues[levelToBe - 1] && woodSlider.value >= BSO.costProg.woodValues[levelToBe - 1]
+            && metalSlider.value >= BSO.costProg.metalValues[levelToBe - 1] && goldSlider.value >= BSO.costProg.goldValues[levelToBe - 1] &&
+            crystalSlider.value >= BSO.costProg.stoneValues[levelToBe - 1])
         {
-            if(costProgression.actualDID == did)
-            {
-                Dictionary<int, int> foodLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> woodLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> stoneLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> metalLevelProg = new Dictionary<int, int>();
-                Dictionary<int, int> goldLevelProg = new Dictionary<int, int>();
-
-                foreach (KeyValuePair<DataID,Dictionary<int,int>> something in costProgression.progression[did])
-                {                                
-                    if(something.Key.name.Equals("food"))
-                    {
-                        foodLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("wood"))
-                    {
-                        woodLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("stone"))
-                    {
-                        stoneLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if (something.Key.name.Equals("metal"))
-                    {
-                        metalLevelProg = costProgression.progression[did][something.Key];
-                    }
-                    else if(something.Key.name.Equals("gold"))
-                    {
-                        goldLevelProg = costProgression.progression[did][something.Key];
-                    }
-                }
-
-
-
-                if (resourceStorageSO.food >= foodLevelProg[levelToBe] && resourceStorageSO.wood >= woodLevelProg[levelToBe]
-                    && resourceStorageSO.stone >= stoneLevelProg[levelToBe] && resourceStorageSO.metal >= metalLevelProg[levelToBe] && resourceStorageSO.gold >= goldLevelProg[levelToBe])
-                {
-
-                    resourceStorageSO.food -= foodLevelProg[levelToBe];
-                    resourceStorageSO.wood -= woodLevelProg[levelToBe];
-                    resourceStorageSO.stone -= stoneLevelProg[levelToBe];
-                    resourceStorageSO.metal -= metalLevelProg[levelToBe];
-                    resourceStorageSO.gold -= goldLevelProg[levelToBe];
-                    UpdateResources();
-                    return true;
-                }
-                
-                else
-                {
-                    instance.resourcesReqPanel.SetActive(true);
-                    return false;
-                }
-            }
+            return true;
         }
 
         return false;
+
     }
-
-    public void UpdateResources()
+    /// <summary>
+    /// Takes in Food, Wood, Metal, Gold and Crystal
+    /// </summary>
+    public void UpdateResources(int food, int wood, int metal, int gold, int crystal,bool toAdd)
     {
-        foodSlider.value = resourceStorageSO.food;
-        woodSlider.value = resourceStorageSO.wood;
-        stoneSlider.value = resourceStorageSO.stone;
-        metalSlider.value = resourceStorageSO.metal;
-        goldSlider.value = resourceStorageSO.gold;
-
-        foodUI.text = foodSlider.value.ToString();
-        woodUI.text = woodSlider.value.ToString();
-        metalUI.text = metalSlider.value.ToString();
-        goldUI.text = goldSlider.value.ToString();
-        crystalUI.text = stoneSlider.value.ToString();
+        if(toAdd)
+        {
+            foodSlider.value += food;
+            woodSlider.value += wood;
+            crystalSlider.value += crystal;
+            metalSlider.value += metal;
+            goldSlider.value += gold;
+        }
+        else
+        {
+            foodSlider.value -= food;
+            woodSlider.value -= wood;
+            crystalSlider.value -= crystal;
+            metalSlider.value -= metal;
+            goldSlider.value -= gold;
+        }
+        
     }
 
     /// <summary>
@@ -154,36 +113,7 @@ public class ResourceManager : MonoBehaviour
     public void HandleResourcesOutput()
     {
         resourceStorageSO.food += foodOutput + baseProductionRate;
-        //instance.currentWood += baseProductionRate/2;
-        //instance.currentStone += baseProductionRate/3;
-        //instance.currentMetal += baseProductionRate/4;
         resourceStorageSO.gold += goldOutput;
-        UpdateResources();
-    }
-
-    /// <summary>
-    /// WORKS!
-    /// </summary>
-    public void IncreaseFoodTest()
-    {
-
-        foodSlider.value = 5000;
-        foodSlider.GetComponentInChildren<TextMeshProUGUI>().text = foodSlider.value.ToString();
-        infoPanel.SetActive(true);
-        infoPanelLabel.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.dataId.name;
-        infoPanelFood.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.food_1.ToString();
-        infoPanelGold.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.gold_1.ToString();
-        infoPanelWood.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.wood_1.ToString();
-        infoPanelMetal.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.metal_1.ToString();
-        infoPanelStone.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.costProg.stone_1.ToString();
-
-        infoPanelPollution.GetComponent<TextMeshProUGUI>().text = selectedBuildingReq.pollutionProg.levelProg[1].ToString();
-
-        //while(foodSlider.value < foodSlider.value + 5000)
-        //{
-        //    foodSlider.value++;
-        //    foodSlider.GetComponentInChildren<TextMeshProUGUI>().text = foodSlider.ToString();
-        //}
     }
 
     /// <summary>
@@ -191,7 +121,7 @@ public class ResourceManager : MonoBehaviour
     /// </summary>
     public void DisplayInfo()
     {
- 
+
         //DataID did = GameManager.instance.dataIDList.FindDataID(buildingName.ToLower());
         //foreach (CostProgression costProgression in GameManager.instance.costProg)
         //{
@@ -237,7 +167,7 @@ public class ResourceManager : MonoBehaviour
 
         //}
 
-     
+
 
     }
 

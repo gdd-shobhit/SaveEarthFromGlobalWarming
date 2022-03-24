@@ -8,15 +8,29 @@ public class Farm : Building
     /// <summary>
     /// Produces food, also in-game Currency
     /// </summary>
-    public Farm()
+    private void Start()
     {
+
         buildingData = GameManager.instance.buildingSOs[3];
         level = 1;
         DID = buildingData.dataId;
-        pollutionOutput = buildingData.pollutionProg.levelProg[1];
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
+        foodOutput = 5;
+        StartCoroutine(IncreaseFood());
+    }
 
-        //ResourceManager.instance.foodOutput += foodOutput;
-        UpdatePollution();
+
+    IEnumerator IncreaseFood()
+    {
+        while(foodOutput > 0)
+        {
+            yield return new WaitForSeconds(4);
+            ResourceManager.instance.foodSlider.value += foodOutput;
+            if (foodOutput <= 0)
+                break;
+        }
+        
+
     }
 
 }

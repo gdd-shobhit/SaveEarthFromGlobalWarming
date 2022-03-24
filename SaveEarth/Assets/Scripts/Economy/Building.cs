@@ -18,15 +18,22 @@ public class Building : MonoBehaviour
     public Building()
     {
         level = 1;
-        pollutionOutput = 0;
     }
 
     /// <summary>
     /// Whenever building is initiated, update the pollution
     /// </summary>
-    public void UpdatePollution()
+    public IEnumerator PollutionCoroutine()
     {
-        GameManager.instance.pollutionValue = pollutionOutput;
+        while(pollutionOutput > 0)
+        {
+            yield return new WaitForSeconds(5);
+            GameManager.instance.pollutionSlider.value += pollutionOutput;
+            if (pollutionOutput <= 0)
+                break;
+        }
+
+        yield return null;
     }
 
     /// <summary>
@@ -35,8 +42,7 @@ public class Building : MonoBehaviour
     public virtual void LevelUp()
     {
         level++;
-        pollutionOutput = buildingData.pollutionProg.levelProg[level];
-        UpdatePollution();
+        pollutionOutput = buildingData.pollutionProg.levelProg[level] - pollutionOutput;
         // required resources
         // 1. Stone 2. Wood 3. Metal 4. Currency(Food)
         // check if resources are enough to level up

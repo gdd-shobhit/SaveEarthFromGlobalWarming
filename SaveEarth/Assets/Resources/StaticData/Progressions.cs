@@ -7,21 +7,21 @@ public class CostProgression
 {
     public int id;
     public string DID;
-    public int food_1;
-    public int wood_1;
-    public int stone_1;
-    public int metal_1;
-    public int gold_1;
-    public int food_2;
-    public int wood_2;
-    public int stone_2;
-    public int metal_2;
-    public int gold_2;
-    public int food_3;
-    public int wood_3;
-    public int stone_3;
-    public int metal_3;
-    public int gold_3;
+    int food_1;
+    int wood_1;
+    int stone_1;
+    int metal_1;
+    int gold_1;
+    int food_2;
+    int wood_2;
+    int stone_2;
+    int metal_2;
+    int gold_2;
+    int food_3;
+    int wood_3;
+    int stone_3;
+    int metal_3;
+    int gold_3;
 
     public DataID actualDID = new DataID(); 
     private int maxLevel = 3;
@@ -29,43 +29,34 @@ public class CostProgression
     Dictionary<DataID, Dictionary<int, int>> dataIDToLevelProg = new Dictionary<DataID, Dictionary<int, int>>();
     // buildings dataID mapped to dictionary of Resource dataID mapped to level and value
     public Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>> progression = new Dictionary<DataID, Dictionary<DataID, Dictionary<int, int>>>();
-
+    public List<int> foodValues = new List<int>();
+    public List<int> woodValues = new List<int>();
+    public List<int> stoneValues = new List<int>();
+    public List<int> metalValues = new List<int>();
+    public List<int> goldValues = new List<int>();
     public void HandleProgression()
     {
         actualDID = CSVImportTool.dataIDs.FindDataID(DID.Split('_')[1]);
-        List<int> foodValues = new List<int>();
+        
         foodValues.Add(food_1);
         foodValues.Add(food_2);
         foodValues.Add(food_3);
-
-        List<int> woodValues = new List<int>();
+        
         woodValues.Add(wood_1);
         woodValues.Add(wood_2);
         woodValues.Add(wood_3);
 
-        List<int> stoneValues = new List<int>();
         stoneValues.Add(stone_1);
         stoneValues.Add(stone_2);
         stoneValues.Add(stone_3);
 
-
-        List<int> metalValues = new List<int>();
         metalValues.Add(metal_1);
         metalValues.Add(metal_2);
         metalValues.Add(metal_3);
 
-        List<int> goldValues = new List<int>();
         goldValues.Add(gold_1);
         goldValues.Add(gold_2);
-        goldValues.Add(gold_3);
-
-
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("food"),foodValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("wood"), woodValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("stone"), stoneValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("metal"), metalValues);
-        FillLevelProg(CSVImportTool.dataIDs.FindDataID("gold"), goldValues);
-        FillFullProgression();
+        goldValues.Add(gold_3); 
     }
 
     void FillLevelProg(DataID did, List<int> levelToValue)

@@ -11,15 +11,13 @@ public class House : Building
 
     public int population;
 
-    //private Dictionary<int, int> levelToPopulation = new Dictionary<int, int>();
-    public House()
+    private void Start()
     {
         this.population = 20;
         buildingData = GameManager.instance.buildingSOs[4];
         level = 1;
         DID = buildingData.dataId;
-        pollutionOutput = buildingData.pollutionProg.levelProg[1];
-        UpdatePollution();
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
     }
 
     public void IncreasePopulations()

@@ -10,6 +10,7 @@ public class GhostBuilding : Building
     public Dir currentDir;
     public BuildingType currentType;
     public MeshRenderer rendererForBuilding;
+    public GameObject costPanel;
     public enum Dir
     {
         Up,
@@ -31,23 +32,30 @@ public class GhostBuilding : Building
     void Start()
     {
        currentDir = Dir.Up;
-        currentType = BuildingType.House;
+       currentType = BuildingType.Towncenter;
     }
 
     private void LateUpdate()
     {
         Vector3 targetPosition = MyGridSystem.instance.GetExactCenter(MyGridSystem.instance.GetMouseWorldPosition());
-        targetPosition.y = 1f;
+        targetPosition.y = 1.25f;
 
         if(buildingData != null && buildingData.size == 2)
-            targetPosition += CalculateBigBuildingOffset();
+        targetPosition += CalculateBigBuildingOffset();
 
         //targetPosition += CalculateOffset(currentDir);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 30f);
         // rotation
         transform.rotation = Quaternion.Lerp(transform.rotation, GetEuler(currentDir), Time.deltaTime * 15f) ;
-
         
+        if(costPanel!=null)
+        {
+            Vector3 costVector = targetPosition;
+            costVector.y += 3;
+            costVector.x -= 3;
+            costPanel.transform.position = Vector3.Lerp(costPanel.transform.position, costVector, Time.deltaTime * 30f);
+        }
+       
     }
 
     private Vector3 CalculateOffset(Dir incomingDir)
