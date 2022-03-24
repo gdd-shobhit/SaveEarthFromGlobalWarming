@@ -17,6 +17,5 @@ MonoBehaviour:
     DID: 
     name: 
   resourcePrefab: {fileID: 0}
-  hitPoints: 0
-  resistance: 0
-  positionOnMap: []
+  hitPoints: 250
+  resistance: 10

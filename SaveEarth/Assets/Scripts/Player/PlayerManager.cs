@@ -163,8 +163,8 @@ public class PlayerManager : MonoBehaviour
         if (canBuild)
         {
             GameObject temp = Instantiate(tempBuildingObj);
-            if (ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(buildingToBeBuild), 1))
-            {
+            //if (ResourceManager.instance.CheckRequirements(buil, 1))
+            //{
                 switch (buildingToBeBuild)
                 {
                     case "towncenter":
@@ -204,12 +204,9 @@ public class PlayerManager : MonoBehaviour
                 BuildingTracker building = new BuildingTracker(highlightedPosition, tileToBePlace, temp);
                 buildingList.Add(highlightedPosition, building);
                 canBuild = false;
-            }
-            
-            else
-            {
+          
                 Destroy(temp);
-            }
+            
 
         }
         

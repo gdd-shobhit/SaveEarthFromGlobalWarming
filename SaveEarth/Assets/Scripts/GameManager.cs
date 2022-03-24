@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Transform lightTransform;
     private float dayChangingSpeed = 1f;
     public bool isItDay = true;
+    public int currentWorker = 1;
     public TimeOfTheDay currentTimeOfTheDay=TimeOfTheDay.Morning;
     /// <summary>
     /// Time passed since the level started
@@ -51,7 +52,9 @@ public class GameManager : MonoBehaviour
     /// Total Pollution Value
     /// </summary>
     public int pollutionValue = 0;
-
+    private int maxPollution = 1000;
+    public Slider pollutionSlider;
+    public bool townHallPresent = false;
     public float health = 100;
     public Text pollutionOutputText;
     public Text daysPassedText;
@@ -62,7 +65,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> levelToPolutionOutput;
     public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -71,7 +74,8 @@ public class GameManager : MonoBehaviour
             dataIDList = CSVImportTool.dataIDs;
             costProg = CSVImportTool.progressionList.costProgs;
             polProg = CSVImportTool.progressionList.polProgs;
-            healthbar = new HealthBar();
+            pollutionSlider.maxValue = maxPollution;
+            StartCoroutine(PollutionCoroutine());
         }
         else
         {
@@ -101,18 +105,18 @@ public class GameManager : MonoBehaviour
         {
             daysPassed++;
             totalDaysPassed++;
-            //daysPassedText.text = "Days Survived: " + totalDaysPassed;
-            health -= ((float)pollutionValue / 20);
-            if (healthLess60 && health >= 60)
-            {
-                health = 60;
-            }
-            else if(healthLess80 && health >= 80)
-            {
-                health = 80;
-            }
-            healthbar.SetHealth(health);
-            ResourceManager.instance.HandleResourcesOutput();
+            ////daysPassedText.text = "Days Survived: " + totalDaysPassed;
+            //health -= ((float)pollutionValue / 20);
+            //if (healthLess60 && health >= 60)
+            //{
+            //    health = 60;
+            //}
+            //else if(healthLess80 && health >= 80)
+            //{
+            //    health = 80;
+            //}
+            //healthbar.SetHealth(health);
+            //ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }    
     }
@@ -140,16 +144,6 @@ public class GameManager : MonoBehaviour
         {
             currentTimeOfTheDay = TimeOfTheDay.Night;
         }
-    }
-
-    void PopulatePollutionEconomy()
-    {
-        // Json file will be inputed
-    }
-
-    DataID GetDID(GameObject gameObject)
-    {
-        return gameObject.GetComponent<DataID>();
     }
 
     public void IncreaseTimeBy(int multiplier)
@@ -181,5 +175,18 @@ public class GameManager : MonoBehaviour
             case 0: ResourceManager.instance.baseProductionRate += 4;
                 break;
         }
+    }
+
+    public IEnumerator PollutionCoroutine()
+    {
+        while (pollutionValue > 0)
+        {
+            yield return new WaitForSeconds(5);
+            pollutionSlider.value += (pollutionValue - pollutionSlider.value);
+            if (pollutionValue <= 0)
+                break;
+        }
+
+        yield return null;
     }
 }

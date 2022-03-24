@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using System;
-
+using TMPro;
+using UnityEngine.UI;
 public class MyGridSystem : MonoBehaviour
 {
     public enum Resources
@@ -24,7 +23,9 @@ public class MyGridSystem : MonoBehaviour
     {
         Towncenter,
         House,
-        Factory
+        Factory,
+        Farm,
+        FilterationPlant
     }
 
     [SerializeField]
@@ -43,6 +44,12 @@ public class MyGridSystem : MonoBehaviour
     public GameObject treeCluster;
     public GameObject rocks;
     public GameObject crystals;
+    public GameObject health;
+    public TextMeshProUGUI healthValue;
+    public GameObject costPanel;
+    public TextMeshProUGUI currentWorker;
+    public TextMeshProUGUI costPanelHeading;
+    public List<TextMeshProUGUI> costText;
 
     public List<Material> buildMaterials;
 
@@ -55,8 +62,9 @@ public class MyGridSystem : MonoBehaviour
         cellSize = myGrid.cellSize;
         gridSize = new Vector2(30, 30);
         ghost = Instantiate(testBuilding);
+        ghost.GetComponent<GhostBuilding>().costPanel = costPanel;
         ghost.SetActive(false);
-        currentBuildingBrush = BuildingBrush.House;
+        currentBuildingBrush = BuildingBrush.Towncenter;
         //ghost.AddComponent<GhostBuilding>();
 
         for (int i = 0; i < gridSize.x; i++)
@@ -71,23 +79,33 @@ public class MyGridSystem : MonoBehaviour
                 {
                     worldLocation.y = 0.75f;
                     toAddInList.buildingObject = Instantiate(treeCluster, worldLocation, Quaternion.identity);
+                    toAddInList.resourceSO = GameManager.instance.resourceSOs[1];
+                    toAddInList.type = GridObject.Type.Resource;
                     toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
                     toAddInList.canBuild = false;
                 }
-                else if(randomNess % 13 == 0)
+                else if (randomNess % 13 == 0)
                 {
                     worldLocation.y = 0.8f;
                     toAddInList.buildingObject = Instantiate(rocks, worldLocation, Quaternion.identity);
+                    toAddInList.resourceSO = GameManager.instance.resourceSOs[2];
+                    toAddInList.type = GridObject.Type.Resource;
                     toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
                     toAddInList.canBuild = false;
 
                 }
-                else if(randomNess % 41 == 0 )
+                else if (randomNess % 41 == 0)
                 {
                     worldLocation.y = 1f;
                     toAddInList.buildingObject = Instantiate(crystals, worldLocation, Quaternion.identity);
+                    toAddInList.resourceSO = GameManager.instance.resourceSOs[0];
+                    toAddInList.type = GridObject.Type.Resource;
                     toAddInList.buildingObject.transform.Rotate(Vector3.up, UnityEngine.Random.Range(0, 360));
                     toAddInList.canBuild = false;
+                }
+                else
+                {
+                    toAddInList.type = GridObject.Type.Empty;
                 }
                 gridObjects.Add(toAddInList);
             }
@@ -126,6 +144,14 @@ public class MyGridSystem : MonoBehaviour
         public GameObject visualObject;
         public GameObject buildingObject;
         public BuildingSO buildingSO;
+        public ResourceSO resourceSO;
+        public Type type;
+        public enum Type
+        {
+            Building,
+            Resource,
+            Empty
+        }
         public Vector3 worldLocation;
         // for bigger buildings
         public List<Vector3> allWorldLocation;
@@ -151,11 +177,21 @@ public class MyGridSystem : MonoBehaviour
             {
                 currentMode = Mode.Selection;
                 ghost.SetActive(false);
+                costPanel.SetActive(false);
             }
             else
             {
                 currentMode = Mode.Brush;
                 ghost.SetActive(true);
+                costPanel.SetActive(true);
+                costPanelHeading.text = "Town Center";
+                costText[0].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.foodValues[0].ToString();
+                costText[1].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.woodValues[0].ToString();
+                costText[2].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.metalValues[0].ToString(); 
+                costText[3].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.goldValues[0].ToString();
+                costText[4].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.stoneValues[0].ToString();
+                costText[5].text = ghost.GetComponent<GhostBuilding>().buildingData.pollutionProg.levelProg[1].ToString();
+
             }
         }
 
@@ -164,27 +200,35 @@ public class MyGridSystem : MonoBehaviour
             bool canBuild = false;
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                switch(currentBuildingBrush)
+                if (!GameManager.instance.townHallPresent)
+                    ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Towncenter;
+                else
                 {
-                    case BuildingBrush.Towncenter:
-                        currentBuildingBrush = BuildingBrush.House;
-                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.House;
-                        break;
+                    switch (currentBuildingBrush)
+                    {
                         case BuildingBrush.House:
-                        currentBuildingBrush = BuildingBrush.Factory;
-                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Factory;
-                        break;
-                    case BuildingBrush.Factory:
-                        currentBuildingBrush = BuildingBrush.Towncenter;
-                        ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Towncenter;
-                        break;
+                            currentBuildingBrush = BuildingBrush.Factory;
+                            ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Factory;
+                            break;
+                        case BuildingBrush.Factory:
+                            currentBuildingBrush = BuildingBrush.Farm;
+                            ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.Farm;
+                            break;
+                        case BuildingBrush.Farm:
+                            currentBuildingBrush = BuildingBrush.FilterationPlant;
+                            ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.FilterationPlant;
+                            break;
+                        case BuildingBrush.FilterationPlant:
+                            currentBuildingBrush = BuildingBrush.House;
+                            ghost.GetComponent<GhostBuilding>().currentType = GhostBuilding.BuildingType.House;
+                            break;
+                    }
                 }
-
                 CheckBuildingBrush();
             }
             // adds a temporary building to see where to place it
             if (ghost.GetComponent<GhostBuilding>() == null)
-                ghost.AddComponent<GhostBuilding>();
+                    ghost.AddComponent<GhostBuilding>();
 
             if (Input.GetKeyDown(KeyCode.Tab))
                 ChangeRotation(ghost.GetComponent<GhostBuilding>());
@@ -193,13 +237,19 @@ public class MyGridSystem : MonoBehaviour
 
             GridObject gridObject1 = GetGridObject(positionToPlaced.x, positionToPlaced.z);
 
-            if(gridObject1 != null && gridObject1.canBuild)
+            if (gridObject1 != null && gridObject1.canBuild)
             {
-                if (ghost.GetComponent<GhostBuilding>().buildingData != null && ghost.GetComponent<GhostBuilding>().buildingData.size == 2)
+                if(!ResourceManager.instance.CheckRequirements(ghost.GetComponent<GhostBuilding>().buildingData, 1))
+                {
+                    ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[1];
+                    canBuild = false;
+                }
+
+                else if (ghost.GetComponent<GhostBuilding>().buildingData != null && ghost.GetComponent<GhostBuilding>().buildingData.size == 2)
                 {
                     Vector3 something = gridObject1.visualObject.transform.position;
 
-                    if(!GetGridObject(something.x + 1f, something.z).canBuild || !GetGridObject(something.x + 1f, something.z + 1).canBuild || !GetGridObject(something.x, something.z + 1f).canBuild)
+                    if (!GetGridObject(something.x + 1f, something.z).canBuild || !GetGridObject(something.x + 1f, something.z + 1).canBuild || !GetGridObject(something.x, something.z + 1f).canBuild)
                     {
                         // red
                         ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[1];
@@ -210,7 +260,7 @@ public class MyGridSystem : MonoBehaviour
                         //Color.green;
                         ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[0];
                         canBuild = true;
-                    }                
+                    }
                 }
                 else
                 {
@@ -228,35 +278,54 @@ public class MyGridSystem : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0) && canBuild)
             {
-                
-                if(currentBuildingBrush == BuildingBrush.House)
-                    ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[2];
-                else if (currentBuildingBrush == BuildingBrush.Towncenter)
-                    ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[3];
-                else if (currentBuildingBrush == BuildingBrush.Factory)
-                    ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[3];
+                ResourceManager.instance.UpdateResources(int.Parse(costText[0].text), int.Parse(costText[1].text),
+                    int.Parse(costText[2].text), int.Parse(costText[3].text), int.Parse(costText[4].text),false);
+                switch (currentBuildingBrush)
+                {
+                    case BuildingBrush.House: ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[2];
+                        ghost.AddComponent<House>();
+                        break;
+                    case BuildingBrush.Towncenter:
+                        ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[4];
+                        ghost.AddComponent<TownCenter>();
+                        break;
+                    case BuildingBrush.Factory:
+                        ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[3];
+                        ghost.AddComponent<Factory>();
+                        break;
+                    case BuildingBrush.FilterationPlant:
+                        ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[5];
+                        ghost.AddComponent<FilterPlants>();
+                        break;
+                    case BuildingBrush.Farm:
+                        ghost.GetComponent<GhostBuilding>().rendererForBuilding.GetComponent<Renderer>().material = buildMaterials[6];
+                        ghost.AddComponent<Farm>();
+                        break;
+                }
                 Destroy(ghost.GetComponent<GhostBuilding>());
-                StopAllCoroutines();
+                
                 Vector3 positionToBePlaced = GetExactCenter(GetMouseWorldPosition());
+                if (currentBuildingBrush == BuildingBrush.Towncenter)
+                    GameManager.instance.townHallPresent = true;
 
                 GridObject gridObject = GetGridObject(positionToBePlaced.x, positionToBePlaced.z);
                 if (gridObject != null && gridObject.canBuild)
                 {
-                    
                     gridObject.buildingObject = Instantiate(ghost);
                     GameObject ps = Instantiate(buildingPS, positionToBePlaced, Quaternion.identity);
                     Vector3 actualPosition = ghost.transform.position;
-                    actualPosition.y = -0.25f;
+                    actualPosition.y = -1.25f;
                     if (ghost.GetComponent<GhostBuilding>().buildingData != null && ghost.GetComponent<GhostBuilding>().buildingData.size == 2)
                     {
                         OccupyMoreSpace(gridObject);
-                        actualPosition.y = -1f;
                     }
-                    
+                    gridObject.type = GridObject.Type.Building;
                     gridObject.buildingObject.transform.position = Vector3.Lerp(gridObject.buildingObject.transform.position, actualPosition, Time.deltaTime * 20f);
                     gridObject.canBuild = false;
-                  
+                    StopCoroutine(SelectionOfBuilding(gridObject));
+                    currentBuildingBrush = BuildingBrush.House;
                     CheckBuildingBrush();
+                    return;
                 }
                 else
                 {
@@ -265,7 +334,84 @@ public class MyGridSystem : MonoBehaviour
                     gridObject.buildingObject.GetComponent<Building>().LevelUp();
                 }
             }
+            else
+            {
+                //cannot build
+                // HandleError();
+            }
         }
+        else
+        {
+            if (Input.GetMouseButton(1))
+            {
+                Vector3 position = GetExactCenter(GetMouseWorldPosition());
+                GridObject gridObject = GetGridObject(position.x, position.z);
+                if (gridObject.buildingObject == null && gridObject.resourceSO == null)
+                    return;
+                SelectObject(gridObject);
+            }
+        }
+      
+
+    }
+
+    /// <summary>
+    /// Floating text in case cannot build
+    /// </summary>
+    /// <param name="error"></param>
+    private void HandleError(string error)
+    {
+        // textMeshPro.text = error;s
+    }
+
+    private void SelectObject(GridObject gridObject)
+    {
+        if (gridObject.resourceSO != null && GameManager.instance.currentWorker > 0)
+        {
+            health.SetActive(true);
+            Slider slider = health.GetComponent<Slider>();
+            slider.maxValue = gridObject.resourceSO.hitPoints;
+            slider.value = gridObject.resourceSO.hitPoints;
+            healthValue.text = slider.value.ToString();
+            Slider resourceSlider = null;
+            switch (gridObject.resourceSO.dataId.name)
+            {
+                case "metal":
+                    resourceSlider = ResourceManager.instance.metalSlider;
+                    break;
+                case "wood":
+                    resourceSlider = ResourceManager.instance.woodSlider;
+                    break;
+                case "crystal":
+                    resourceSlider = ResourceManager.instance.crystalSlider;
+                    break;
+            }
+            GameManager.instance.currentWorker--;
+            currentWorker.text = GameManager.instance.currentWorker.ToString();
+
+            StartCoroutine(GettingResource(gridObject, resourceSlider, slider));
+        }
+    }
+
+    IEnumerator GettingResource(GridObject gridObject, Slider resourceToReflectOn, Slider resourceHealth)
+    {
+        while (resourceHealth.value > 0)
+        {
+            resourceHealth.value -= 10;
+            resourceToReflectOn.value += 10;
+            healthValue.text = resourceHealth.value.ToString();
+            yield return new WaitForSeconds(1f);
+            if (resourceHealth.value <= 0)
+                break;
+        }
+        GameManager.instance.currentWorker++;
+        currentWorker.text = GameManager.instance.currentWorker.ToString();
+        gridObject.resourceSO = null;
+        Destroy(gridObject.buildingObject);
+        gridObject.type = GridObject.Type.Empty;
+        gridObject.canBuild = true;
+        health.SetActive(false);
+        yield return null;
     }
 
     private void OccupyMoreSpace(GridObject go)
@@ -273,10 +419,10 @@ public class MyGridSystem : MonoBehaviour
         Vector3 something = go.visualObject.transform.position;
         GetGridObject(something.x + 1f, something.z).canBuild = false;
 
-        GetGridObject(something.x + 1f, something.z+1).canBuild = false;
+        GetGridObject(something.x + 1f, something.z + 1).canBuild = false;
 
 
-        GetGridObject(something.x, something.z +1f).canBuild = false;
+        GetGridObject(something.x, something.z + 1f).canBuild = false;
     }
 
     private void CheckBuildingBrush()
@@ -286,25 +432,39 @@ public class MyGridSystem : MonoBehaviour
         {
             case BuildingBrush.Towncenter:
                 ghost = Instantiate(testBuildingsPrefabs[1]);
+                costPanelHeading.text = "Town Center";
                 break;
             case BuildingBrush.House:
                 ghost = Instantiate(testBuildingsPrefabs[0]);
+                costPanelHeading.text = "House";
                 break;
             case BuildingBrush.Factory:
                 ghost = Instantiate(testBuildingsPrefabs[2]);
+                costPanelHeading.text = "Factoru";
+                break;
+
+            case BuildingBrush.FilterationPlant:
+                ghost = Instantiate(testBuildingsPrefabs[4]);
+                costPanelHeading.text = "Filteration Plant";
+                break;
+            case BuildingBrush.Farm:
+                ghost = Instantiate(testBuildingsPrefabs[3]);
+                costPanelHeading.text = "Farm";
                 break;
         }
-    }
 
-    public void ChangeMode()
-    {
-        currentMode = Mode.Brush;
-        ghost.SetActive(true);
+        costText[0].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.foodValues[0].ToString();
+        costText[1].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.woodValues[0].ToString();
+        costText[2].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.metalValues[0].ToString();
+        costText[3].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.goldValues[0].ToString();
+        costText[4].text = ghost.GetComponent<GhostBuilding>().buildingData.costProg.stoneValues[0].ToString();
+        costText[5].text = ghost.GetComponent<GhostBuilding>().buildingData.pollutionProg.levelProg[1].ToString();
+        ghost.GetComponent<GhostBuilding>().costPanel = costPanel;
     }
 
     private void ChangeRotation(GhostBuilding ghost)
     {
-        switch(ghost.currentDir)
+        switch (ghost.currentDir)
         {
             case GhostBuilding.Dir.Up: ghost.currentDir = GhostBuilding.Dir.Right; break;
             case GhostBuilding.Dir.Right: ghost.currentDir = GhostBuilding.Dir.Down; break;

@@ -10,10 +10,15 @@ public class FilterPlants : Building
 {
    public FilterPlants()
     {
+     
+    }
+
+    private void Start()
+    {
         buildingData = GameManager.instance.buildingSOs[2];
         level = 1;
         DID = buildingData.dataId;
-        pollutionOutput = buildingData.pollutionProg.levelProg[1];
-        UpdatePollution();
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
+
     }
 }

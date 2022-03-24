@@ -7,15 +7,14 @@ using UnityEngine;
 /// </summary>
 public class TownCenter : Building
 {
-    public TownCenter()
+
+    private void Start()
     {
         // sets the DID when its instantiated - Shobhit
         buildingData = GameManager.instance.buildingSOs[0];
         level = 1;
         DID = buildingData.dataId;
-        pollutionOutput = buildingData.pollutionProg.levelProg[1];
-        UpdatePollution();
-
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
     }
 
     /// <summary>
