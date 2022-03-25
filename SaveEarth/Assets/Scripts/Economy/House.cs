@@ -17,7 +17,8 @@ public class House : Building
         buildingData = GameManager.instance.buildingSOs[4];
         level = 1;
         DID = buildingData.dataId;
-        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
+        pollutionOutput = buildingData.pollutionProg.levelProg[1];
+        GameManager.instance.pollutionValue += pollutionOutput;
     }
 
     public void IncreasePopulations()

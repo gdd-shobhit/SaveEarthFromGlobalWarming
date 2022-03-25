@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public bool isItDay = true;
     public int currentWorker = 1;
     public TimeOfTheDay currentTimeOfTheDay=TimeOfTheDay.Morning;
+    public bool coroutineRunning = false;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
             costProg = CSVImportTool.progressionList.costProgs;
             polProg = CSVImportTool.progressionList.polProgs;
             pollutionSlider.maxValue = maxPollution;
-            StartCoroutine(PollutionCoroutine());
+            
         }
         else
         {
@@ -87,6 +88,11 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         // Deals with Time
+        if(pollutionValue > 0 && !coroutineRunning)
+        {
+            StartCoroutine(PollutionCoroutine());
+            coroutineRunning = true;
+        }
         UpdateTime();
         //pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
     }
@@ -96,7 +102,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateTime()
     {
-        
         time += Time.deltaTime * timeMultiplier;
 
         CheckForTimeOfTheDay();
@@ -181,8 +186,8 @@ public class GameManager : MonoBehaviour
     {
         while (pollutionValue > 0)
         {
-            yield return new WaitForSeconds(5);
-            pollutionSlider.value += (pollutionValue - pollutionSlider.value);
+            yield return new WaitForSeconds(20);
+            pollutionSlider.value += pollutionValue;
             if (pollutionValue <= 0)
                 break;
         }

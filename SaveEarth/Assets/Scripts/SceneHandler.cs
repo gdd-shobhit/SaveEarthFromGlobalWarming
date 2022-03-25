@@ -14,14 +14,18 @@ public class SceneHandler : MonoBehaviour
                 SwitchToExitScreen();
             }
         }
+        if(SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            if (Input.anyKeyDown)
+                SwitchToGame();
+        }
         
     }
 
     public void SwitchToGame()
     {
-        
-        SceneManager.LoadScene("Game");
-        CSVImportTool.TestMethod();
+        SceneManager.LoadScene("3DGame");
+        //CSVImportTool.TestMethod();
     }
 
     public void SwitchToExitScreen()
