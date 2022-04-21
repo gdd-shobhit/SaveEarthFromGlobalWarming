@@ -15,12 +15,12 @@ MonoBehaviour:
   prefabs:
   - gameObject: {fileID: 4116995492308388160, guid: 899d4881d13429445affb64e0ad2eafe, type: 3}
     settings:
-      m_Strength: 74.217155
-      m_RotationRangeMin: {x: 0, y: 0, z: 0}
-      m_RotationRangeMax: {x: 0, y: 255.31915, z: 0}
+      m_Strength: 100
+      m_RotationRangeMin: {x: 15.319167, y: 0, z: 0}
+      m_RotationRangeMax: {x: 86.80851, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
       m_ScaleRangeMax: {x: 1, y: 1, z: 1}
-      m_UniformScale: {x: 1, y: 2}
+      m_UniformScale: {x: 2.745098, y: 4.117647}
       m_UniformBool: 1
       m_XRotationBool: 0
       m_YRotationBool: 1
