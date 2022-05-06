@@ -314,7 +314,7 @@ public class MyGridSystem : MonoBehaviour
                     gridObject.buildingObject = Instantiate(ghost);
                     GameObject ps = Instantiate(buildingPS, positionToBePlaced, Quaternion.identity);
                     Vector3 actualPosition = ghost.transform.position;
-                    actualPosition.y = -1.25f;
+                    actualPosition.y = 0.27f;
                     if (ghost.GetComponent<GhostBuilding>().buildingData != null && ghost.GetComponent<GhostBuilding>().buildingData.size == 2)
                     {
                         OccupyMoreSpace(gridObject);
