@@ -8,13 +8,29 @@ using UnityEngine;
 public class Factory : Building
 {
     public int goldCoinsOutput=0;
-    public Factory()
+
+    private void Start()
     {
-        DID = GameManager.instance.dataIDList.FindDataID("factory");
-        polProg = GameManager.instance.polProg[2].progression[DID];
-        pollutionOutput = polProg[1];
-        goldCoinsOutput = 20;
-        ResourceManager.instance.goldOutput = goldCoinsOutput;
-        UpdatePollution();
+        buildingData = GameManager.instance.buildingSOs[1];
+        level = 1;
+        DID = buildingData.dataId;
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
+        goldCoinsOutput = 4;
+
+        //ResourceManager.instance.goldOutput = goldCoinsOutput;
+        StartCoroutine(GoldUpdate());
+    }
+
+    IEnumerator GoldUpdate()
+    {
+        while(goldCoinsOutput > 0)
+        {
+            yield return new WaitForSeconds(5);
+            ResourceManager.instance.goldSlider.value += goldCoinsOutput;
+            if (goldCoinsOutput <= 0)
+                break;
+        }
+
+        yield return null;
     }
 }

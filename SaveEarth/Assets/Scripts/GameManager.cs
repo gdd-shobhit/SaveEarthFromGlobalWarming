@@ -6,10 +6,26 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public enum TimeOfTheDay
+    {
+        Morning,
+        Afternoon,
+        Evening,
+        Night
+    }
+
     public static GameManager instance;
     public DataIDList dataIDList;
     public List<CostProgression> costProg;
     public List<PollutionProgression> polProg;
+    public List<BuildingSO> buildingSOs;
+    public List<ResourceSO> resourceSOs;
+    public Transform lightTransform;
+    private float dayChangingSpeed = 1f;
+    public bool isItDay = true;
+    public int currentWorker = 1;
+    public TimeOfTheDay currentTimeOfTheDay=TimeOfTheDay.Morning;
+    public bool coroutineRunning = false;
     /// <summary>
     /// Time passed since the level started
     /// </summary>
@@ -37,7 +53,9 @@ public class GameManager : MonoBehaviour
     /// Total Pollution Value
     /// </summary>
     public int pollutionValue = 0;
-
+    private int maxPollution = 1000;
+    public Slider pollutionSlider;
+    public bool townHallPresent = false;
     public float health = 100;
     public Text pollutionOutputText;
     public Text daysPassedText;
@@ -48,7 +66,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> levelToPolutionOutput;
     public Dictionary<DataID, int> currentResources = new Dictionary<DataID, int>();
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -57,7 +75,8 @@ public class GameManager : MonoBehaviour
             dataIDList = CSVImportTool.dataIDs;
             costProg = CSVImportTool.progressionList.costProgs;
             polProg = CSVImportTool.progressionList.polProgs;
-            healthbar = new HealthBar();
+            pollutionSlider.maxValue = maxPollution;
+            
         }
         else
         {
@@ -69,8 +88,13 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         // Deals with Time
+        if(pollutionValue > 0 && !coroutineRunning)
+        {
+            StartCoroutine(PollutionCoroutine());
+            coroutineRunning = true;
+        }
         UpdateTime();
-        pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
+        //pollutionOutputText.text = "Current Pollution Output: "+pollutionValue+"/day";
     }
 
     /// <summary>
@@ -80,34 +104,51 @@ public class GameManager : MonoBehaviour
     {
         time += Time.deltaTime * timeMultiplier;
 
+        CheckForTimeOfTheDay();
+ 
         if (time > 120.0f)
         {
             daysPassed++;
             totalDaysPassed++;
-            daysPassedText.text = "Days Survived: " + totalDaysPassed;
-            health -= ((float)pollutionValue / 20);
-            if (healthLess60 && health >= 60)
-            {
-                health = 60;
-            }
-            else if(healthLess80 && health >= 80)
-            {
-                health = 80;
-            }
-            healthbar.SetHealth(health);
-            ResourceManager.instance.HandleResourcesOutput();
+            ////daysPassedText.text = "Days Survived: " + totalDaysPassed;
+            //health -= ((float)pollutionValue / 20);
+            //if (healthLess60 && health >= 60)
+            //{
+            //    health = 60;
+            //}
+            //else if(healthLess80 && health >= 80)
+            //{
+            //    health = 80;
+            //}
+            //healthbar.SetHealth(health);
+            //ResourceManager.instance.HandleResourcesOutput();
             time = 0;
         }    
     }
 
-    void PopulatePollutionEconomy()
+    private void CheckForTimeOfTheDay()
     {
-        // Json file will be inputed
-    }
+        lightTransform.Rotate(Vector3.right, Time.deltaTime * dayChangingSpeed);
 
-    DataID GetDID(GameObject gameObject)
-    {
-        return gameObject.GetComponent<DataID>();
+        if (lightTransform.rotation.eulerAngles.x >= 0 && lightTransform.rotation.eulerAngles.x <= 60)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Morning;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 60 && lightTransform.rotation.eulerAngles.x <= 120)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Afternoon;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 120 && lightTransform.rotation.eulerAngles.x <= 190)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Evening;
+        }
+
+        else if (lightTransform.rotation.eulerAngles.x > 190 && lightTransform.rotation.eulerAngles.x <= 359)
+        {
+            currentTimeOfTheDay = TimeOfTheDay.Night;
+        }
     }
 
     public void IncreaseTimeBy(int multiplier)
@@ -139,5 +180,18 @@ public class GameManager : MonoBehaviour
             case 0: ResourceManager.instance.baseProductionRate += 4;
                 break;
         }
+    }
+
+    public IEnumerator PollutionCoroutine()
+    {
+        while (pollutionValue > 0)
+        {
+            yield return new WaitForSeconds(20);
+            pollutionSlider.value += pollutionValue;
+            if (pollutionValue <= 0)
+                break;
+        }
+
+        yield return null;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine.Tilemaps;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 
+/// <summary>
+/// A lot of it will get deprecated due to shifting to 3D
+/// </summary>
 public class PlayerManager : MonoBehaviour
 {
 
@@ -118,8 +121,6 @@ public class PlayerManager : MonoBehaviour
                 // play some Particle System
             }
 
-            ResourceClicker(gridPosition);
-
         }
     }
 
@@ -153,8 +154,8 @@ public class PlayerManager : MonoBehaviour
     {
         // Scale the building down = Done :+1: - Durrell
         // Need to build when requirements are met
-        buildingToBeBuild = building.name.ToLower();
-        ResourceManager.instance.DisplayInfo(building.name, 1);
+        //buildingToBeBuild = building.name.ToLower();
+        //ResourceManager.instance.DisplayInfo(building.name, 1);
     }
 
     public void BuildBuilding()
@@ -162,8 +163,8 @@ public class PlayerManager : MonoBehaviour
         if (canBuild)
         {
             GameObject temp = Instantiate(tempBuildingObj);
-            if (ResourceManager.instance.CheckRequirements(GameManager.instance.dataIDList.FindDataID(buildingToBeBuild), 1))
-            {
+            //if (ResourceManager.instance.CheckRequirements(buil, 1))
+            //{
                 switch (buildingToBeBuild)
                 {
                     case "towncenter":
@@ -203,12 +204,9 @@ public class PlayerManager : MonoBehaviour
                 BuildingTracker building = new BuildingTracker(highlightedPosition, tileToBePlace, temp);
                 buildingList.Add(highlightedPosition, building);
                 canBuild = false;
-            }
-            
-            else
-            {
+          
                 Destroy(temp);
-            }
+            
 
         }
         
@@ -271,37 +269,6 @@ public class PlayerManager : MonoBehaviour
             map.SetTile(clickerPosition, grassTile);
             CreateResourceClicker();
         }
-    }
-
-    /// <summary>
-    /// Checks if tile is a resource clicker or not.
-    /// -- Durrell
-    /// </summary>
-    /// <param name="position"></param>
-    private void ResourceClicker(Vector3Int position)
-    {
-        // Create cookie clicker element on tiles - Durrell
-        // check if tile has resource item on it.
-        var tile = map.GetTile(position);
-        Debug.Log(tile);
-        switch (tile.name)
-        {
-            case "wood_tile":
-                ResourceManager.instance.currentWood += 5;
-                break;
-            case "stone_tile":
-                // Add resources for stone when clicked.
-                ResourceManager.instance.currentStone += 4;
-                break;
-            case "metal_tile":
-                // Add resources for metal when clicked.
-                ResourceManager.instance.currentMetal += 3;
-                break;
-            default:
-                print("Tile is not a clicker!");
-                break;
-        }
-        ResourceManager.instance.UpdateResources();
     }
 
 }

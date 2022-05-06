@@ -4,7 +4,7 @@ using UnityEngine;
 public class BuildingSO : ScriptableObject
 {
     public DataID dataId;
-
+    public int size;
     public CostProgression costProg;
     public PollutionProgression pollutionProg;
 
@@ -13,5 +13,5 @@ public class BuildingSO : ScriptableObject
     // in seconds
     public int timeToBuild = 30;
 
-    public int level = 1;
+    public int maxLevel = 10;
 }

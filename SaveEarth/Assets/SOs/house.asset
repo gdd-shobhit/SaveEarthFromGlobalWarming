@@ -13,11 +13,43 @@ MonoBehaviour:
   m_Name: house
   m_EditorClassIdentifier: 
   dataId:
-    id: 0
-    DID: 
-    name: 
-  list:
-    costProgs: []
-    polProgs: []
+    id: 4
+    DID: building_house
+    name: house
+  size: 1
+  costProg:
+    id: 4
+    DID: building_house
+    food_1: 150
+    wood_1: 100
+    stone_1: 50
+    metal_1: 50
+    gold_1: 50
+    food_2: 250
+    wood_2: 250
+    stone_2: 100
+    metal_2: 100
+    gold_2: 150
+    food_3: 400
+    wood_3: 400
+    stone_3: 300
+    metal_3: 250
+    gold_3: 150
+    actualDID:
+      id: 4
+      DID: building_house
+      name: house
+  pollutionProg:
+    id: 4
+    DID: building_house
+    PO_1: 20
+    PO_2: 40
+    PO_3: 60
+    PO_4: 100
+    actualDID:
+      id: 4
+      DID: building_house
+      name: house
+    levelProg: 0000000014000000280000003c00000064000000
   timeToBuild: 30
-  level: 1
+  maxLevel: 10

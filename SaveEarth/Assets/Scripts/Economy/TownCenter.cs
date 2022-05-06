@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Town Center for the city - Singular and already build in to start off the game.
+/// </summary>
 public class TownCenter : Building
 {
-    
-    
-    public TownCenter()
+
+    private void Start()
     {
         // sets the DID when its instantiated - Shobhit
-        DID = GameManager.instance.dataIDList.FindDataID("towncenter");
-        polProg = GameManager.instance.polProg[0].progression[DID];
-        pollutionOutput = polProg[1];
-        UpdatePollution();
-
+        buildingData = GameManager.instance.buildingSOs[0];
+        level = 1;
+        DID = buildingData.dataId;
+        GameManager.instance.pollutionValue += buildingData.pollutionProg.levelProg[1];
     }
 
     /// <summary>

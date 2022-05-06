@@ -7,7 +7,7 @@ public class HealthBar : MonoBehaviour
 
     public HealthBar()
     {
-        slider = GameObject.Find("PollutionMeter").GetComponent<Slider>();
+        //slider = GameObject.Find("PollutionMeter").GetComponent<Slider>();
     }
     public void SetMaxPollution(int pollution)
     {
@@ -51,14 +51,14 @@ public class HealthBar : MonoBehaviour
         }
         else
         {
-            if (health <= 100)
-            {
-                slider.value = health;
-            }
-            else
-            {
-                slider.value = 100;
-            }
+            //if (health <= 100)
+            //{
+            //    slider.value = health;
+            //}
+            //else
+            //{
+            //    slider.value = 100;
+            //}
         }
     }
 }

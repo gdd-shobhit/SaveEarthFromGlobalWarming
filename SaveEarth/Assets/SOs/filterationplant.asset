@@ -13,11 +13,43 @@ MonoBehaviour:
   m_Name: filterationplant
   m_EditorClassIdentifier: 
   dataId:
-    id: 0
-    DID: 
-    name: 
-  list:
-    costProgs: []
-    polProgs: []
+    id: 3
+    DID: building_filterationplant
+    name: filterationplant
+  size: 2
+  costProg:
+    id: 3
+    DID: building_filterationplant
+    food_1: 400
+    wood_1: 300
+    stone_1: 200
+    metal_1: 100
+    gold_1: 500
+    food_2: 1000
+    wood_2: 800
+    stone_2: 700
+    metal_2: 350
+    gold_2: 1500
+    food_3: 2500
+    wood_3: 1600
+    stone_3: 1200
+    metal_3: 750
+    gold_3: 1500
+    actualDID:
+      id: 3
+      DID: building_filterationplant
+      name: filterationplant
+  pollutionProg:
+    id: 3
+    DID: building_filterationplant
+    PO_1: -20
+    PO_2: -50
+    PO_3: -150
+    PO_4: -300
+    actualDID:
+      id: 3
+      DID: building_filterationplant
+      name: filterationplant
+    levelProg: 00000000ecffffffceffffff6affffffd4feffff
   timeToBuild: 30
-  level: 1
+  maxLevel: 10
